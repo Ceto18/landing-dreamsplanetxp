@@ -1,0 +1,25 @@
+import { Header } from '@/components/header'
+import { Hero } from '@/components/hero'
+import { Mission } from '@/components/mission'
+import { Moment } from '@/components/moment'
+import { Team } from '@/components/team'
+import { Review } from '@/components/review'
+import { About } from '@/components/about'
+import { Contact } from '@/components/contact'
+import { Footer } from '@/components/footer'
+
+export default function Page() {
+  return (
+    <main className="bg-background text-foreground">
+      <Header />
+      <Hero />
+      <Mission />
+      <Moment />
+      <Team />
+      <Review />
+      <About />
+      <Contact />
+      <Footer />
+    </main>
+  )
+}
