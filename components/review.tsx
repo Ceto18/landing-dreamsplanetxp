@@ -59,9 +59,11 @@ export function Review() {
 
     useEffect(() => {
         if (!autoScroll) return
+
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % reviews.length)
         }, 5000)
+
         return () => clearInterval(interval)
     }, [autoScroll])
 
@@ -80,22 +82,49 @@ export function Review() {
     const review = reviews[activeIndex]
 
     return (
-        <section id="review" className="py-20 bg-secondary/30">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="resenas" className="relative py-24 bg-secondary/30 overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
+            <div className="absolute bottom-20 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section Header */}
+                <div className="mb-16 space-y-6 text-center">
+                    <h2 className="text-5xl sm:text-6xl font-bold text-foreground">
+                        Reseñas
+                    </h2>
+
+                    <div className="flex justify-center">
+                        <div className="w-20 h-1 bg-gradient-to-r from-transparent via-accent to-transparent" />
+                    </div>
+
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                        Historias reales de viajeros que vivieron experiencias únicas, auténticas e inolvidables.
+                    </p>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Left - Reviews */}
                     <div className="space-y-8">
-                        <h2 className="text-5xl font-bold leading-tight tracking-tight text-foreground">Lo que dicen nuestros viajeros</h2>
+                        <div className="inline-flex rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
+                            Lo que dicen nuestros viajeros
+                        </div>
 
                         {/* Main Review */}
-                        <div className="space-y-8 pt-4">
-                            <p className="text-xl text-foreground leading-relaxed italic">
-                                &quot;{review.quote}&quot;
-                            </p>
+                        <div className="rounded-2xl border border-border/60 bg-card/40 p-7 shadow-lg glass-effect space-y-8">
+                            <div className="space-y-3">
+                                <p className="text-accent text-sm font-semibold uppercase tracking-[0.25em]">
+                                    {review.title}
+                                </p>
+
+                                <p className="text-xl sm:text-2xl text-foreground leading-relaxed italic">
+                                    &quot;{review.quote}&quot;
+                                </p>
+                            </div>
 
                             {/* Rating */}
                             <div className="flex items-center gap-2">
-                                {Array.from({ length: 5 }).map((_, i) => (
+                                {Array.from({ length: review.rating }).map((_, i) => (
                                     <Star
                                         key={i}
                                         className="w-5 h-5 fill-accent text-accent"
@@ -104,44 +133,68 @@ export function Review() {
                             </div>
 
                             {/* Traveler Info */}
-                            <div className="space-y-1">
-                                <p className="font-semibold text-foreground">{review.traveler}</p>
-                                <p className="text-sm text-foreground/60">{review.mission}</p>
+                            <div className="flex items-center justify-between gap-4 border-t border-border/60 pt-5">
+                                <div className="space-y-1">
+                                    <p className="font-semibold text-foreground">
+                                        {review.traveler}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Misión {review.mission}
+                                    </p>
+                                </div>
+
+                                <div className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+                                    {activeIndex + 1}/{reviews.length}
+                                </div>
                             </div>
                         </div>
 
                         {/* Navigation */}
                         <div className="flex items-center gap-4">
                             <button
+                                type="button"
                                 onClick={handlePrev}
                                 className="p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
+                                aria-label="Reseña anterior"
                             >
                                 <ChevronLeft className="w-5 h-5 text-accent" />
                             </button>
+
                             <button
+                                type="button"
                                 onClick={handleNext}
                                 className="p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
+                                aria-label="Siguiente reseña"
                             >
                                 <ChevronRight className="w-5 h-5 text-accent" />
                             </button>
+
                             <div className="ml-auto flex gap-1">
                                 {reviews.map((_, idx) => (
                                     <button
                                         key={idx}
+                                        type="button"
                                         onClick={() => {
                                             setAutoScroll(false)
                                             setActiveIndex(idx)
                                             setTimeout(() => setAutoScroll(true), 5000)
                                         }}
-                                        className={`w-2 h-2 rounded-full transition-all ${idx === activeIndex ? 'bg-accent w-8' : 'bg-accent/30'
-                                            }`}
+                                        className={`h-2 rounded-full transition-all ${
+                                            idx === activeIndex
+                                                ? 'bg-accent w-8'
+                                                : 'bg-accent/30 w-2'
+                                        }`}
+                                        aria-label={`Ver reseña ${idx + 1}`}
                                     />
                                 ))}
                             </div>
                         </div>
 
                         {/* Button */}
-                        <button className="px-8 py-3 border border-accent text-accent font-semibold rounded-lg hover:bg-accent/10 transition-colors">
+                        <button
+                            type="button"
+                            className="px-8 py-3 border border-accent text-accent font-semibold rounded-lg hover:bg-accent/10 transition-colors"
+                        >
                             Ver todas las reseñas
                         </button>
                     </div>
@@ -150,15 +203,24 @@ export function Review() {
                     <div className="space-y-8">
                         {/* Video Mockup */}
                         <div className="relative max-w-sm mx-auto">
-                            {/* Phone Frame */}
-                            <div className="relative bg-black rounded-3xl p-3 shadow-2xl mx-auto" style={{ width: '280px' }}>
+                            <div
+                                className="relative bg-black rounded-3xl p-3 shadow-2xl mx-auto border border-accent/20"
+                                style={{ width: '280px' }}
+                            >
                                 {/* Notch */}
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-3xl z-10" />
 
                                 {/* Screen */}
                                 <div className="relative bg-foreground/5 rounded-2xl h-96 overflow-hidden flex items-center justify-center">
-                                    <div className="absolute inset-0 bg-gradient-to-b from-accent/20 to-transparent" />
-                                    <Play className="w-16 h-16 text-accent relative z-10" />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-accent/20 via-background/20 to-background/80" />
+
+                                    <button
+                                        type="button"
+                                        className="relative z-10 w-20 h-20 rounded-full border border-accent/40 bg-accent/15 flex items-center justify-center hover:bg-accent/25 transition-colors"
+                                        aria-label="Reproducir video"
+                                    >
+                                        <Play className="w-10 h-10 text-accent fill-accent" />
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -168,10 +230,14 @@ export function Review() {
                             {metrics.map((metric, idx) => (
                                 <div
                                     key={idx}
-                                    className="p-4 rounded-lg border border-accent/30 bg-secondary/50 hover:border-accent transition-all"
+                                    className="p-5 rounded-xl border border-border/60 bg-card/40 hover:border-accent/60 hover:bg-card/70 transition-all shadow-lg"
                                 >
-                                    <p className="text-sm text-foreground/60 mb-2">{metric.label}</p>
-                                    <p className="text-2xl font-bold text-accent">{metric.value}</p>
+                                    <p className="text-sm text-muted-foreground mb-2">
+                                        {metric.label}
+                                    </p>
+                                    <p className="text-3xl font-bold text-accent">
+                                        {metric.value}
+                                    </p>
                                 </div>
                             ))}
                         </div>

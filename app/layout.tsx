@@ -3,32 +3,24 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
+
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-  title: 'Dreams Planetap - Experiencias de Viaje Premium',
-  description: 'Vive experiencias de viaje únicas y memorables con Dreams Planetap. Misiones exclusivas en destinos exóticos.',
-  generator: 'v0.app',
+  title: 'DreamsPlanetXP - Experiencias de Viaje Premium',
+  description:
+    'Vive experiencias de viaje únicas y memorables con DreamsPlanetXP. Misiones exclusivas en destinos extraordinarios.',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/logodreams.png',
+    shortcut: '/logodreams.png',
+    apple: '/logodreams.png',
   },
 }
 
@@ -38,7 +30,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} bg-background dark`}>
+    <html
+      lang="es"
+      className={`${geistSans.variable} ${geistMono.variable} bg-background dark`}
+    >
       <body className="font-sans antialiased bg-background text-foreground">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

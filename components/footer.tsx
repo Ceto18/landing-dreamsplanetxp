@@ -1,4 +1,25 @@
-import { Heart, Share2, MessageSquare, Globe } from 'lucide-react'
+const socialLinks = [
+    {
+        name: 'Facebook',
+        href: '#',
+        icon: '/icons/facebook.svg',
+    },
+    {
+        name: 'Instagram',
+        href: '#',
+        icon: '/icons/instagram.svg',
+    },
+    {
+        name: 'YouTube',
+        href: '#',
+        icon: '/icons/youtube.svg',
+    },
+    {
+        name: 'LinkedIn',
+        href: '#',
+        icon: '/icons/world-www.svg',
+    },
+]
 
 export function Footer() {
     return (
@@ -9,8 +30,9 @@ export function Footer() {
                     <div className="space-y-4">
                         <h3 className="text-xl font-bold">
                             <span className="text-accent">Dreams</span>
-                            <span className="text-foreground">Planetap</span>
+                            <span className="text-foreground">PlanetXP</span>
                         </h3>
+
                         <p className="text-muted-foreground text-sm">
                             Transformando viajes en experiencias memorables.
                         </p>
@@ -18,25 +40,43 @@ export function Footer() {
 
                     {/* Quick Links */}
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-foreground">Enlaces Rápidos</h4>
+                        <h4 className="font-semibold text-foreground">
+                            Enlaces Rápidos
+                        </h4>
+
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#misiones" className="text-muted-foreground hover:text-accent transition-colors">
+                                <a
+                                    href="#misiones"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Misiones
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#momentos" className="text-muted-foreground hover:text-accent transition-colors">
+                                <a
+                                    href="#momentos"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Momentos
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#equipo" className="text-muted-foreground hover:text-accent transition-colors">
+                                <a
+                                    href="#equipo"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Equipo
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#contacto" className="text-muted-foreground hover:text-accent transition-colors">
+                                <a
+                                    href="#contacto"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Contacto
                                 </a>
                             </li>
@@ -45,25 +85,43 @@ export function Footer() {
 
                     {/* Company */}
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-foreground">Empresa</h4>
+                        <h4 className="font-semibold text-foreground">
+                            Empresa
+                        </h4>
+
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="text-foreground/60 hover:text-accent transition-colors">
+                                <a
+                                    href="#quienes-somos"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Sobre Nosotros
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#" className="text-foreground/60 hover:text-accent transition-colors">
+                                <a
+                                    href="#"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Condiciones
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#" className="text-foreground/60 hover:text-accent transition-colors">
+                                <a
+                                    href="#"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Privacidad
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#" className="text-foreground/60 hover:text-accent transition-colors">
+                                <a
+                                    href="#"
+                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                >
                                     Sostenibilidad
                                 </a>
                             </li>
@@ -72,20 +130,35 @@ export function Footer() {
 
                     {/* Social */}
                     <div className="space-y-4">
-                        <h4 className="font-semibold text-foreground">Síguenos</h4>
+                        <h4 className="font-semibold text-foreground">
+                            Síguenos
+                        </h4>
+
                         <div className="flex gap-4">
-                            <a href="#" className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors">
-                                <Heart className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors">
-                                <Share2 className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors">
-                                <MessageSquare className="w-5 h-5" />
-                            </a>
-                            <a href="#" className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors">
-                                <Globe className="w-5 h-5" />
-                            </a>
+                            {socialLinks.map((social) => (
+                                <a
+                                    key={social.name}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={social.name}
+                                    className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
+                                >
+                                    <span
+                                        className="block w-5 h-5 bg-current"
+                                        style={{
+                                            WebkitMaskImage: `url(${social.icon})`,
+                                            maskImage: `url(${social.icon})`,
+                                            WebkitMaskRepeat: 'no-repeat',
+                                            maskRepeat: 'no-repeat',
+                                            WebkitMaskSize: 'contain',
+                                            maskSize: 'contain',
+                                            WebkitMaskPosition: 'center',
+                                            maskPosition: 'center',
+                                        }}
+                                    />
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -94,9 +167,10 @@ export function Footer() {
                 <div className="h-px bg-accent/20 my-8" />
 
                 {/* Bottom */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-foreground/60">
-                    <p>&copy; 2024 Dreams Planetap. Todos los derechos reservados.</p>
-                    <p>Diseñado con 💛 para viajeros apasionados</p>
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+                    <p>&copy; 2024 DreamsPlanetXP. Todos los derechos reservados.</p>
+
+                    <p>Diseñado con pasión para viajeros apasionados</p>
                 </div>
             </div>
         </footer>

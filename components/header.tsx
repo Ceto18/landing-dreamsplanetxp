@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 
 const navigation = [
@@ -46,34 +47,38 @@ export function Header() {
             }`}
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="flex items-center justify-between h-20">
+                <div className="flex items-center justify-between h-24">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center group-hover:bg-accent/30 transition-all duration-300">
-                            <span className="text-sm font-bold text-accent">
-                                DP
-                            </span>
+                    <Link href="/" className="flex items-center gap-4 group">
+                        <div className="relative w-14 h-14 rounded-full bg-accent/20 border border-accent/40 flex items-center justify-center overflow-hidden group-hover:bg-accent/30 transition-all duration-300">
+                            <Image
+                                src="/logodreams.png"
+                                alt="DreamsPlanetXP"
+                                fill
+                                className="object-contain p-1"
+                                priority
+                            />
                         </div>
 
                         <div className="hidden sm:block">
-                            <h1 className="text-sm font-bold tracking-tight text-foreground">
+                            <h1 className="text-lg font-bold tracking-tight text-foreground">
                                 Dreams
                                 <span className="text-accent">PlanetXP</span>
                             </h1>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-sm text-muted-foreground">
                                 Experiencias Premium
                             </p>
                         </div>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center gap-8">
+                    <nav className="hidden lg:flex items-center gap-10">
                         {navigation.map((item) => (
                             <Link
                                 key={item.name}
                                 href={item.href}
                                 onClick={() => handleNavClick(item.href)}
-                                className={`relative text-sm font-medium transition-colors duration-300 ${
+                                className={`relative text-base font-semibold transition-colors duration-300 ${
                                     activeLink === item.href
                                         ? 'text-accent'
                                         : 'text-muted-foreground hover:text-foreground'
@@ -93,7 +98,7 @@ export function Header() {
                         <Link
                             href="#contacto"
                             onClick={() => handleNavClick('#contacto')}
-                            className="hidden sm:inline-flex px-5 py-2 text-sm font-medium bg-accent text-background rounded-lg hover:opacity-90 transition-all duration-300"
+                            className="hidden sm:inline-flex px-6 py-2.5 text-base font-semibold bg-accent text-background rounded-lg hover:opacity-90 transition-all duration-300"
                         >
                             Reservar ahora
                         </Link>
@@ -105,9 +110,9 @@ export function Header() {
                             aria-label="Abrir menú"
                         >
                             {isOpen ? (
-                                <X className="w-6 h-6" />
+                                <X className="w-7 h-7" />
                             ) : (
-                                <Menu className="w-6 h-6" />
+                                <Menu className="w-7 h-7" />
                             )}
                         </button>
                     </div>
@@ -116,13 +121,13 @@ export function Header() {
                 {/* Mobile Navigation */}
                 {isOpen && (
                     <nav className="lg:hidden bg-background/95 backdrop-blur-md border border-border/40 rounded-b-xl overflow-hidden shadow-lg">
-                        <div className="px-4 py-4 space-y-2">
+                        <div className="px-4 py-5 space-y-2">
                             {navigation.map((item) => (
                                 <Link
                                     key={item.name}
                                     href={item.href}
                                     onClick={() => handleNavClick(item.href)}
-                                    className={`block px-4 py-3 rounded-lg text-sm transition-all duration-300 border-l-2 ${
+                                    className={`block px-4 py-3.5 rounded-lg text-base font-medium transition-all duration-300 border-l-2 ${
                                         activeLink === item.href
                                             ? 'bg-accent/15 text-accent border-accent'
                                             : 'text-muted-foreground hover:text-foreground hover:bg-muted/50 border-transparent'
@@ -135,7 +140,7 @@ export function Header() {
                             <Link
                                 href="#contacto"
                                 onClick={() => handleNavClick('#contacto')}
-                                className="block w-full px-4 py-3 text-sm font-medium text-center bg-accent text-background rounded-lg hover:opacity-90 transition-all mt-4"
+                                className="block w-full px-4 py-3.5 text-base font-semibold text-center bg-accent text-background rounded-lg hover:opacity-90 transition-all mt-4"
                             >
                                 Reservar ahora
                             </Link>

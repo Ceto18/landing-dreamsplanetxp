@@ -3,87 +3,94 @@
 import { useEffect, useState } from 'react'
 
 interface CountdownProps {
-  departureDate: string
+    departureDate: string
 }
 
 interface TimeLeft {
-  días: number
-  horas: number
-  minutos: number
-  segundos: number
+    días: number
+    horas: number
+    minutos: number
 }
 
 export function Countdown({ departureDate }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    días: 0,
-    horas: 0,
-    minutos: 0,
-    segundos: 0,
-  })
-  const [mounted, setMounted] = useState(false)
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+        días: 0,
+        horas: 0,
+        minutos: 0,
+    })
 
-  useEffect(() => {
-    setMounted(true)
+    const [mounted, setMounted] = useState(false)
 
-    const calculateTimeLeft = () => {
-      const targetDate = new Date(departureDate).getTime()
-      const now = new Date().getTime()
-      const difference = targetDate - now
+    useEffect(() => {
+        setMounted(true)
 
-      if (difference > 0) {
-        setTimeLeft({
-          días: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutos: Math.floor((difference / 1000 / 60) % 60),
-          segundos: Math.floor((difference / 1000) % 60),
-        })
-      }
+        const calculateTimeLeft = () => {
+            const targetDate = new Date(departureDate).getTime()
+            const now = new Date().getTime()
+            const difference = targetDate - now
+
+            if (difference > 0) {
+                setTimeLeft({
+                    días: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                    minutos: Math.floor((difference / 1000 / 60) % 60),
+                })
+            } else {
+                setTimeLeft({
+                    días: 0,
+                    horas: 0,
+                    minutos: 0,
+                })
+            }
+        }
+
+        calculateTimeLeft()
+
+        const timer = setInterval(calculateTimeLeft, 60000)
+
+        return () => clearInterval(timer)
+    }, [departureDate])
+
+    if (!mounted) {
+        return (
+            <div className="grid grid-cols-3 gap-2 my-6">
+                {Array.from({ length: 3 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="bg-accent/5 border border-accent/20 rounded-lg p-3 text-center"
+                    >
+                        <div className="text-2xl font-bold text-accent">00</div>
+                        <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">
+                            --
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
     }
 
-    calculateTimeLeft()
-    const timer = setInterval(calculateTimeLeft, 1000)
+    const units = [
+        { label: 'días', value: timeLeft.días },
+        { label: 'horas', value: timeLeft.horas },
+        { label: 'minutos', value: timeLeft.minutos },
+    ]
 
-    return () => clearInterval(timer)
-  }, [departureDate])
-
-  if (!mounted) {
     return (
-      <div className="grid grid-cols-4 gap-2 my-6">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            key={i}
-            className="bg-gold/5 border border-gold/20 rounded-lg p-3 text-center"
-          >
-            <div className="text-2xl font-bold text-gold">0</div>
-            <div className="text-xs text-muted-text mt-1">--</div>
-          </div>
-        ))}
-      </div>
-    )
-  }
+        <div className="grid grid-cols-3 gap-2 my-6">
+            {units.map((unit) => (
+                <div
+                    key={unit.label}
+                    className="bg-accent/10 border border-accent/30 rounded-lg p-3 text-center hover:border-accent/50 transition-colors"
+                >
+                    <div className="text-2xl font-bold text-accent">
+                        {String(unit.value).padStart(2, '0')}
+                    </div>
 
-  const units = [
-    { label: 'días', value: timeLeft.días },
-    { label: 'horas', value: timeLeft.horas },
-    { label: 'minutos', value: timeLeft.minutos },
-    { label: 'segundos', value: timeLeft.segundos },
-  ]
-
-  return (
-    <div className="grid grid-cols-4 gap-2 my-6">
-      {units.map((unit) => (
-        <div
-          key={unit.label}
-          className="bg-gold/10 border border-gold/30 rounded-lg p-3 text-center hover:border-gold/50 transition-colors"
-        >
-          <div className="text-2xl font-bold text-gold">
-            {String(unit.value).padStart(2, '0')}
-          </div>
-          <div className="text-xs text-muted-text mt-1 uppercase tracking-wider">
-            {unit.label}
-          </div>
+                    <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">
+                        {unit.label}
+                    </div>
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
-  )
+    )
 }

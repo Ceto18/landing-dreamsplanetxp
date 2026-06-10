@@ -62,6 +62,40 @@ export function Hero() {
                             </a>
                         </div>
 
+                        {/* Mobile Departure Card */}
+                        <div className="lg:hidden rounded-2xl border border-border/40 bg-background/40 backdrop-blur-md p-5 shadow-xl">
+                            <p className="text-muted-foreground text-xs uppercase tracking-widest">
+                                Próxima Salida
+                            </p>
+
+                            <h3 className="text-2xl font-bold text-foreground mt-2">
+                                Misión Marruecos
+                            </h3>
+
+                            <Countdown departureDate="2024-07-15" />
+
+                            <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 mt-4">
+                                <div className="flex items-center gap-2">
+                                    <Users className="w-5 h-5 text-accent" />
+                                    <span className="text-foreground font-medium">
+                                        Plazas disponibles:{' '}
+                                        <span className="text-accent">12/18</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <a
+                                href="#contacto"
+                                className="block w-full btn-gold py-3 text-center no-underline mt-5"
+                            >
+                                Solicitar información
+                            </a>
+
+                            <p className="text-xs text-muted-foreground text-center mt-4">
+                                Confirmación en 24 horas
+                            </p>
+                        </div>
+
                         {/* Stats */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-accent/20">
                             {stats.map((stat) => (
