@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { FadeUp } from '@/components/animations/fade-up'
+import { AnimatedCard } from '@/components/animations/animated-card'
+import { SectionHeader } from '@/components/animations/section-header'
 
 const destinations = ['Marruecos', 'Vietnam', 'Tailandia', 'Japón', 'Nepal', 'Sorpresa']
 
-const roles = ['Influencers','Coordinadores', 'Colaboradores'] as const
+const roles = ['Influencers', 'Coordinadores', 'Colaboradores'] as const
 
 type RoleTab = (typeof roles)[number]
 
@@ -219,12 +222,22 @@ destinations.forEach((destination) => {
 function roleTabToRole(roleTab: RoleTab): TeamMember['role'] {
     if (roleTab === 'Coordinadores') return 'Coordinador'
     if (roleTab === 'Colaboradores') return 'Colaborador'
+
     return 'Influencer'
 }
 
-function TeamCard({ member }: { member: TeamMember }) {
+function TeamCard({
+    member,
+    delay = 0,
+}: {
+    member: TeamMember
+    delay?: number
+}) {
     return (
-        <div className="group space-y-4 rounded-2xl border border-border/60 bg-card/40 p-6 shadow-lg transition-all duration-500 hover:-translate-y-1 hover:border-accent/60 hover:bg-card/70 hover:shadow-2xl">
+        <AnimatedCard
+            delay={delay}
+            className="group space-y-4 rounded-2xl border border-border/60 bg-card/40 p-6 shadow-lg transition-all duration-500 hover:border-accent/60 hover:bg-card/70 hover:shadow-2xl"
+        >
             {/* Image */}
             <div className="relative h-48 overflow-hidden rounded-xl border border-border/50">
                 <img
@@ -257,6 +270,7 @@ function TeamCard({ member }: { member: TeamMember }) {
                         <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                             Experiencia
                         </p>
+
                         <p className="font-medium text-foreground">
                             {member.experience}
                         </p>
@@ -266,6 +280,7 @@ function TeamCard({ member }: { member: TeamMember }) {
                         <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                             Idiomas
                         </p>
+
                         <p className="font-medium text-foreground">
                             {member.languages.join(', ')}
                         </p>
@@ -275,13 +290,14 @@ function TeamCard({ member }: { member: TeamMember }) {
                         <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                             Especialidad
                         </p>
+
                         <p className="font-medium text-foreground">
                             {member.specialty}
                         </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </AnimatedCard>
     )
 }
 
@@ -304,22 +320,13 @@ export function Team() {
 
             <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
-                <div className="mb-16 space-y-6 text-center">
-                    <h2 className="text-5xl font-bold text-foreground sm:text-6xl">
-                        Equipo
-                    </h2>
-
-                    <div className="flex justify-center">
-                        <div className="h-1 w-20 bg-gradient-to-r from-transparent via-accent to-transparent" />
-                    </div>
-
-                    <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                        Conoce a los expertos que harán tu viaje inolvidable. Profesionales dedicados con pasión por las aventuras.
-                    </p>
-                </div>
+                <SectionHeader
+                    title="Equipo"
+                    description="Conoce a los expertos que harán tu viaje inolvidable. Profesionales dedicados con pasión por las aventuras."
+                />
 
                 {/* Destination Tabs */}
-                <div className="mb-10 flex justify-center">
+                <FadeUp delay={0.15} className="mb-10 flex justify-center">
                     <div className="flex max-w-5xl flex-wrap justify-center gap-3">
                         {destinations.map((destination) => (
                             <button
@@ -339,10 +346,10 @@ export function Team() {
                             </button>
                         ))}
                     </div>
-                </div>
+                </FadeUp>
 
                 {/* Role Tabs */}
-                <div className="mb-14 flex justify-center">
+                <FadeUp delay={0.22} className="mb-14 flex justify-center">
                     <div className="flex flex-wrap justify-center gap-3">
                         {roles.map((role) => (
                             <button
@@ -359,21 +366,30 @@ export function Team() {
                             </button>
                         ))}
                     </div>
-                </div>
+                </FadeUp>
 
                 {/* Team Members Grid */}
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {filteredMembers.map((member) => (
-                        <TeamCard key={member.id} member={member} />
+                <div
+                    key={`${activeDestination}-${activeRole}`}
+                    className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+                >
+                    {filteredMembers.map((member, idx) => (
+                        <TeamCard
+                            key={member.id}
+                            member={member}
+                            delay={idx * 0.08}
+                        />
                     ))}
                 </div>
 
                 {filteredMembers.length === 0 && (
-                    <div className="rounded-2xl border border-border/60 bg-card/40 p-10 text-center">
-                        <p className="text-muted-foreground">
-                            No hay miembros disponibles para esta categoría.
-                        </p>
-                    </div>
+                    <FadeUp>
+                        <div className="rounded-2xl border border-border/60 bg-card/40 p-10 text-center">
+                            <p className="text-muted-foreground">
+                                No hay miembros disponibles para esta categoría.
+                            </p>
+                        </div>
+                    </FadeUp>
                 )}
             </div>
         </section>

@@ -10,6 +10,10 @@ import {
     MessageSquare,
     MapPin,
 } from 'lucide-react'
+import { motion, AnimatePresence } from 'motion/react'
+import { FadeUp } from '@/components/animations/fade-up'
+import { AnimatedCard } from '@/components/animations/animated-card'
+import { SectionHeader } from '@/components/animations/section-header'
 
 const misionOptions = [
     'Marruecos',
@@ -71,79 +75,87 @@ export function Contact() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
-                <div className="mb-16 space-y-6 text-center">
-                    <h2 className="text-5xl sm:text-6xl font-bold text-foreground">
-                        Contacto
-                    </h2>
-
-                    <div className="flex justify-center">
-                        <div className="w-20 h-1 bg-gradient-to-r from-transparent via-accent to-transparent" />
-                    </div>
-
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        ¿Listo para tu próxima aventura? Conecta con nuestro equipo y empieza a planificar tu misión ideal.
-                    </p>
-                </div>
+                <SectionHeader
+                    title="Contacto"
+                    description="¿Listo para tu próxima aventura? Conecta con nuestro equipo y empieza a planificar tu misión ideal."
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                     {/* Left side - Contact info */}
                     <div className="space-y-8">
                         <div className="space-y-4">
-                            <h3 className="text-3xl sm:text-4xl font-bold text-foreground">
-                                Reserva tu <span className="text-accent">aventura</span>
-                            </h3>
+                            <FadeUp delay={0.1}>
+                                <h3 className="text-3xl sm:text-4xl font-bold text-foreground">
+                                    Reserva tu <span className="text-accent">aventura</span>
+                                </h3>
+                            </FadeUp>
 
-                            <p className="text-lg text-muted-foreground leading-relaxed">
-                                Escríbenos para resolver tus dudas, separar tu cupo o recibir asesoría personalizada.
-                            </p>
+                            <FadeUp delay={0.18}>
+                                <p className="text-lg text-muted-foreground leading-relaxed">
+                                    Escríbenos para resolver tus dudas, separar tu cupo o recibir asesoría personalizada.
+                                </p>
+                            </FadeUp>
                         </div>
 
                         {/* Contact methods */}
                         <div className="space-y-4">
                             {/* WhatsApp */}
-                            <a
-                                href="https://wa.me/51999999999"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group flex items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 glass-effect hover:border-accent/60 hover:bg-card/70 transition-all duration-300 no-underline"
+                            <AnimatedCard
+                                delay={0.22}
+                                className="group rounded-2xl border border-border/60 bg-card/40 glass-effect hover:border-accent/60 hover:bg-card/70 transition-all duration-300"
                             >
-                                <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
-                                    <Share2 className="w-6 h-6 text-accent group-hover:text-background transition-colors" />
-                                </div>
+                                <a
+                                    href="https://wa.me/51999999999"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-4 p-4 no-underline"
+                                >
+                                    <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                                        <Share2 className="w-6 h-6 text-accent group-hover:text-background transition-colors" />
+                                    </div>
 
-                                <div>
-                                    <p className="text-foreground font-semibold">
-                                        WhatsApp
-                                    </p>
+                                    <div>
+                                        <p className="text-foreground font-semibold">
+                                            WhatsApp
+                                        </p>
 
-                                    <p className="text-accent text-sm">
-                                        +51 999 999 999
-                                    </p>
-                                </div>
-                            </a>
+                                        <p className="text-accent text-sm">
+                                            +51 999 999 999
+                                        </p>
+                                    </div>
+                                </a>
+                            </AnimatedCard>
 
                             {/* Email */}
-                            <a
-                                href="mailto:info@dreamsplanetxp.com"
-                                className="group flex items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 glass-effect hover:border-accent/60 hover:bg-card/70 transition-all duration-300 no-underline"
+                            <AnimatedCard
+                                delay={0.3}
+                                className="group rounded-2xl border border-border/60 bg-card/40 glass-effect hover:border-accent/60 hover:bg-card/70 transition-all duration-300"
                             >
-                                <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
-                                    <Mail className="w-6 h-6 text-accent group-hover:text-background transition-colors" />
-                                </div>
+                                <a
+                                    href="mailto:info@dreamsplanetxp.com"
+                                    className="flex items-center gap-4 p-4 no-underline"
+                                >
+                                    <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                                        <Mail className="w-6 h-6 text-accent group-hover:text-background transition-colors" />
+                                    </div>
 
-                                <div>
-                                    <p className="text-foreground font-semibold">
-                                        Email
-                                    </p>
+                                    <div>
+                                        <p className="text-foreground font-semibold">
+                                            Email
+                                        </p>
 
-                                    <p className="text-accent text-sm break-all">
-                                        info@dreamsplanetxp.com
-                                    </p>
-                                </div>
-                            </a>
+                                        <p className="text-accent text-sm break-all">
+                                            info@dreamsplanetxp.com
+                                        </p>
+                                    </div>
+                                </a>
+                            </AnimatedCard>
 
                             {/* Location */}
-                            <div className="flex items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 glass-effect">
+                            <AnimatedCard
+                                delay={0.38}
+                                className="flex items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 glass-effect"
+                            >
                                 <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center">
                                     <MapPin className="w-6 h-6 text-accent" />
                                 </div>
@@ -157,10 +169,13 @@ export function Contact() {
                                         Atención desde Lima, Perú
                                     </p>
                                 </div>
-                            </div>
+                            </AnimatedCard>
 
                             {/* Response time */}
-                            <div className="flex items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 glass-effect">
+                            <AnimatedCard
+                                delay={0.46}
+                                className="flex items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 glass-effect"
+                            >
                                 <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center">
                                     <Clock className="w-6 h-6 text-accent" />
                                 </div>
@@ -174,54 +189,67 @@ export function Contact() {
                                         Menos de 24 horas
                                     </p>
                                 </div>
-                            </div>
+                            </AnimatedCard>
                         </div>
 
                         {/* Social links */}
-                        <div className="space-y-3">
-                            <p className="text-sm text-muted-foreground uppercase tracking-widest font-semibold">
-                                Síguenos
-                            </p>
+                        <FadeUp delay={0.5}>
+                            <div className="space-y-3">
+                                <p className="text-sm text-muted-foreground uppercase tracking-widest font-semibold">
+                                    Síguenos
+                                </p>
 
-                            <div className="flex gap-3">
-                                <a
-                                    href="#"
-                                    className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
-                                    aria-label="Red social"
-                                >
-                                    <Share2 className="w-5 h-5" />
-                                </a>
+                                <div className="flex gap-3">
+                                    <motion.a
+                                        href="#"
+                                        whileHover={{ y: -4, scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
+                                        aria-label="Red social"
+                                    >
+                                        <Share2 className="w-5 h-5" />
+                                    </motion.a>
 
-                                <a
-                                    href="#"
-                                    className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
-                                    aria-label="Red social"
-                                >
-                                    <Heart className="w-5 h-5" />
-                                </a>
+                                    <motion.a
+                                        href="#"
+                                        whileHover={{ y: -4, scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
+                                        aria-label="Red social"
+                                    >
+                                        <Heart className="w-5 h-5" />
+                                    </motion.a>
 
-                                <a
-                                    href="#"
-                                    className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
-                                    aria-label="Web"
-                                >
-                                    <Globe className="w-5 h-5" />
-                                </a>
+                                    <motion.a
+                                        href="#"
+                                        whileHover={{ y: -4, scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
+                                        aria-label="Web"
+                                    >
+                                        <Globe className="w-5 h-5" />
+                                    </motion.a>
 
-                                <a
-                                    href="#"
-                                    className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
-                                    aria-label="Mensaje"
-                                >
-                                    <MessageSquare className="w-5 h-5" />
-                                </a>
+                                    <motion.a
+                                        href="#"
+                                        whileHover={{ y: -4, scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="w-10 h-10 rounded-full border border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300 flex items-center justify-center"
+                                        aria-label="Mensaje"
+                                    >
+                                        <MessageSquare className="w-5 h-5" />
+                                    </motion.a>
+                                </div>
                             </div>
-                        </div>
+                        </FadeUp>
                     </div>
 
                     {/* Right side - Form */}
                     <div className="lg:col-span-2">
-                        <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8 glass-effect shadow-2xl space-y-6">
+                        <AnimatedCard
+                            delay={0.18}
+                            className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8 glass-effect shadow-2xl space-y-6"
+                        >
                             <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/10 blur-3xl" />
 
                             <div className="relative z-10 space-y-6">
@@ -346,21 +374,31 @@ export function Contact() {
                                     </div>
 
                                     {/* Submit button */}
-                                    <button
+                                    <motion.button
                                         type="submit"
+                                        whileHover={{ scale: 1.01 }}
+                                        whileTap={{ scale: 0.98 }}
                                         className="w-full btn-gold py-4 font-semibold text-lg hover:shadow-lg transition-all duration-300"
                                     >
                                         {submitted ? 'Solicitud enviada' : 'Enviar solicitud'}
-                                    </button>
+                                    </motion.button>
 
-                                    {submitted && (
-                                        <p className="text-accent text-center text-sm font-semibold">
-                                            ¡Gracias! Nos pondremos en contacto pronto.
-                                        </p>
-                                    )}
+                                    <AnimatePresence>
+                                        {submitted && (
+                                            <motion.p
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.25 }}
+                                                className="text-accent text-center text-sm font-semibold"
+                                            >
+                                                ¡Gracias! Nos pondremos en contacto pronto.
+                                            </motion.p>
+                                        )}
+                                    </AnimatePresence>
                                 </form>
                             </div>
-                        </div>
+                        </AnimatedCard>
                     </div>
                 </div>
             </div>

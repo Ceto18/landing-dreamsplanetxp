@@ -2,6 +2,11 @@
 
 import { useState } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion, AnimatePresence } from 'motion/react'
+import { FadeUp } from '@/components/animations/fade-up'
+import { ImageReveal } from '@/components/animations/image-reveal'
+import { AnimatedCard } from '@/components/animations/animated-card'
+import { SectionHeader } from '@/components/animations/section-header'
 
 interface Photo {
     id: number
@@ -310,6 +315,12 @@ export function Moment() {
         )
     }
 
+    const handleChangeDestination = (destination: string) => {
+        setActiveDestination(destination)
+        setCurrentImageIndex(0)
+        setSelectedPhoto(null)
+    }
+
     return (
         <section id="momentos" className="relative py-24 bg-secondary/30 overflow-hidden">
             {/* Background decoration */}
@@ -318,224 +329,244 @@ export function Moment() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
-                <div className="mb-16 space-y-6 text-center">
-                    <h2 className="text-5xl sm:text-6xl font-bold text-foreground">
-                        Momentos
-                    </h2>
-
-                    <div className="flex justify-center">
-                        <div className="w-20 h-1 bg-gradient-to-r from-transparent via-accent to-transparent" />
-                    </div>
-
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Cada foto es un recuerdo eterno. Cada imagen cuenta la historia de una transformación personal.
-                    </p>
-                </div>
+                <SectionHeader
+                    title="Momentos"
+                    description="Cada foto es un recuerdo eterno. Cada imagen cuenta la historia de una transformación personal."
+                />
 
                 {/* Destination Tabs */}
-                <div className="mb-12 flex justify-center">
+                <FadeUp delay={0.15} className="mb-12 flex justify-center">
                     <div className="flex max-w-4xl flex-wrap justify-center gap-3">
-                        {destinations.map((destination) => (
+                        {destinations.map((destination, idx) => (
                             <button
                                 key={destination}
                                 type="button"
-                                onClick={() => {
-                                    setActiveDestination(destination)
-                                    setCurrentImageIndex(0)
-                                    setSelectedPhoto(null)
-                                }}
+                                onClick={() => handleChangeDestination(destination)}
                                 className={`px-6 py-3 rounded-full font-semibold whitespace-nowrap border transition-all duration-300 ${
                                     activeDestination === destination
                                         ? 'bg-accent text-background border-accent shadow-lg shadow-accent/20'
                                         : 'border-accent/50 text-foreground hover:border-accent hover:bg-accent/10'
                                 }`}
+                                style={{
+                                    transitionDelay: `${idx * 20}ms`,
+                                }}
                             >
                                 {destination}
                             </button>
                         ))}
                     </div>
-                </div>
+                </FadeUp>
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-                    {filteredPhotos.map((photo) => (
-                        <button
+                    {filteredPhotos.map((photo, idx) => (
+                        <ImageReveal
                             key={`${photo.destination}-${photo.id}`}
-                            type="button"
-                            onClick={() => {
-                                setSelectedPhoto(photo)
-                                setCurrentImageIndex(0)
-                            }}
-                            className="group relative aspect-square rounded-lg overflow-hidden border border-border/50 bg-card/50 hover:border-accent/50 transition-all duration-300 cursor-pointer"
+                            delay={idx * 0.04}
                         >
-                            <img
-                                src={photo.image}
-                                alt={photo.title}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setSelectedPhoto(photo)
+                                    setCurrentImageIndex(0)
+                                }}
+                                className="group relative aspect-square w-full rounded-lg overflow-hidden border border-border/50 bg-card/50 hover:border-accent/50 transition-all duration-300 cursor-pointer"
+                            >
+                                <img
+                                    src={photo.image}
+                                    alt={photo.title}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                />
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
-                                <h3 className="text-foreground font-semibold text-sm line-clamp-2 text-left">
-                                    {photo.title}
-                                </h3>
-                            </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                                    <h3 className="text-foreground font-semibold text-sm line-clamp-2 text-left">
+                                        {photo.title}
+                                    </h3>
+                                </div>
 
-                            <div className="absolute inset-0 border border-accent/0 group-hover:border-accent/50 rounded-lg transition-colors duration-300" />
-                        </button>
+                                <div className="absolute inset-0 border border-accent/0 group-hover:border-accent/50 rounded-lg transition-colors duration-300" />
+                            </button>
+                        </ImageReveal>
                     ))}
                 </div>
 
                 {/* Ver más Button */}
-                <div className="text-center">
-                    <button
-                        type="button"
-                        className="px-8 py-3 rounded-lg border border-accent text-accent font-semibold hover:bg-accent/10 transition-colors"
-                    >
-                        Ver más momentos
-                    </button>
-                </div>
+                <FadeUp delay={0.15}>
+                    <div className="text-center">
+                        <a
+                            href="/moment"
+                            className="inline-flex px-8 py-3 rounded-lg border border-accent text-accent font-semibold hover:bg-accent/10 transition-colors no-underline"
+                        >
+                            Ver más momentos
+                        </a>
+                    </div>
+                </FadeUp>
             </div>
 
             {/* Premium Modal */}
-            {selectedPhoto && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md">
-                    <div className="relative bg-card border border-border/60 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 space-y-6 shadow-2xl">
-                        {/* Close Button */}
-                        <button
-                            type="button"
-                            onClick={() => setSelectedPhoto(null)}
-                            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-accent/20 hover:bg-accent/30 text-accent transition-colors flex items-center justify-center z-10"
-                            aria-label="Cerrar modal"
+            <AnimatePresence>
+                {selectedPhoto && (
+                    <motion.div
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.94, y: 30 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.94, y: 30 }}
+                            transition={{
+                                duration: 0.35,
+                                ease: [0.22, 1, 0.36, 1],
+                            }}
+                            className="relative bg-card border border-border/60 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 space-y-6 shadow-2xl"
                         >
-                            <X className="w-6 h-6" />
-                        </button>
+                            {/* Close Button */}
+                            <button
+                                type="button"
+                                onClick={() => setSelectedPhoto(null)}
+                                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-accent/20 hover:bg-accent/30 text-accent transition-colors flex items-center justify-center z-10"
+                                aria-label="Cerrar modal"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Image Carousel */}
-                            <div className="lg:col-span-2 space-y-4">
-                                <div className="relative h-80 sm:h-96 lg:h-[420px] rounded-xl overflow-hidden border border-border/50">
-                                    <img
-                                        src={selectedPhoto.gallery[currentImageIndex]}
-                                        alt={selectedPhoto.title}
-                                        className="w-full h-full object-cover"
-                                    />
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                {/* Image Carousel */}
+                                <div className="lg:col-span-2 space-y-4">
+                                    <div className="relative h-80 sm:h-96 lg:h-[420px] rounded-xl overflow-hidden border border-border/50">
+                                        <AnimatePresence mode="wait">
+                                            <motion.img
+                                                key={selectedPhoto.gallery[currentImageIndex]}
+                                                src={selectedPhoto.gallery[currentImageIndex]}
+                                                alt={selectedPhoto.title}
+                                                className="w-full h-full object-cover"
+                                                initial={{ opacity: 0, scale: 1.04 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.98 }}
+                                                transition={{ duration: 0.35 }}
+                                            />
+                                        </AnimatePresence>
 
+                                        {selectedPhoto.gallery.length > 1 && (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    onClick={handlePrevImage}
+                                                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
+                                                    aria-label="Imagen anterior"
+                                                >
+                                                    <ChevronLeft className="w-6 h-6" />
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={handleNextImage}
+                                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
+                                                    aria-label="Imagen siguiente"
+                                                >
+                                                    <ChevronRight className="w-6 h-6" />
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    {/* Thumbnails */}
                                     {selectedPhoto.gallery.length > 1 && (
-                                        <>
-                                            <button
-                                                type="button"
-                                                onClick={handlePrevImage}
-                                                className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
-                                                aria-label="Imagen anterior"
-                                            >
-                                                <ChevronLeft className="w-6 h-6" />
-                                            </button>
-
-                                            <button
-                                                type="button"
-                                                onClick={handleNextImage}
-                                                className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
-                                                aria-label="Imagen siguiente"
-                                            >
-                                                <ChevronRight className="w-6 h-6" />
-                                            </button>
-                                        </>
+                                        <div className="flex gap-2 overflow-x-auto pb-2">
+                                            {selectedPhoto.gallery.map((img, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    type="button"
+                                                    onClick={() => setCurrentImageIndex(idx)}
+                                                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
+                                                        idx === currentImageIndex
+                                                            ? 'border-accent ring-2 ring-accent/50'
+                                                            : 'border-border hover:border-accent/50'
+                                                    }`}
+                                                    aria-label={`Ver imagen ${idx + 1}`}
+                                                >
+                                                    <img
+                                                        src={img}
+                                                        alt={`Miniatura ${idx + 1}`}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
                                     )}
                                 </div>
 
-                                {/* Thumbnails */}
-                                {selectedPhoto.gallery.length > 1 && (
-                                    <div className="flex gap-2 overflow-x-auto pb-2">
-                                        {selectedPhoto.gallery.map((img, idx) => (
-                                            <button
-                                                key={idx}
-                                                type="button"
-                                                onClick={() => setCurrentImageIndex(idx)}
-                                                className={`w-20 h-20 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
-                                                    idx === currentImageIndex
-                                                        ? 'border-accent ring-2 ring-accent/50'
-                                                        : 'border-border hover:border-accent/50'
-                                                }`}
-                                                aria-label={`Ver imagen ${idx + 1}`}
-                                            >
-                                                <img
-                                                    src={img}
-                                                    alt={`Miniatura ${idx + 1}`}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Content */}
-                            <div className="space-y-6">
-                                <div className="space-y-3">
-                                    <p className="text-accent text-sm uppercase tracking-widest font-semibold">
-                                        {selectedPhoto.destination}
-                                    </p>
-
-                                    <h3 className="text-3xl font-bold text-foreground">
-                                        {selectedPhoto.title}
-                                    </h3>
-
-                                    <p className="text-lg text-muted-foreground leading-relaxed">
-                                        {selectedPhoto.description}
-                                    </p>
-                                </div>
-
-                                {/* Details */}
-                                <div className="space-y-3 border-t border-accent/20 pt-6">
-                                    <div className="space-y-2">
-                                        <p className="text-accent text-xs uppercase tracking-widest font-semibold">
-                                            Detalles
+                                {/* Content */}
+                                <div className="space-y-6">
+                                    <div className="space-y-3">
+                                        <p className="text-accent text-sm uppercase tracking-widest font-semibold">
+                                            {selectedPhoto.destination}
                                         </p>
 
+                                        <h3 className="text-3xl font-bold text-foreground">
+                                            {selectedPhoto.title}
+                                        </h3>
+
+                                        <p className="text-lg text-muted-foreground leading-relaxed">
+                                            {selectedPhoto.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Details */}
+                                    <div className="space-y-3 border-t border-accent/20 pt-6">
                                         <div className="space-y-2">
-                                            <p className="text-foreground">
-                                                <span className="text-muted-foreground">Lugar:</span>{' '}
-                                                {selectedPhoto.place}
+                                            <p className="text-accent text-xs uppercase tracking-widest font-semibold">
+                                                Detalles
                                             </p>
 
-                                            <p className="text-foreground">
-                                                <span className="text-muted-foreground">Experiencia:</span>{' '}
-                                                {selectedPhoto.experience}
-                                            </p>
+                                            <div className="space-y-2">
+                                                <p className="text-foreground">
+                                                    <span className="text-muted-foreground">Lugar:</span>{' '}
+                                                    {selectedPhoto.place}
+                                                </p>
 
-                                            <p className="text-foreground">
-                                                <span className="text-muted-foreground">Momento ideal:</span>{' '}
-                                                {selectedPhoto.moment}
-                                            </p>
+                                                <p className="text-foreground">
+                                                    <span className="text-muted-foreground">Experiencia:</span>{' '}
+                                                    {selectedPhoto.experience}
+                                                </p>
 
-                                            <p className="text-foreground">
-                                                <span className="text-muted-foreground">Sensación:</span>{' '}
-                                                {selectedPhoto.emotion}
-                                            </p>
+                                                <p className="text-foreground">
+                                                    <span className="text-muted-foreground">Momento ideal:</span>{' '}
+                                                    {selectedPhoto.moment}
+                                                </p>
+
+                                                <p className="text-foreground">
+                                                    <span className="text-muted-foreground">Sensación:</span>{' '}
+                                                    {selectedPhoto.emotion}
+                                                </p>
+                                            </div>
                                         </div>
+
+                                        {/* Recommendation */}
+                                        <AnimatedCard className="bg-accent/10 border border-accent/30 rounded-lg p-4">
+                                            <p className="text-foreground italic">
+                                                &quot;{selectedPhoto.recommendation}&quot;
+                                            </p>
+                                        </AnimatedCard>
                                     </div>
 
-                                    {/* Recommendation */}
-                                    <div className="bg-accent/10 border border-accent/30 rounded-lg p-4">
-                                        <p className="text-foreground italic">
-                                            &quot;{selectedPhoto.recommendation}&quot;
-                                        </p>
-                                    </div>
+                                    {/* CTA */}
+                                    <a
+                                        href="#misiones"
+                                        className="block w-full text-center bg-accent text-background font-semibold rounded-lg py-3 hover:bg-accent/90 transition-colors no-underline"
+                                        onClick={() => setSelectedPhoto(null)}
+                                    >
+                                        Explorar misión
+                                    </a>
                                 </div>
-
-                                {/* CTA */}
-                                <a
-                                    href="#misiones"
-                                    className="block w-full text-center bg-accent text-background font-semibold rounded-lg py-3 hover:bg-accent/90 transition-colors no-underline"
-                                    onClick={() => setSelectedPhoto(null)}
-                                >
-                                    Explorar misión
-                                </a>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     )
 }
