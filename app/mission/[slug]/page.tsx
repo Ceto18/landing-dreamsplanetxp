@@ -1,5 +1,13 @@
 import { notFound } from 'next/navigation'
-import { MissionDetailContent } from '@/components/pages/mission/mission-detail-content'
+
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
+
+import { MissionHero } from '@/components/pages/mission/detail/MissionHero'
+import { MissionSummary } from '@/components/pages/mission/detail/MissionSummary'
+import { MissionMain } from '@/components/pages/mission/detail/MissionMain'
+import { MissionCTA } from '@/components/pages/mission/detail/MissionCTA'
+
 import { getMissionBySlug, missions } from '@/data/missions'
 
 interface Props {
@@ -9,13 +17,14 @@ interface Props {
 }
 
 export function generateStaticParams() {
-    return missions.map((mission) => ({
-        slug: mission.slug,
+    return missions.map((m) => ({
+        slug: m.slug,
     }))
 }
 
 export async function generateMetadata({ params }: Props) {
     const { slug } = await params
+
     const mission = getMissionBySlug(slug)
 
     if (!mission) {
@@ -32,11 +41,25 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function MissionDetailPage({ params }: Props) {
     const { slug } = await params
+
     const mission = getMissionBySlug(slug)
 
     if (!mission) {
         notFound()
     }
 
-    return <MissionDetailContent mission={mission} />
+    return (
+        <>
+            <Header />
+
+            <MissionHero mission={mission} />
+            <MissionSummary mission={mission} />
+
+            <MissionMain mission={mission} />
+
+            <MissionCTA mission={mission} />
+
+            <Footer />
+        </>
+    )
 }

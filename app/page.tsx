@@ -1,6 +1,6 @@
 import { Header } from '@/components/header'
 import { Hero } from '@/components/hero'
-import { Mission } from '@/components/mission'
+import { Mission } from '@/components/pages/mission/mission'
 import { Moment } from '@/components/moment'
 import { Team } from '@/components/team'
 import { Review } from '@/components/review'

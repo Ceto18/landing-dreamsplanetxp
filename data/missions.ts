@@ -13,6 +13,7 @@ export interface Mission {
     level: string
     price: string
     description: string
+    pdfUrl?: string
     longDescription: string
     highlights: string[]
     includes: string[]
@@ -40,6 +41,7 @@ export const missions: Mission[] = [
         rating: '4.9',
         level: 'Intermedio',
         price: 'Desde $1,490',
+        pdfUrl: '/pdf/morocco.pdf',
         description:
             'Una expedición diseñada para vivir el desierto, los zocos, la arquitectura tradicional y la magia de Marruecos.',
         longDescription:
@@ -105,6 +107,7 @@ export const missions: Mission[] = [
         rating: '4.8',
         level: 'Fácil',
         price: 'Desde $1,690',
+        pdfUrl: '/pdf/vietnam.pdf',
         description:
             'Una ruta pensada para descubrir la esencia de Vietnam entre ciudades vibrantes, naturaleza y gastronomía.',
         longDescription:
@@ -170,6 +173,7 @@ export const missions: Mission[] = [
         rating: '4.9',
         level: 'Fácil',
         price: 'Desde $1,590',
+        pdfUrl: '/pdf/thailand.pdf',
         description:
             'Una experiencia vibrante entre playas, cultura, templos y actividades tropicales.',
         longDescription:
@@ -235,6 +239,7 @@ export const missions: Mission[] = [
         rating: '5.0',
         level: 'Intermedio',
         price: 'Desde $2,290',
+        pdfUrl: '/pdf/japan.pdf',
         description:
             'Un viaje premium para descubrir Japón entre templos, ciudades modernas y paisajes únicos.',
         longDescription:
@@ -300,6 +305,7 @@ export const missions: Mission[] = [
         rating: '4.9',
         level: 'Avanzado',
         price: 'Desde $1,990',
+        pdfUrl: '/pdf/nepal.pdf',
         description:
             'Una misión para quienes buscan naturaleza, montaña, cultura espiritual y transformación personal.',
         longDescription:
@@ -365,6 +371,7 @@ export const missions: Mission[] = [
         rating: '5.0',
         level: 'Sorpresa',
         price: 'Por anunciar',
+        pdfUrl: '/pdf/sorpresa.pdf',
         description:
             'Una experiencia misteriosa diseñada para quienes quieren dejarse sorprender.',
         longDescription:
