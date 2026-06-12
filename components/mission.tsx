@@ -19,82 +19,21 @@ import { AnimatedCard } from '@/components/animations/animated-card'
 import { SectionHeader } from '@/components/animations/section-header'
 
 const missions = [
-    {
-        id: 1,
-        slug: 'vietnam',
-        name: 'Vietnam',
-        image: '/mission-morocco.jpg',
-        description: 'Ha Long Bay',
-    },
-    {
-        id: 2,
-        slug: 'tailandia',
-        name: 'Tailandia',
-        image: '/mission-morocco.jpg',
-        description: 'Playas Exóticas',
-    },
-    {
-        id: 3,
-        slug: 'marruecos',
-        name: 'Marruecos',
-        image: '/mission-morocco.jpg',
-        description: 'Desierto Mágico',
-    },
-    {
-        id: 4,
-        slug: 'japon',
-        name: 'Japón',
-        image: '/mission-morocco.jpg',
-        description: 'Tierra del Sol',
-    },
-    {
-        id: 5,
-        slug: 'nepal',
-        name: 'Nepal',
-        image: '/mission-morocco.jpg',
-        description: 'Himalayás',
-    },
-    {
-        id: 6,
-        slug: 'sorpresa',
-        name: 'Misión',
-        image: '/mission-morocco.jpg',
-        description: 'Sorpresa',
-        isSurprise: true,
-    },
+    { id: 1, slug: 'vietnam', name: 'Vietnam', image: '/mission-morocco.jpg', description: 'Ha Long Bay' },
+    { id: 2, slug: 'tailandia', name: 'Tailandia', image: '/mission-morocco.jpg', description: 'Playas Exóticas' },
+    { id: 3, slug: 'marruecos', name: 'Marruecos', image: '/mission-morocco.jpg', description: 'Desierto Mágico' },
+    { id: 4, slug: 'japon', name: 'Japón', image: '/mission-morocco.jpg', description: 'Tierra del Sol' },
+    { id: 5, slug: 'nepal', name: 'Nepal', image: '/mission-morocco.jpg', description: 'Himalayás' },
+    { id: 6, slug: 'sorpresa', name: 'Misión', image: '/mission-morocco.jpg', description: 'Sorpresa', isSurprise: true },
 ]
 
 const benefits = [
-    {
-        title: 'Guías Especializados',
-        description: 'Acompañamiento experto durante cada etapa del viaje.',
-        icon: Map,
-    },
-    {
-        title: 'Hospedaje Premium',
-        description: 'Estadías cómodas, seleccionadas por ubicación y calidad.',
-        icon: Hotel,
-    },
-    {
-        title: 'Experiencias Auténticas',
-        description: 'Actividades reales que conectan con la cultura local.',
-        icon: Sparkles,
-    },
-    {
-        title: 'Seguridad Garantizada',
-        description: 'Rutas planificadas y soporte constante durante la misión.',
-        icon: ShieldCheck,
-    },
-    {
-        title: 'Grupos Reducidos',
-        description: 'Viajes más cercanos, personalizados y mejor organizados.',
-        icon: Users,
-    },
-    {
-        title: 'Memorias Inmortales',
-        description: 'Momentos únicos diseñados para quedarse contigo.',
-        icon: Camera,
-    },
+    { title: 'Guías Especializados', description: 'Acompañamiento experto durante cada etapa del viaje.', icon: Map },
+    { title: 'Hospedaje Premium', description: 'Estadías cómodas, seleccionadas por ubicación y calidad.', icon: Hotel },
+    { title: 'Experiencias Auténticas', description: 'Actividades reales que conectan con la cultura local.', icon: Sparkles },
+    { title: 'Seguridad Garantizada', description: 'Rutas planificadas y soporte constante durante la misión.', icon: ShieldCheck },
+    { title: 'Grupos Reducidos', description: 'Viajes más cercanos, personalizados y mejor organizados.', icon: Users },
+    { title: 'Memorias Inmortales', description: 'Momentos únicos diseñados para quedarse contigo.', icon: Camera },
 ]
 
 export function Mission() {
@@ -103,11 +42,9 @@ export function Mission() {
 
     useEffect(() => {
         if (!autoScroll) return
-
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % missions.length)
         }, 4000)
-
         return () => clearInterval(interval)
     }, [autoScroll])
 
@@ -146,7 +83,7 @@ export function Mission() {
                 />
 
                 {/* Ver todas */}
-                <FadeUp delay={0.1}>
+                {/* <FadeUp delay={0.1}>
                     <div className="mb-12 flex justify-center">
                         <Link
                             href="/mission"
@@ -156,201 +93,84 @@ export function Mission() {
                             <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                         </Link>
                     </div>
-                </FadeUp>
+                </FadeUp> */}
 
-                {/* Carousel */}
+                {/* Desktop Carousel */}
                 <FadeUp delay={0.15} className="mb-14 sm:mb-16">
-                    <div className="relative">
-                        {/* Mobile Carousel */}
-                        <div className="lg:hidden">
-                            <Link
-                                href={`/mission/${activeMission.slug}`}
-                                className="group block no-underline"
-                            >
-                                <div className="relative mx-auto w-full max-w-sm h-[420px] rounded-2xl overflow-hidden border border-border/50 bg-card/40 shadow-2xl glow-gold">
-                                    <Image
-                                        src={activeMission.image}
-                                        alt={activeMission.name}
-                                        fill
-                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                        priority
-                                    />
+                    {/* Desktop Carousel */}
+                    <div className="hidden lg:block relative overflow-hidden">
+                        <div className="flex gap-6 pb-6 transition-transform duration-700 ease-out"
+                            style={{
+                                transform: `translateX(calc(50% - ${missions.slice(0, activeIndex).reduce((total, _, i) => {
+                                    const distance = Math.abs(i - activeIndex)
+                                    const w = distance === 0 ? 384 : distance === 1 ? 192 : 160
+                                    return total + w + 24 // gap
+                                }, 0) + 384 / 2}px))`
+                            }}>
+                            {missions.map((mission, idx) => {
+                                const distance = Math.abs(idx - activeIndex)
+                                const isActive = distance === 0
+                                const isNear = distance === 1
 
-                                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+                                const width = isActive ? 384 : isNear ? 192 : 160
+                                const opacity = isActive ? 1 : isNear ? 0.6 : 0.3
 
-                                    {activeMission.isSurprise && (
-                                        <div className="absolute top-4 right-4 bg-accent text-background px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                            Sorpresa
-                                        </div>
-                                    )}
-
-                                    <div className="absolute bottom-0 left-0 right-0 p-5 space-y-3">
-                                        <p className="text-accent text-xs font-semibold uppercase tracking-widest">
-                                            MISIÓN
-                                        </p>
-
-                                        <h3 className="text-3xl font-bold text-foreground">
-                                            {activeMission.name}
-                                        </h3>
-
-                                        <p className="text-muted-foreground text-base">
-                                            {activeMission.description}
-                                        </p>
-
-                                        <div className="inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                                            Ver detalle
-                                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                return (
+                                    <div
+                                        key={mission.id}
+                                        className="flex-shrink-0 cursor-pointer transition-all duration-700"
+                                        style={{ width: `${width}px`, height: '384px', opacity }}
+                                        onClick={() => setActiveIndex(idx)}
+                                    >
+                                        <div className={`relative w-full h-full rounded-xl overflow-hidden border border-border/40 group ${isActive ? 'glow-gold' : ''}`}>
+                                            <Image
+                                                src={mission.image}
+                                                alt={mission.name}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+                                            {mission.isSurprise && (
+                                                <div className="absolute top-4 right-4 bg-accent text-background px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                                                    Sorpresa
+                                                </div>
+                                            )}
+                                            <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+                                                <p className="text-accent text-xs font-semibold uppercase tracking-widest">MISIÓN</p>
+                                                <h3 className="text-xl font-bold text-foreground">{mission.name}</h3>
+                                                <p className="text-muted-foreground text-sm">{mission.description}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
+                                )
+                            })}
 
-                            {/* Mobile dots */}
-                            <div className="flex justify-center gap-2 mt-5">
-                                {missions.map((mission, idx) => (
-                                    <button
-                                        key={mission.id}
-                                        type="button"
-                                        onClick={() => handleSelectMission(idx)}
-                                        className={`h-2 rounded-full transition-all ${
-                                            idx === activeIndex
-                                                ? 'w-8 bg-accent'
-                                                : 'w-2 bg-accent/30'
-                                        }`}
-                                        aria-label={`Ver misión ${idx + 1}`}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Mobile arrows */}
-                            <div className="flex justify-center gap-4 mt-6">
-                                <button
-                                    type="button"
-                                    onClick={handlePrev}
-                                    className="p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
-                                    aria-label="Misión anterior"
-                                >
-                                    <ChevronLeft className="w-6 h-6 text-accent" />
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    className="p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
-                                    aria-label="Siguiente misión"
-                                >
-                                    <ChevronRight className="w-6 h-6 text-accent" />
-                                </button>
+                            {/* Botón final: Ver todas las misiones */}
+                            <div className="flex-shrink-0 flex items-center justify-center rounded-xl border border-border/40 bg-card/30 hover:bg-card/50 cursor-pointer transition-all duration-500"
+                                style={{ width: '384px', height: '384px' }}
+                                onClick={() => window.location.href = '/mission'}>
+                                <span className="text-accent font-semibold text-lg flex items-center gap-2">
+                                    Ver todas las misiones
+                                    <ArrowRight className="w-5 h-5" />
+                                </span>
                             </div>
                         </div>
 
-                        {/* Desktop Carousel */}
-                        <div className="hidden lg:block">
-                            <div className="overflow-hidden">
-                                <div className="flex justify-center gap-6 pb-6">
-                                    {missions.map((mission, idx) => {
-                                        const distance = Math.abs(idx - activeIndex)
-                                        const isActive = idx === activeIndex
-                                        const isNear = distance === 1
-
-                                        const cardClassName = `flex-shrink-0 transition-all duration-500 ${
-                                            isActive
-                                                ? 'w-96 h-96'
-                                                : isNear
-                                                    ? 'w-48 h-96 opacity-60 cursor-pointer'
-                                                    : 'w-40 h-96 opacity-30 cursor-pointer'
-                                        }`
-
-                                        const cardContent = (
-                                            <div
-                                                className={`relative w-full h-full rounded-xl overflow-hidden border border-border/40 group ${
-                                                    isActive ? 'glow-gold' : ''
-                                                }`}
-                                            >
-                                                <Image
-                                                    src={mission.image}
-                                                    alt={mission.name}
-                                                    fill
-                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                                />
-
-                                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-
-                                                {mission.isSurprise && (
-                                                    <div className="absolute top-4 right-4 bg-accent text-background px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                                        Sorpresa
-                                                    </div>
-                                                )}
-
-                                                <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
-                                                    <p className="text-accent text-xs font-semibold uppercase tracking-widest">
-                                                        MISIÓN
-                                                    </p>
-
-                                                    <h3 className="text-xl font-bold text-foreground">
-                                                        {mission.name}
-                                                    </h3>
-
-                                                    <p className="text-muted-foreground text-sm">
-                                                        {mission.description}
-                                                    </p>
-
-                                                    {isActive && (
-                                                        <div className="inline-flex items-center gap-2 pt-1 text-sm font-semibold text-accent">
-                                                            Ver detalle
-                                                            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )
-
-                                        if (isActive) {
-                                            return (
-                                                <Link
-                                                    key={mission.id}
-                                                    href={`/mission/${mission.slug}`}
-                                                    className={`${cardClassName} no-underline`}
-                                                >
-                                                    {cardContent}
-                                                </Link>
-                                            )
-                                        }
-
-                                        return (
-                                            <button
-                                                key={mission.id}
-                                                type="button"
-                                                className={`${cardClassName} text-left`}
-                                                onClick={() => handleSelectMission(idx)}
-                                                aria-label={`Seleccionar misión ${mission.name}`}
-                                            >
-                                                {cardContent}
-                                            </button>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-
-                            {/* Navigation Arrows Desktop */}
-                            <button
-                                type="button"
-                                onClick={handlePrev}
-                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
-                                aria-label="Misión anterior"
-                            >
-                                <ChevronLeft className="w-6 h-6 text-accent" />
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={handleNext}
-                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
-                                aria-label="Siguiente misión"
-                            >
-                                <ChevronRight className="w-6 h-6 text-accent" />
-                            </button>
-                        </div>
+                        {/* Flechas */}
+                        <button
+                            type="button"
+                            onClick={handlePrev}
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
+                        >
+                            <ChevronLeft className="w-6 h-6 text-accent" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleNext}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
+                        >
+                            <ChevronRight className="w-6 h-6 text-accent" />
+                        </button>
                     </div>
                 </FadeUp>
 
