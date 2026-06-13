@@ -10,9 +10,9 @@ import { aboutPillars, aboutStats, aboutTimeline, aboutValues } from '@/data/abo
 
 export function AboutPageContent() {
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <main className="min-h-screen text-foreground">
             {/* Hero */}
-            <section className="relative overflow-hidden pt-32 pb-16 bg-background">
+            <section className="relative overflow-hidden pt-32 pb-16">
                 <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
 
@@ -121,7 +121,7 @@ export function AboutPageContent() {
             </section>
 
             {/* Timeline tipo camino */}
-            <section className="relative py-20 bg-background overflow-hidden">
+            <section className="relative py-20 overflow-hidden">
                 <div className="absolute top-20 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
                 <div className="absolute bottom-20 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
 
@@ -150,7 +150,7 @@ export function AboutPageContent() {
                                     >
                                         {/* Punto central desktop */}
                                         <div className="hidden lg:flex absolute left-1/2 top-10 z-20 -translate-x-1/2">
-                                            <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-accent/50 bg-background shadow-xl">
+                                            <div className="relative flex h-14 w-14 items-center justify-center rounded-full border border-accent/50 shadow-xl">
                                                 <div className="absolute inset-0 rounded-full bg-accent/20 blur-md" />
                                                 <div className="relative h-5 w-5 rounded-full bg-accent" />
                                             </div>
@@ -158,7 +158,7 @@ export function AboutPageContent() {
 
                                         {/* Punto móvil */}
                                         <div className="lg:hidden absolute left-0 top-8 z-20">
-                                            <div className="relative flex h-10 w-10 items-center justify-center rounded-full border border-accent/50 bg-background shadow-xl">
+                                            <div className="relative flex h-10 w-10 items-center justify-center rounded-full border border-accent/50 shadow-xl">
                                                 <div className="absolute inset-0 rounded-full bg-accent/20 blur-md" />
                                                 <div className="relative h-4 w-4 rounded-full bg-accent" />
                                             </div>
@@ -183,7 +183,7 @@ export function AboutPageContent() {
 
                                                         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
 
-                                                        <div className="absolute bottom-5 left-5 rounded-full border border-accent/30 bg-background/70 px-4 py-2 text-sm font-semibold text-accent backdrop-blur-md">
+                                                        <div className="absolute bottom-5 left-5 rounded-full border border-accent/30 px-4 py-2 text-sm font-semibold text-accent backdrop-blur-md">
                                                             {item.year}
                                                         </div>
                                                     </div>

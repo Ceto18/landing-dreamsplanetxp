@@ -59,9 +59,9 @@ export function MomentsPageContent() {
     }
 
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <main className="min-h-screen text-foreground">
             {/* Hero */}
-            <section className="relative overflow-hidden pt-32 pb-16 bg-background">
+            <section className="relative overflow-hidden pt-32 pb-16">
                 <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
 
@@ -130,7 +130,7 @@ export function MomentsPageContent() {
             {/* Gallery */}
             <section
                 id="moments-gallery"
-                className="relative py-16 bg-background overflow-hidden scroll-mt-24"
+                className="relative py-16 overflow-hidden scroll-mt-24"
             >
                 <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
 

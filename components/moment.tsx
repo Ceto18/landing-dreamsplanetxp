@@ -407,7 +407,7 @@ export function Moment() {
             <AnimatePresence>
                 {selectedPhoto && (
                     <motion.div
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/85 backdrop-blur-md"
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -455,7 +455,7 @@ export function Moment() {
                                                 <button
                                                     type="button"
                                                     onClick={handlePrevImage}
-                                                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
+                                                    className="absolute left-4 top-1/2 -translate-y-1/2 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
                                                     aria-label="Imagen anterior"
                                                 >
                                                     <ChevronLeft className="w-6 h-6" />
@@ -464,7 +464,7 @@ export function Moment() {
                                                 <button
                                                     type="button"
                                                     onClick={handleNextImage}
-                                                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/60 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
+                                                    className="absolute right-4 top-1/2 -translate-y-1/2 hover:bg-accent/20 text-accent p-2 rounded-full transition-colors z-10 border border-accent/30"
                                                     aria-label="Imagen siguiente"
                                                 >
                                                     <ChevronRight className="w-6 h-6" />

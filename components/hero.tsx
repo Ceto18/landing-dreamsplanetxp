@@ -15,7 +15,7 @@ export function Hero() {
 
     return (
         <section
-            className="relative min-h-screen pt-20 overflow-hidden bg-background"
+            className="relative min-h-screen pt-20 overflow-hidden"
             style={{
                 backgroundImage:
                     "linear-gradient(135deg, rgba(5, 5, 5, 0.85) 0%, rgba(11, 11, 10, 0.75) 100%), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop')",
@@ -74,7 +74,7 @@ export function Hero() {
                         <div className="lg:hidden">
                             <AnimatedCard
                                 delay={0.28}
-                                className="rounded-2xl border border-border/40 bg-background/40 backdrop-blur-md p-5 shadow-xl"
+                                className="rounded-2xl border border-border/40 backdrop-blur-md p-5 shadow-xl"
                             >
                                 <p className="text-muted-foreground text-xs uppercase tracking-widest">
                                     Próxima Salida
@@ -131,7 +131,7 @@ export function Hero() {
                     <div className="hidden lg:flex justify-end">
                         <AnimatedCard
                             delay={0.25}
-                            className="w-full max-w-sm relative overflow-hidden rounded-2xl border border-border/40 bg-background/40 backdrop-blur-md p-8 space-y-6 shadow-2xl glow-gold"
+                            className="w-full max-w-sm relative overflow-hidden rounded-2xl border border-border/40 backdrop-blur-md p-8 space-y-6 shadow-2xl glow-gold"
                         >
                             {/* Decorative corner */}
                             <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-2xl rounded-full -mr-16 -mt-16" />

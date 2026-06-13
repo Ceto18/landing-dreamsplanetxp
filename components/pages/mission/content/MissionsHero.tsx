@@ -6,7 +6,7 @@ import { SectionHeader } from '@/components/animations/section-header'
 
 export function MissionsHero() {
     return (
-        <section className="relative overflow-hidden pt-32 pb-16 bg-background">
+        <section className="relative overflow-hidden pt-32 pb-16">
 
             {/* ambient glow EXACTO del sistema original */}
             <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />

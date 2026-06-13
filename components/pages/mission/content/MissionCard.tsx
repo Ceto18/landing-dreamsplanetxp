@@ -64,7 +64,7 @@ export function MissionCard({ mission }: Props) {
                 {/* INFO GRID EXACTO */}
                 <div className="grid grid-cols-2 gap-3 text-sm">
 
-                    <div className="rounded-xl border border-border/60 bg-background/40 p-3">
+                    <div className="rounded-xl border border-border/60 p-3">
                         <div className="flex items-center gap-2 text-accent mb-1">
                             <CalendarDays className="w-4 h-4" />
                             <span className="font-semibold">Salida</span>
@@ -72,7 +72,7 @@ export function MissionCard({ mission }: Props) {
                         <p className="text-muted-foreground text-xs">{mission.date}</p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-background/40 p-3">
+                    <div className="rounded-xl border border-border/60  p-3">
                         <div className="flex items-center gap-2 text-accent mb-1">
                             <Users className="w-4 h-4" />
                             <span className="font-semibold">Grupo</span>
@@ -80,7 +80,7 @@ export function MissionCard({ mission }: Props) {
                         <p className="text-muted-foreground text-xs">{mission.group}</p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-background/40 p-3">
+                    <div className="rounded-xl border border-border/60 p-3">
                         <div className="flex items-center gap-2 text-accent mb-1">
                             <MapPin className="w-4 h-4" />
                             <span className="font-semibold">Duración</span>
@@ -88,7 +88,7 @@ export function MissionCard({ mission }: Props) {
                         <p className="text-muted-foreground text-xs">{mission.duration}</p>
                     </div>
 
-                    <div className="rounded-xl border border-border/60 bg-background/40 p-3">
+                    <div className="rounded-xl border border-border/60 p-3">
                         <div className="flex items-center gap-2 text-accent mb-1">
                             <Star className="w-4 h-4 fill-accent" />
                             <span className="font-semibold">Rating</span>

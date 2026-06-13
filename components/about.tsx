@@ -9,7 +9,7 @@ export function About() {
     return (
         <section
             id="quienes-somos"
-            className="relative py-24 bg-background overflow-hidden"
+            className="relative py-24 overflow-hidden"
         >
             {/* Background decoration */}
             <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />

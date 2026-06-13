@@ -9,7 +9,7 @@ import { MissionSidebar } from './MissionSidebar'
 
 export function MissionMain({ mission }: { mission: Mission }) {
     return (
-        <section className="relative py-24 bg-background overflow-hidden">
+        <section className="relative py-24 overflow-hidden">
 
             {/* decoración EXACTA del original */}
             <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />

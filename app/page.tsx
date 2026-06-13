@@ -10,7 +10,7 @@ import { Footer } from '@/components/footer'
 
 export default function Page() {
   return (
-    <main className="bg-background text-foreground">
+    <main className=" text-foreground">
       <Header />
       <Hero />
       <Mission />

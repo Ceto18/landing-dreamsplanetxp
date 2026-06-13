@@ -22,7 +22,7 @@ interface MomentDetailContentProps {
 
 export function MomentDetailContent({ moment }: MomentDetailContentProps) {
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <main className="min-h-screen text-foreground">
             {/* ================= Hero ================= */}
             <section className="relative min-h-[85vh] overflow-hidden pt-32 pb-20 flex items-center">
                 <img
@@ -119,7 +119,7 @@ export function MomentDetailContent({ moment }: MomentDetailContentProps) {
             </section>
 
             {/* ================= Content + Gallery + Reservation Form ================= */}
-            <section className="relative py-24 bg-background overflow-hidden">
+            <section className="relative py-24 overflow-hidden">
                 <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">

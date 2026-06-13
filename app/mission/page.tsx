@@ -36,7 +36,7 @@ export default function MissionsPage() {
             {/* HEADER */}
             <Header />
 
-            <main className="min-h-screen bg-background text-foreground">
+            <main className="min-h-screen text-foreground">
 
                 {/* HERO */}
                 <MissionsHero />

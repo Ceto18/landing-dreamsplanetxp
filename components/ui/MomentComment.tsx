@@ -1,4 +1,3 @@
-// components/ui/MomentComments.tsx
 'use client'
 
 import { useState } from 'react'
@@ -6,8 +5,17 @@ import { AnimatedCard } from '@/components/animations/animated-card'
 import { FadeUp } from '@/components/animations/fade-up'
 import { ArrowRight, Video } from 'lucide-react'
 
+/**
+ * 🔥 Tipo correcto del review
+ */
+type Review = {
+  user: string
+  comment: string
+  video: string | null
+}
+
 // Simulación de comentarios existentes
-const dummyReviews = [
+const dummyReviews: Review[] = [
   { user: 'Ana García', comment: 'Una experiencia increíble, totalmente recomendable!', video: null },
   { user: 'Carlos Pérez', comment: 'Me encantó la organización y los guías fueron excelentes.', video: null },
   { user: 'Lucía Fernández', comment: 'Hermosos paisajes y actividades muy divertidas.', video: null },
@@ -15,22 +23,28 @@ const dummyReviews = [
 ]
 
 export function MomentComments() {
-  const [reviews, setReviews] = useState(dummyReviews)
+  const [reviews, setReviews] = useState<Review[]>(dummyReviews)
   const [name, setName] = useState('')
   const [comment, setComment] = useState('')
   const [videoFile, setVideoFile] = useState<File | null>(null)
 
+  /**
+   * 🔥 crea URL SOLO una vez por submit
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!name || !comment) return
 
-    const newReview = {
+    const videoUrl = videoFile ? URL.createObjectURL(videoFile) : null
+
+    const newReview: Review = {
       user: name,
       comment,
-      video: videoFile ? URL.createObjectURL(videoFile) : null,
+      video: videoUrl,
     }
 
-    setReviews([newReview, ...reviews])
+    setReviews(prev => [newReview, ...prev])
+
     setName('')
     setComment('')
     setVideoFile(null)
@@ -39,27 +53,34 @@ export function MomentComments() {
   return (
     <section className="mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <FadeUp>
-        <h3 className="text-2xl font-bold text-foreground mb-6">Comentarios</h3>
+        <h3 className="text-2xl font-bold text-foreground mb-6">
+          Comentarios
+        </h3>
       </FadeUp>
 
-      {/* Lista de comentarios */}
+      {/* LISTA DE COMENTARIOS */}
       <div className="space-y-4 mb-8">
         {reviews.length > 0 ? (
           reviews.map((review, idx) => (
             <AnimatedCard
               key={idx}
               delay={idx * 0.08}
-              className="rounded-3xl border border-border/60 bg-card/50 p-6 hover:shadow-lg transition-all relative"
+              className="rounded-3xl border border-border/60 bg-card/50 p-6 hover:shadow-lg transition-all"
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center text-accent font-semibold">
                   {review.user.charAt(0)}
                 </div>
-                <p className="font-semibold text-foreground">{review.user}</p>
+                <p className="font-semibold text-foreground">
+                  {review.user}
+                </p>
               </div>
-              <p className="text-muted-foreground text-base mb-2">{review.comment}</p>
 
-              {/* Video en comentario */}
+              <p className="text-muted-foreground text-base mb-2">
+                {review.comment}
+              </p>
+
+              {/* VIDEO */}
               {review.video && (
                 <video
                   src={review.video}
@@ -70,49 +91,62 @@ export function MomentComments() {
             </AnimatedCard>
           ))
         ) : (
-          <p className="text-muted-foreground italic">No hay comentarios aún.</p>
+          <p className="text-muted-foreground italic">
+            No hay comentarios aún.
+          </p>
         )}
       </div>
 
-      {/* Formulario para agregar comentario + video */}
+      {/* FORMULARIO */}
       <FadeUp>
         <AnimatedCard className="rounded-3xl border border-border/60 bg-card/50 p-6 shadow-2xl space-y-4">
-          <h4 className="text-lg font-bold text-foreground mb-4">Escribe un comentario</h4>
+          <h4 className="text-lg font-bold text-foreground mb-4">
+            Escribe un comentario
+          </h4>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
               placeholder="Tu nombre"
-              className="w-full px-4 py-3 rounded-lg bg-background/30 border border-border focus:border-accent focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg border border-border focus:border-accent focus:outline-none"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
+
             <textarea
               placeholder="Tu comentario..."
-              className="w-full px-4 py-3 rounded-lg bg-background/30 border border-border focus:border-accent focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-lg border border-border focus:border-accent focus:outline-none resize-none"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows={4}
               required
             />
 
-            {/* Nueva caja de video más visual */}
+            {/* VIDEO UPLOAD */}
             <div
-              className="w-full border-2 border-dashed border-accent/50 rounded-lg p-6 text-center cursor-pointer hover:bg-accent/10 transition-colors relative"
-              onClick={() => document.getElementById('videoInput')?.click()}
+              className="w-full border-2 border-dashed border-accent/50 rounded-lg p-6 text-center cursor-pointer hover:bg-accent/10 transition-colors"
+              onClick={() =>
+                document.getElementById('videoInput')?.click()
+              }
             >
               <Video className="w-10 h-10 mx-auto text-accent mb-2" />
-              <p className="text-muted-foreground">Haz click aquí o arrastra tu video (opcional, max 30s)</p>
+              <p className="text-muted-foreground">
+                Haz click o sube un video (opcional)
+              </p>
+
               <input
                 type="file"
                 id="videoInput"
                 accept="video/*"
-                onChange={(e) => e.target.files && setVideoFile(e.target.files[0])}
+                onChange={(e) =>
+                  setVideoFile(e.target.files?.[0] || null)
+                }
                 className="hidden"
               />
             </div>
 
-            {/* Previsualización del video */}
+            {/* PREVIEW */}
             {videoFile && (
               <video
                 src={URL.createObjectURL(videoFile)}

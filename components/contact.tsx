@@ -270,7 +270,7 @@ export function Contact() {
                                             value={formData.nombre}
                                             onChange={handleChange}
                                             required
-                                            className="w-full bg-background/70 border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
+                                            className="w-full border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
                                             placeholder="Tu nombre"
                                         />
                                     </div>
@@ -287,7 +287,7 @@ export function Contact() {
                                             value={formData.email}
                                             onChange={handleChange}
                                             required
-                                            className="w-full bg-background/70 border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
+                                            className="w-full border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
                                             placeholder="tu@email.com"
                                         />
                                     </div>
@@ -306,7 +306,7 @@ export function Contact() {
                                                 value={formData.telefono}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full bg-background/70 border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
+                                                className="w-full border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
                                                 placeholder="+51 999 999 999"
                                             />
                                         </div>
@@ -322,7 +322,7 @@ export function Contact() {
                                                 value={formData.viajeros}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full bg-background/70 border border-border/70 rounded-lg px-4 py-3 text-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                                                className="w-full border border-border/70 rounded-lg px-4 py-3 text-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all appearance-none cursor-pointer"
                                             >
                                                 <option value="">Selecciona</option>
                                                 <option value="1">1 viajero</option>
@@ -345,7 +345,7 @@ export function Contact() {
                                             value={formData.mision}
                                             onChange={handleChange}
                                             required
-                                            className="w-full bg-background/70 border border-border/70 rounded-lg px-4 py-3 text-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all appearance-none cursor-pointer"
+                                            className="w-full border border-border/70 rounded-lg px-4 py-3 text-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all appearance-none cursor-pointer"
                                         >
                                             <option value="">Selecciona una misión</option>
 
@@ -368,7 +368,7 @@ export function Contact() {
                                             value={formData.mensaje}
                                             onChange={handleChange}
                                             rows={4}
-                                            className="w-full bg-background/70 border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all resize-none"
+                                            className="w-full border border-border/70 rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all resize-none"
                                             placeholder="Cuéntanos sobre tu viaje soñado..."
                                         />
                                     </div>

@@ -30,6 +30,15 @@ export function Header() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    // 🔒 BLOQUEO DE SCROLL CUANDO MENU ESTÁ ABIERTO
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = ''
+        }
+    }, [isOpen])
+
     const handleNavClick = (href: string) => {
         setActiveLink(href)
         setIsOpen(false)
@@ -81,7 +90,6 @@ export function Header() {
 
                     {/* NAV DESKTOP */}
                     <nav className="hidden lg:flex items-center gap-10">
-
                         {navigation.map((item) => {
                             const isActive = activeLink === item.href
 
@@ -97,7 +105,6 @@ export function Header() {
                                 >
                                     {item.name}
 
-                                    {/* 🔥 UNDERLINE ANIMADO */}
                                     <span
                                         className={`absolute left-0 -bottom-1 h-[2px] bg-accent transition-all duration-300 ${
                                             isActive
@@ -108,12 +115,10 @@ export function Header() {
                                 </button>
                             )
                         })}
-
                     </nav>
 
-                    {/* CTA + MOBILE */}
+                    {/* CTA + MOBILE BUTTON */}
                     <div className="flex items-center gap-4">
-
                         <Link
                             href="#contacto"
                             onClick={() => handleNavClick('#contacto')}
@@ -127,38 +132,56 @@ export function Header() {
                             onClick={() => setIsOpen(!isOpen)}
                             className="lg:hidden p-2 text-foreground"
                         >
-                            {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+                            {isOpen ? (
+                                <X className="w-7 h-7" />
+                            ) : (
+                                <Menu className="w-7 h-7" />
+                            )}
                         </button>
-
                     </div>
-
-                    {/* MOBILE MENU */}
-                    {isOpen && (
-                        <nav className="lg:hidden absolute top-24 left-0 right-0 bg-background border border-border shadow-lg">
-                            <div className="px-4 py-5 space-y-2">
-
-                                {navigation.map((item) => (
-                                    <button
-                                        key={item.name}
-                                        onClick={() => handleNavClick(item.href)}
-                                        className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground transition"
-                                    >
-                                        {item.name}
-                                    </button>
-                                ))}
-
-                                <button
-                                    onClick={() => handleNavClick('#contacto')}
-                                    className="block w-full mt-4 px-4 py-3 bg-accent text-background rounded-lg"
-                                >
-                                    Reservar ahora
-                                </button>
-
-                            </div>
-                        </nav>
-                    )}
-
                 </div>
+            </div>
+
+            {/* 🔥 OVERLAY */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
+
+            {/* 📱 MOBILE DRAWER */}
+            <div
+                className={`fixed top-0 right-0 h-full w-[80%] max-w-sm z-50 bg-background shadow-xl transform transition-transform duration-300 ${
+                    isOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}
+            >
+                <div className="flex items-center justify-between px-6 h-24 border-b border-border">
+                    <span className="font-bold text-foreground">Menú</span>
+
+                    <button onClick={() => setIsOpen(false)}>
+                        <X className="w-6 h-6" />
+                    </button>
+                </div>
+
+                <nav className="px-6 py-6 space-y-2">
+                    {navigation.map((item) => (
+                        <button
+                            key={item.name}
+                            onClick={() => handleNavClick(item.href)}
+                            className="block w-full text-left py-3 text-muted-foreground hover:text-foreground transition"
+                        >
+                            {item.name}
+                        </button>
+                    ))}
+
+                    <button
+                        onClick={() => handleNavClick('#contacto')}
+                        className="w-full mt-6 px-4 py-3 bg-accent text-background rounded-lg"
+                    >
+                        Reservar ahora
+                    </button>
+                </nav>
             </div>
         </header>
     )

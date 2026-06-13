@@ -42,7 +42,7 @@ export function ReservationForm({ momentTitle }: ReservationFormProps) {
                 <input
                     type="text"
                     placeholder="Nombre completo"
-                    className="w-full px-4 py-3 rounded-lg bg-background/30 border border-border focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-border focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -51,7 +51,7 @@ export function ReservationForm({ momentTitle }: ReservationFormProps) {
                 <input
                     type="email"
                     placeholder="Correo electrónico"
-                    className="w-full px-4 py-3 rounded-lg bg-background/30 border border-border focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-border focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -59,7 +59,7 @@ export function ReservationForm({ momentTitle }: ReservationFormProps) {
 
                 <textarea
                     placeholder="Mensaje o detalles de la reserva"
-                    className="w-full px-4 py-3 rounded-lg bg-background/30 border border-border focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-lg border border-border focus:border-accent focus:ring-1 focus:ring-accent/30 focus:outline-none transition-all resize-none"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={5}

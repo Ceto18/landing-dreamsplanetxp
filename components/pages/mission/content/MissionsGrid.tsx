@@ -6,7 +6,7 @@ import { AnimatedCard } from '@/components/animations/animated-card'
 
 export function MissionsGrid({ missions }: { missions: any[] }) {
     return (
-        <section className="relative py-16 bg-background overflow-hidden">
+        <section className="relative py-16 overflow-hidden">
 
             {/* glow decorativo como en el diseño original */}
             <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />

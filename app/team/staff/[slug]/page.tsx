@@ -7,14 +7,33 @@ import { FadeUp } from '@/components/animations/fade-up'
 import { User, Globe, Briefcase, Book, Star } from 'lucide-react'
 import Link from 'next/link'
 
-interface Props {
-  params: { slug: string } | Promise<{ slug: string }>
+/**
+ * 🔥 REQUIRED con output: 'export'
+ * Genera rutas estáticas en build time
+ */
+export function generateStaticParams() {
+  return teamData
+    .filter(member => member.role !== 'Influencer')
+    .map(member => ({
+      slug: member.slug,
+    }))
 }
 
-export default async function StaffDetail({ params }: Props) {
-  const { slug } = params instanceof Promise ? await params : params
+/**
+ * 🔥 FIX NEXT 15/16:
+ * params YA ES PROMISE
+ */
+export default async function StaffDetail({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
 
-  const member = teamData.find(m => m.slug === slug && m.role !== 'Influencer')
+  const member = teamData.find(
+    m => m.slug === slug && m.role !== 'Influencer'
+  )
+
   if (!member) return notFound()
 
   const infoItems = [
@@ -26,10 +45,9 @@ export default async function StaffDetail({ params }: Props) {
 
   return (
     <>
-      {/* Header */}
       <Header />
 
-      {/* Hero similar a InfluencerDetail */}
+      {/* HERO */}
       <section className="relative flex flex-col lg:flex-row items-center gap-8 max-w-7xl mx-auto px-4 py-16 mt-24">
         <FadeUp>
           <div className="w-64 h-64 rounded-xl shadow-lg overflow-hidden">
@@ -40,20 +58,27 @@ export default async function StaffDetail({ params }: Props) {
             />
           </div>
         </FadeUp>
+
         <FadeUp delay={0.08}>
           <div>
             <h1 className="text-4xl font-bold mb-2">{member.name}</h1>
             <p className="text-lg text-muted-foreground">{member.role}</p>
-            {member.specialty && <p className="text-sm text-muted-foreground mt-1">{member.specialty}</p>}
+
+            {member.specialty && (
+              <p className="text-sm text-muted-foreground mt-1">
+                {member.specialty}
+              </p>
+            )}
           </div>
         </FadeUp>
       </section>
 
-      {/* Info Cards */}
+      {/* INFO CARDS */}
       <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {infoItems.map((item, idx) => {
             const Icon = item.icon
+
             return (
               <AnimatedCard
                 key={item.label}
@@ -64,33 +89,43 @@ export default async function StaffDetail({ params }: Props) {
                   <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/30 flex items-center justify-center">
                     <Icon className="w-6 h-6 text-accent" />
                   </div>
+
                   <p className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
                     {item.label}
                   </p>
                 </div>
-                <p className="text-base font-bold text-foreground">{item.value}</p>
+
+                <p className="text-base font-bold text-foreground">
+                  {item.value}
+                </p>
               </AnimatedCard>
             )
           })}
         </div>
       </section>
 
-      {/* Biografía */}
+      {/* BIOGRAFÍA */}
       <section className="py-14 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeUp>
-          <h2 className="text-3xl font-bold mb-4 text-center">Biografía</h2>
+          <h2 className="text-3xl font-bold mb-4 text-center">
+            Biografía
+          </h2>
+
           <p className="text-lg text-muted-foreground leading-relaxed text-center">
             {member.bio || 'No hay biografía disponible para este miembro.'}
           </p>
         </FadeUp>
       </section>
 
-      {/* Misiones / Proyectos */}
+      {/* MISIONES / PROYECTOS */}
       {member.missions && member.missions.length > 0 && (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp>
-            <h2 className="text-3xl font-bold mb-10 text-center">Misiones / Proyectos</h2>
+            <h2 className="text-3xl font-bold mb-10 text-center">
+              Misiones / Proyectos
+            </h2>
           </FadeUp>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {member.missions.map((mission, idx) => (
               <AnimatedCard
@@ -103,8 +138,12 @@ export default async function StaffDetail({ params }: Props) {
                   alt={mission.title}
                   className="w-full h-48 object-cover"
                 />
+
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{mission.title}</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    {mission.title}
+                  </h3>
+
                   <p className="text-sm text-muted-foreground">
                     Descripción breve de la misión o proyecto.
                   </p>
@@ -120,13 +159,16 @@ export default async function StaffDetail({ params }: Props) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <FadeUp>
             <div className="rounded-3xl border border-border/60 bg-card/50 glass-effect p-8 sm:p-12 shadow-2xl hover:shadow-xl transition-all">
-              <div className="flex justify-center mb-5">
-                <Star className="w-8 h-8 text-accent" />
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">¿Quieres conocer al equipo?</h2>
+              <Star className="w-8 h-8 text-accent mx-auto mb-5" />
+
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                ¿Quieres conocer al equipo?
+              </h2>
+
               <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
                 Explora nuestras misiones y descubre cómo nuestro equipo puede ayudarte a lograr tus objetivos.
               </p>
+
               <Link
                 href="/#contacto"
                 className="btn-gold inline-flex items-center justify-center gap-2 no-underline"
@@ -138,7 +180,6 @@ export default async function StaffDetail({ params }: Props) {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </>
   )

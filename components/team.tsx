@@ -45,7 +45,7 @@ export function Team() {
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-            <div className="absolute bottom-3 left-3 rounded-full border border-accent/30 bg-background/60 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent backdrop-blur-md">
+            <div className="absolute bottom-3 left-3 rounded-full border border-accent/30 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent backdrop-blur-md">
               {member.role}
             </div>
           </div>
@@ -91,7 +91,7 @@ export function Team() {
   )
 
   return (
-    <section id="equipo" className="relative overflow-hidden bg-background py-24">
+    <section id="equipo" className="relative overflow-hidden py-24">
       {/* Fondo decorativo */}
       <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-accent/5 blur-3xl -mb-48 -mr-48" />
       <div className="absolute left-0 top-24 h-96 w-96 rounded-full bg-accent/[0.03] blur-3xl -ml-48" />

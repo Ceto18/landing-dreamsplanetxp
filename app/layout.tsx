@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Montserrat, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { GlobalAtmosphere } from '@/components/ui/GlobalAtmosphere'
 
 const montserrat = Montserrat({
   variable: '--font-geist-sans',
@@ -27,17 +28,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html
       lang="es"
-      className={`${montserrat.variable} ${geistMono.variable} bg-background dark`}
+      className={`${montserrat.variable} ${geistMono.variable} dark`}
     >
-      <body className="font-sans antialiased bg-background text-foreground">
-        {children}
+
+      {/* 🧠 IMPORTANTE: base sólida para contraste del navegador */}
+      <body className="font-sans antialiased bg-black text-foreground relative">
+
+        {/* 🌌 BACKGROUND GLOBAL (CAPA VISUAL) */}
+        <GlobalAtmosphere />
+
+        {/* 📦 CONTENIDO ENCIMA DEL FONDO */}
+        <div className="relative z-10">
+          {children}
+        </div>
+
         {process.env.NODE_ENV === 'production' && <Analytics />}
+
       </body>
     </html>
   )

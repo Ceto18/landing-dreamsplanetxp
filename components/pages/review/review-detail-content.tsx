@@ -15,9 +15,9 @@ export function ReviewDetailContent({ review }: Props) {
     const relatedReviews = getRelatedReviews(review.slug)
 
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <main className="min-h-screen text-foreground">
             {/* Hero */}
-            <section className="relative overflow-hidden pt-32 pb-16 bg-background">
+            <section className="relative overflow-hidden pt-32 pb-16">
                 <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
 
@@ -170,7 +170,7 @@ export function ReviewDetailContent({ review }: Props) {
             </section>
 
             {/* Related */}
-            <section className="relative py-16 bg-background overflow-hidden">
+            <section className="relative py-16 overflow-hidden">
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                         title="Más reseñas"
