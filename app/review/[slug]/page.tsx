@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { ReviewDetailContent } from '@/components/pages/review/review-detail-content'
+import { ReviewDetailContent } from '@/components/pages/review/ReviewDetail/ReviewDetailContent'
 import { getAllReviews, getReviewBySlug } from '@/data/reviews'
 
 type Props = {

@@ -23,6 +23,9 @@ export function Header() {
     const router = useRouter()
     const pathname = usePathname()
 
+    const isHome = pathname === '/'
+
+    // scroll detection (solo para desktop hero behavior)
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 50)
         handleScroll()
@@ -30,7 +33,7 @@ export function Header() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    // 🔒 BLOQUEO DE SCROLL CUANDO MENU ESTÁ ABIERTO
+    // lock scroll when drawer open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden'
@@ -57,10 +60,12 @@ export function Header() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-                isScrolled
-                    ? 'bg-background/85 backdrop-blur-md border-b border-border/40 shadow-sm'
-                    : 'bg-transparent'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-sm
+            ${
+                // 🔥 FIX REAL: desktop transparente, mobile sólido automático
+                isHome && !isScrolled
+                    ? 'lg:bg-transparent bg-[#0b0b0b]'
+                    : 'bg-[#0b0b0b]'
             }`}
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -68,7 +73,7 @@ export function Header() {
 
                     {/* LOGO */}
                     <Link href="/" className="flex items-center gap-4 group">
-                        <div className="relative w-14 h-14 overflow-hidden group-hover:bg-accent/30 transition-all duration-300">
+                        <div className="relative w-14 h-14 overflow-hidden">
                             <Image
                                 src="/logodreams.png"
                                 alt="DreamsPlanetXP"
@@ -107,9 +112,7 @@ export function Header() {
 
                                     <span
                                         className={`absolute left-0 -bottom-1 h-[2px] bg-accent transition-all duration-300 ${
-                                            isActive
-                                                ? 'w-full'
-                                                : 'w-0 group-hover:w-full'
+                                            isActive ? 'w-full' : 'w-0 group-hover:w-full'
                                         }`}
                                     />
                                 </button>
@@ -117,7 +120,7 @@ export function Header() {
                         })}
                     </nav>
 
-                    {/* CTA + MOBILE BUTTON */}
+                    {/* CTA + MOBILE */}
                     <div className="flex items-center gap-4">
                         <Link
                             href="#contacto"
@@ -145,22 +148,24 @@ export function Header() {
             {/* 🔥 OVERLAY */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+                    className="fixed inset-0 z-40 bg-black/80"
                     onClick={() => setIsOpen(false)}
                 />
             )}
 
-            {/* 📱 MOBILE DRAWER */}
+            {/* 📱 MOBILE DRAWER (100% SOLIDO REAL FIX) */}
             <div
-                className={`fixed top-0 right-0 h-full w-[80%] max-w-sm z-50 bg-background shadow-xl transform transition-transform duration-300 ${
+                className={`fixed top-0 right-0 h-full w-[80%] max-w-sm z-50
+                bg-[#0b0b0b] border-l border-white/10 shadow-2xl
+                transform transition-transform duration-300 ${
                     isOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}
             >
-                <div className="flex items-center justify-between px-6 h-24 border-b border-border">
-                    <span className="font-bold text-foreground">Menú</span>
+                <div className="flex items-center justify-between px-6 h-24 border-b border-white/10">
+                    <span className="font-bold text-white">Menú</span>
 
                     <button onClick={() => setIsOpen(false)}>
-                        <X className="w-6 h-6" />
+                        <X className="w-6 h-6 text-white" />
                     </button>
                 </div>
 
@@ -169,7 +174,7 @@ export function Header() {
                         <button
                             key={item.name}
                             onClick={() => handleNavClick(item.href)}
-                            className="block w-full text-left py-3 text-muted-foreground hover:text-foreground transition"
+                            className="block w-full text-left py-3 text-gray-300 hover:text-white transition"
                         >
                             {item.name}
                         </button>
@@ -177,7 +182,7 @@ export function Header() {
 
                     <button
                         onClick={() => handleNavClick('#contacto')}
-                        className="w-full mt-6 px-4 py-3 bg-accent text-background rounded-lg"
+                        className="w-full mt-6 px-4 py-3 bg-accent text-black rounded-lg"
                     >
                         Reservar ahora
                     </button>

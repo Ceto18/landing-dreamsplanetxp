@@ -1,4 +1,4 @@
-import { ReviewsPageContent } from '@/components/pages/review/reviews-page-content'
+import { ReviewsPageContent } from '@/components/pages/review/ReviewPage/ReviewsPageContent'
 
 export default function ReviewsPage() {
     return <ReviewsPageContent />

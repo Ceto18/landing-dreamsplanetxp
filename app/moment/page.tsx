@@ -1,4 +1,4 @@
-import { MomentsPageContent } from '@/components/pages/moment/moments-page-content'
+import { MomentsPageContent } from '@/components/pages/moment/MomentsPageContent'
 
 export const metadata = {
     title: 'Momentos | DreamsPlanetXP',

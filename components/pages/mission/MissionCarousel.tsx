@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
@@ -11,6 +11,9 @@ export function MissionCarousel() {
     const [activeIndex, setActiveIndex] = useState(2)
     const [autoScroll, setAutoScroll] = useState(true)
 
+    const mobileRef = useRef<HTMLDivElement>(null)
+
+    // ================= DESKTOP AUTO =================
     useEffect(() => {
         if (!autoScroll) return
 
@@ -33,13 +36,36 @@ export function MissionCarousel() {
         setTimeout(() => setAutoScroll(true), 5000)
     }
 
+    // ================= MOBILE AUTO SCROLL =================
+    useEffect(() => {
+        const el = mobileRef.current
+        if (!el) return
+
+        const interval = setInterval(() => {
+            const maxScroll = el.scrollWidth - el.clientWidth
+
+            // si llegó al final vuelve al inicio
+            if (el.scrollLeft >= maxScroll - 5) {
+                el.scrollTo({ left: 0, behavior: 'smooth' })
+            } else {
+                // avanza una "card"
+                el.scrollBy({
+                    left: el.clientWidth * 0.8,
+                    behavior: 'smooth'
+                })
+            }
+        }, 3500)
+
+        return () => clearInterval(interval)
+    }, [])
+
     return (
         <>
             <FadeUp delay={0.15} className="mb-10 sm:mb-16">
 
+                {/* ================= DESKTOP ================= */}
                 <div className="hidden lg:block relative overflow-hidden">
 
-                    {/* ================= CAROUSEL (SIN CAMBIOS) ================= */}
                     <div
                         className="flex gap-6 pb-6 transition-transform duration-700 ease-out"
                         style={{
@@ -101,7 +127,7 @@ export function MissionCarousel() {
                         })}
                     </div>
 
-                    {/* ================= FLECHAS (SIN CAMBIOS) ================= */}
+                    {/* arrows */}
                     <button
                         type="button"
                         onClick={handlePrev}
@@ -120,9 +146,56 @@ export function MissionCarousel() {
 
                 </div>
 
+                {/* ================= MOBILE (AUTO CAROUSEL) ================= */}
+                <div className="lg:hidden">
+                    <div
+                        ref={mobileRef}
+                        className="flex gap-4 overflow-x-auto px-4 pb-4 snap-x snap-mandatory scroll-smooth"
+                    >
+                        {missions.map((mission) => (
+                            <Link
+                                key={mission.id}
+                                href={`/mission/${mission.slug}`}
+                                className="min-w-[80%] sm:min-w-[60%] snap-center flex-shrink-0"
+                            >
+                                <div className="relative h-[320px] rounded-xl overflow-hidden border border-border/40">
+
+                                    <Image
+                                        src={mission.image}
+                                        alt={mission.name}
+                                        fill
+                                        className="object-cover"
+                                    />
+
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+
+                                    {mission.isSurprise && (
+                                        <div className="absolute top-4 right-4 bg-accent text-background px-3 py-1 rounded-full text-xs font-bold">
+                                            Sorpresa
+                                        </div>
+                                    )}
+
+                                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                                        <p className="text-accent text-xs font-semibold uppercase">
+                                            MISIÓN
+                                        </p>
+                                        <h3 className="text-lg font-bold text-foreground">
+                                            {mission.name}
+                                        </h3>
+                                        <p className="text-muted-foreground text-sm">
+                                            {mission.description}
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+
             </FadeUp>
 
-            {/* ================= BOTÓN FUERA DEL CAROUSEL ================= */}
+            {/* CTA */}
             <div className="flex justify-center mt-6">
                 <Link
                     href="/mission"

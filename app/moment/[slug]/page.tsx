@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { MomentDetailContent } from '@/components/pages/moment/moment-detail-content'
+import { MomentDetailContent } from '@/components/pages/moment/MomentsPageDetail/MomentDetailContent'
 import { getAllMoments, getMomentBySlug } from '@/data/moments'
 
 interface Props {
