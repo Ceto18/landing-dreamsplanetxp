@@ -2,22 +2,28 @@ import { Header } from '@/components/header'
 import { Hero } from '@/components/hero'
 import { Mission } from '@/components/pages/mission/mission'
 import { Moment } from '@/components/pages/moment/Moment'
-//import { Moment } from '@/components/moment'
-//import { Team } from '@/components/team'
 import { Team } from '@/components/pages/team/Team'
-//import { Review } from '@/components/review'
 import { Review } from '@/components/pages/review/Review'
-//import { About } from '@/components/about'
 import { About } from '@/components/pages/about/About'
 import { Contact } from '@/components/contact'
 import { Footer } from '@/components/footer'
 
-export default function Page() {
+import { homeService } from '@/services/homeService'
+
+export default async function Page() {
+  const home = await homeService.getHome()
+
   return (
-    <main className=" text-foreground">
+    <main className="text-foreground">
       <Header />
-      <Hero />
-      <Mission />
+
+      <Hero
+        hero={home.hero}
+        nextDeparture={home.next_departure}
+      />
+
+      <Mission missions={home.missions} />
+
       <Moment />
       <Team />
       <Review />

@@ -5,20 +5,55 @@ import { Countdown } from './countdown'
 import { FadeUp } from '@/components/animations/fade-up'
 import { AnimatedCard } from '@/components/animations/animated-card'
 
-export function Hero() {
+import type { HomeHero, HomeNextDeparture } from '@/types/home'
+
+type Props = {
+    hero: HomeHero
+    nextDeparture: HomeNextDeparture | null
+}
+
+export function Hero({ hero, nextDeparture }: Props) {
     const stats = [
-        { label: 'Destinos', value: '25+' },
-        { label: 'Viajeros', value: '1.2k' },
-        { label: 'Experiencias', value: '80+' },
-        { label: 'Continentes', value: '5' },
+        {
+            label: 'Destinos',
+            value: `${hero.destinations_count}+`,
+        },
+        {
+            label: 'Viajeros',
+            value: `${hero.travelers_count}+`,
+        },
+        {
+            label: 'Experiencias',
+            value: `${hero.experiences_count}+`,
+        },
+        {
+            label: 'Continentes',
+            value: `${hero.continents_count}`,
+        },
     ]
+
+    const fallbackBackground =
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop'
+
+    const backgroundImage =
+        hero.images_background?.length > 0
+            ? hero.images_background[0]
+            : fallbackBackground
+
+    const departureTitle =
+        nextDeparture?.mission?.name || nextDeparture?.name || 'Próxima misión'
+
+    const departureDate = nextDeparture?.release_date || '2026-07-15'
+
+    const totalSeats = nextDeparture?.number_seats ?? 0
+    const usedSeats = nextDeparture?.seats_used ?? 0
+    const availableSeats = Math.max(totalSeats - usedSeats, 0)
 
     return (
         <section
             className="relative min-h-screen pt-20 overflow-hidden"
             style={{
-                backgroundImage:
-                    "linear-gradient(135deg, rgba(5, 5, 5, 0.85) 0%, rgba(11, 11, 10, 0.75) 100%), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop')",
+                backgroundImage: `linear-gradient(135deg, rgba(5, 5, 5, 0.85) 0%, rgba(11, 11, 10, 0.75) 100%), url('${backgroundImage}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundAttachment: 'fixed',
@@ -35,16 +70,16 @@ export function Hero() {
                         <div className="space-y-4">
                             <FadeUp>
                                 <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight">
-                                    Pon tu vida en modo{' '}
-                                    <span className="text-accent">avión</span>
+                                    {hero.title}{' '}
+                                    <span className="text-accent">
+                                        {hero.highlight_text}
+                                    </span>
                                 </h1>
                             </FadeUp>
 
                             <FadeUp delay={0.12}>
                                 <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-lg">
-                                    Expediciones exclusivas diseñadas para quienes quieren vivir algo diferente.
-                                    Destinos extraordinarios, coordinadores expertos y momentos que cambiarán tu
-                                    perspectiva del mundo.
+                                    {hero.description}
                                 </p>
                             </FadeUp>
                         </div>
@@ -71,43 +106,47 @@ export function Hero() {
                         </FadeUp>
 
                         {/* Mobile Departure Card */}
-                        <div className="lg:hidden">
-                            <AnimatedCard
-                                delay={0.28}
-                                className="rounded-2xl border border-border/40 backdrop-blur-md p-5 shadow-xl"
-                            >
-                                <p className="text-muted-foreground text-xs uppercase tracking-widest">
-                                    Próxima Salida
-                                </p>
-
-                                <h3 className="text-2xl font-bold text-foreground mt-2">
-                                    Misión Marruecos
-                                </h3>
-
-                                <Countdown departureDate="2026-07-15" />
-
-                                <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 mt-4">
-                                    <div className="flex items-center gap-2">
-                                        <Users className="w-5 h-5 text-accent" />
-                                        <span className="text-foreground font-medium">
-                                            Plazas disponibles:{' '}
-                                            <span className="text-accent">12/18</span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <a
-                                    href="#contacto"
-                                    className="block w-full btn-gold py-3 text-center no-underline mt-5"
+                        {nextDeparture && (
+                            <div className="lg:hidden">
+                                <AnimatedCard
+                                    delay={0.28}
+                                    className="rounded-2xl border border-border/40 backdrop-blur-md p-5 shadow-xl"
                                 >
-                                    Solicitar información
-                                </a>
+                                    <p className="text-muted-foreground text-xs uppercase tracking-widest">
+                                        Próxima Salida
+                                    </p>
 
-                                <p className="text-xs text-muted-foreground text-center mt-4">
-                                    Confirmación en 24 horas
-                                </p>
-                            </AnimatedCard>
-                        </div>
+                                    <h3 className="text-2xl font-bold text-foreground mt-2">
+                                        {departureTitle}
+                                    </h3>
+
+                                    <Countdown departureDate={departureDate} />
+
+                                    <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 mt-4">
+                                        <div className="flex items-center gap-2">
+                                            <Users className="w-5 h-5 text-accent" />
+                                            <span className="text-foreground font-medium">
+                                                Plazas disponibles:{' '}
+                                                <span className="text-accent">
+                                                    {availableSeats}/{totalSeats}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <a
+                                        href="#contacto"
+                                        className="block w-full btn-gold py-3 text-center no-underline mt-5"
+                                    >
+                                        Solicitar información
+                                    </a>
+
+                                    <p className="text-xs text-muted-foreground text-center mt-4">
+                                        Confirmación en 24 horas
+                                    </p>
+                                </AnimatedCard>
+                            </div>
+                        )}
 
                         {/* Stats */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-accent/20">
@@ -128,52 +167,52 @@ export function Hero() {
                     </div>
 
                     {/* Right side - Next Departure Card */}
-                    <div className="hidden lg:flex justify-end">
-                        <AnimatedCard
-                            delay={0.25}
-                            className="w-full max-w-sm relative overflow-hidden rounded-2xl border border-border/40 backdrop-blur-md p-8 space-y-6 shadow-2xl glow-gold"
-                        >
-                            {/* Decorative corner */}
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-2xl rounded-full -mr-16 -mt-16" />
+                    {nextDeparture && (
+                        <div className="hidden lg:flex justify-end">
+                            <AnimatedCard
+                                delay={0.25}
+                                className="w-full max-w-sm relative overflow-hidden rounded-2xl border border-border/40 backdrop-blur-md p-8 space-y-6 shadow-2xl glow-gold"
+                            >
+                                {/* Decorative corner */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-2xl rounded-full -mr-16 -mt-16" />
 
-                            <div className="relative z-10">
-                                <p className="text-muted-foreground text-sm uppercase tracking-widest">
-                                    Próxima Salida
-                                </p>
+                                <div className="relative z-10">
+                                    <p className="text-muted-foreground text-sm uppercase tracking-widest">
+                                        Próxima Salida
+                                    </p>
 
-                                <h3 className="text-3xl font-bold text-foreground mt-2">
-                                    Misión Marruecos
-                                </h3>
+                                    <h3 className="text-3xl font-bold text-foreground mt-2">
+                                        {departureTitle}
+                                    </h3>
 
-                                {/* Countdown */}
-                                <Countdown departureDate="2026-07-15" />
+                                    <Countdown departureDate={departureDate} />
 
-                                {/* Available spots */}
-                                <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 my-6">
-                                    <div className="flex items-center gap-2">
-                                        <Users className="w-5 h-5 text-accent" />
-                                        <span className="text-foreground font-medium">
-                                            Plazas disponibles:{' '}
-                                            <span className="text-accent">12/18</span>
-                                        </span>
+                                    <div className="bg-accent/10 border border-accent/30 rounded-lg p-4 my-6">
+                                        <div className="flex items-center gap-2">
+                                            <Users className="w-5 h-5 text-accent" />
+                                            <span className="text-foreground font-medium">
+                                                Plazas disponibles:{' '}
+                                                <span className="text-accent">
+                                                    {availableSeats}/{totalSeats}
+                                                </span>
+                                            </span>
+                                        </div>
                                     </div>
+
+                                    <a
+                                        href="#contacto"
+                                        className="block w-full btn-gold py-3 text-center no-underline"
+                                    >
+                                        Solicitar información
+                                    </a>
+
+                                    <p className="text-xs text-muted-foreground text-center mt-4">
+                                        Confirmación en 24 horas
+                                    </p>
                                 </div>
-
-                                {/* CTA */}
-                                <a
-                                    href="#contacto"
-                                    className="block w-full btn-gold py-3 text-center no-underline"
-                                >
-                                    Solicitar información
-                                </a>
-
-                                {/* Small text */}
-                                <p className="text-xs text-muted-foreground text-center mt-4">
-                                    Confirmación en 24 horas
-                                </p>
-                            </div>
-                        </AnimatedCard>
-                    </div>
+                            </AnimatedCard>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
