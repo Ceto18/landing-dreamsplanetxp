@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, Users } from 'lucide-react'
 import { Countdown } from './countdown'
 import { FadeUp } from '@/components/animations/fade-up'
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export function Hero({ hero, nextDeparture }: Props) {
+    const [activeBackgroundIndex, setActiveBackgroundIndex] = useState(0)
+
     const stats = [
         {
             label: 'Destinos',
@@ -35,10 +38,26 @@ export function Hero({ hero, nextDeparture }: Props) {
     const fallbackBackground =
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop'
 
-    const backgroundImage =
-        hero.images_background?.length > 0
-            ? hero.images_background[0]
-            : fallbackBackground
+    const backgroundImages = useMemo(() => {
+        const apiImages =
+            hero.images_background
+                ?.map((image) => image.image_url)
+                .filter(Boolean) ?? []
+
+        return apiImages.length > 0 ? apiImages : [fallbackBackground]
+    }, [hero.images_background])
+
+    useEffect(() => {
+        if (backgroundImages.length <= 1) return
+
+        const interval = setInterval(() => {
+            setActiveBackgroundIndex((prev) =>
+                prev === backgroundImages.length - 1 ? 0 : prev + 1
+            )
+        }, 5000)
+
+        return () => clearInterval(interval)
+    }, [backgroundImages.length])
 
     const departureTitle =
         nextDeparture?.mission?.name || nextDeparture?.name || 'Próxima misión'
@@ -50,18 +69,30 @@ export function Hero({ hero, nextDeparture }: Props) {
     const availableSeats = Math.max(totalSeats - usedSeats, 0)
 
     return (
-        <section
-            className="relative min-h-screen pt-20 overflow-hidden"
-            style={{
-                backgroundImage: `linear-gradient(135deg, rgba(5, 5, 5, 0.85) 0%, rgba(11, 11, 10, 0.75) 100%), url('${backgroundImage}')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundAttachment: 'fixed',
-            }}
-        >
+        <section className="relative min-h-screen pt-20 overflow-hidden">
+            {/* Background carousel */}
+            <div className="absolute inset-0 z-0">
+                {backgroundImages.map((image, index) => (
+                    <div
+                        key={`${image}-${index}`}
+                        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${
+                            index === activeBackgroundIndex
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                        }`}
+                        style={{
+                            backgroundImage: `url('${image}')`,
+                            backgroundAttachment: 'fixed',
+                        }}
+                    />
+                ))}
+
+                <div className="absolute inset-0 bg-gradient-to-br from-black/85 to-[#0b0b0a]/75" />
+            </div>
+
             {/* Decorative elements */}
-            <div className="absolute top-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-            <div className="absolute -bottom-32 left-1/4 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl" />
+            <div className="absolute top-20 right-10 z-[1] w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+            <div className="absolute -bottom-32 left-1/4 z-[1] w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[600px]">

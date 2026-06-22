@@ -1,3 +1,8 @@
+export type HomeHeroBackgroundImage = {
+    name: string
+    image_url: string
+}
+
 export type HomeHero = {
     title: string
     highlight_text: string
@@ -6,7 +11,7 @@ export type HomeHero = {
     travelers_count: number
     experiences_count: number
     continents_count: number
-    images_background: string[]
+    images_background: HomeHeroBackgroundImage[]
 }
 
 export type HomeNextDeparture = {
@@ -31,10 +36,33 @@ export type HomeMission = {
     image_url: string | null
 }
 
+export type HomeMomentExperience = {
+    name: string
+    slug: string
+}
+
+export type HomeMomentMission = {
+    name: string
+    slug: string
+    image_url: string | null
+    experiences: HomeMomentExperience[]
+}
+
+export type HomeMomentCountry = {
+    country: string
+    missions: HomeMomentMission[]
+}
+
+export type HomeMoments = {
+    countries: string[]
+    data: HomeMomentCountry[]
+}
+
 export type HomeData = {
     hero: HomeHero
     next_departure: HomeNextDeparture | null
     missions: HomeMission[]
+    moments?: HomeMoments
 }
 
 export type HomeResponse = {

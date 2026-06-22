@@ -12,41 +12,40 @@ interface TimeLeft {
     minutos: number
 }
 
-export function Countdown({ departureDate }: CountdownProps) {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-        días: 0,
-        horas: 0,
-        minutos: 0,
-    })
+const initialTimeLeft: TimeLeft = {
+    días: 0,
+    horas: 0,
+    minutos: 0,
+}
 
+function calculateTimeLeft(departureDate: string): TimeLeft {
+    const targetDate = new Date(`${departureDate}T00:00:00`).getTime()
+    const now = new Date().getTime()
+    const difference = targetDate - now
+
+    if (difference <= 0) {
+        return initialTimeLeft
+    }
+
+    return {
+        días: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutos: Math.floor((difference / (1000 * 60)) % 60),
+    }
+}
+
+export function Countdown({ departureDate }: CountdownProps) {
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>(initialTimeLeft)
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
         setMounted(true)
 
-        const calculateTimeLeft = () => {
-            const targetDate = new Date(departureDate).getTime()
-            const now = new Date().getTime()
-            const difference = targetDate - now
+        setTimeLeft(calculateTimeLeft(departureDate))
 
-            if (difference > 0) {
-                setTimeLeft({
-                    días: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                    horas: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                    minutos: Math.floor((difference / 1000 / 60) % 60),
-                })
-            } else {
-                setTimeLeft({
-                    días: 0,
-                    horas: 0,
-                    minutos: 0,
-                })
-            }
-        }
-
-        calculateTimeLeft()
-
-        const timer = setInterval(calculateTimeLeft, 60000)
+        const timer = setInterval(() => {
+            setTimeLeft(calculateTimeLeft(departureDate))
+        }, 60000)
 
         return () => clearInterval(timer)
     }, [departureDate])
@@ -82,7 +81,7 @@ export function Countdown({ departureDate }: CountdownProps) {
                     key={unit.label}
                     className="bg-accent/10 border border-accent/30 rounded-lg p-3 text-center hover:border-accent/50 transition-colors"
                 >
-                    <div className="text-2xl font-bold text-accent">
+                    <div className="text-2xl font-bold text-accent tabular-nums">
                         {String(unit.value).padStart(2, '0')}
                     </div>
 
