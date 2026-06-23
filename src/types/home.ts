@@ -32,9 +32,19 @@ export type HomeMission = {
     slug?: string
     label: string
     country: string
-    active: boolean
+    active?: boolean
     image_url: string | null
 }
+
+/* ======================================================
+   HOME MOMENTS
+   Endpoint:
+   /api/v1/public/home
+
+   Estructura actual:
+   moments.data[].experiences[]
+   moments.data[].experiences[].experiences[]
+====================================================== */
 
 export type HomeMomentExperience = {
     name: string
@@ -50,7 +60,7 @@ export type HomeMomentMission = {
 
 export type HomeMomentCountry = {
     country: string
-    missions: HomeMomentMission[]
+    experiences: HomeMomentMission[]
 }
 
 export type HomeMoments = {
@@ -69,4 +79,54 @@ export type HomeResponse = {
     success: boolean
     message: string
     data: HomeData
+}
+
+/* ======================================================
+   EXPERIENCE DETAIL
+   Endpoint:
+   /api/v1/public/missions/experiences/{slug}
+====================================================== */
+
+export type ExperienceImage = {
+    name: string
+    image: string
+}
+
+export type ExperienceItinerary = {
+    day: string
+    order: number
+    title: string
+    description: string
+}
+
+export type ExperienceMission = {
+    name: string
+    country: string
+    image: string | null
+}
+
+export type MissionExperienceDetail = {
+    name: string
+    slug: string
+    subtitle: string
+    short_description: string
+    long_description: string
+    release_date: string
+    days: number
+    nights: number
+    raiting: string
+    investment: number
+    number_seats: number
+    seats_used: number
+    file: string | null
+    mission: ExperienceMission
+    images: ExperienceImage[]
+    features: string[]
+    itineraries: ExperienceItinerary[]
+}
+
+export type MissionExperienceDetailResponse = {
+    success: boolean
+    message: string
+    data: MissionExperienceDetail
 }
