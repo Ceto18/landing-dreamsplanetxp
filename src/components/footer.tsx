@@ -26,6 +26,23 @@ const socialLinks = [
     },
 ]
 
+const whatsappContacts = [
+    {
+        label: '+34 640 72 36 03',
+        href: 'https://wa.me/34640723603',
+    },
+    {
+        label: '+34 640 23 96 96',
+        href: 'https://wa.me/34640239696',
+    },
+]
+
+const emails = [
+    'reservas@dreamsplanetxp.com',
+    'info@dreamsplanetxp.com',
+    'saiko@dreamsplanet.com',
+]
+
 export function Footer() {
     return (
         <footer className="border-t border-border">
@@ -42,6 +59,35 @@ export function Footer() {
                             <p className="text-muted-foreground text-sm">
                                 Transformando viajes en experiencias memorables.
                             </p>
+
+                            <div className="flex gap-4 pt-2">
+                                {socialLinks.map((social) => (
+                                    <motion.a
+                                        key={social.name}
+                                        href={social.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={social.name}
+                                        whileHover={{ y: -4, scale: 1.06 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
+                                    >
+                                        <span
+                                            className="block w-5 h-5 bg-current"
+                                            style={{
+                                                WebkitMaskImage: `url(${social.icon})`,
+                                                maskImage: `url(${social.icon})`,
+                                                WebkitMaskRepeat: 'no-repeat',
+                                                maskRepeat: 'no-repeat',
+                                                WebkitMaskSize: 'contain',
+                                                maskSize: 'contain',
+                                                WebkitMaskPosition: 'center',
+                                                maskPosition: 'center',
+                                            }}
+                                        />
+                                    </motion.a>
+                                ))}
+                            </div>
                         </div>
                     </FadeUp>
 
@@ -111,68 +157,81 @@ export function Footer() {
 
                                 <li>
                                     <a
-                                        href="#"
+                                        href="/aviso-legal"
                                         className="text-muted-foreground hover:text-accent transition-colors"
                                     >
-                                        Condiciones
+                                        Aviso Legal
                                     </a>
                                 </li>
 
                                 <li>
                                     <a
-                                        href="#"
+                                        href="/politica-de-privacidad"
                                         className="text-muted-foreground hover:text-accent transition-colors"
                                     >
-                                        Privacidad
+                                        Política de Privacidad
                                     </a>
                                 </li>
 
                                 <li>
                                     <a
-                                        href="#"
+                                        href="/condiciones-generales"
                                         className="text-muted-foreground hover:text-accent transition-colors"
                                     >
-                                        Sostenibilidad
+                                        Condiciones Generales
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </FadeUp>
 
-                    {/* Social */}
+                    {/* Contact */}
                     <FadeUp delay={0.26}>
                         <div className="space-y-4">
                             <h4 className="font-semibold text-foreground">
-                                Síguenos
+                                Contactos
                             </h4>
 
-                            <div className="flex gap-4">
-                                {socialLinks.map((social) => (
-                                    <motion.a
-                                        key={social.name}
-                                        href={social.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={social.name}
-                                        whileHover={{ y: -4, scale: 1.06 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
-                                    >
-                                        <span
-                                            className="block w-5 h-5 bg-current"
-                                            style={{
-                                                WebkitMaskImage: `url(${social.icon})`,
-                                                maskImage: `url(${social.icon})`,
-                                                WebkitMaskRepeat: 'no-repeat',
-                                                maskRepeat: 'no-repeat',
-                                                WebkitMaskSize: 'contain',
-                                                maskSize: 'contain',
-                                                WebkitMaskPosition: 'center',
-                                                maskPosition: 'center',
-                                            }}
-                                        />
-                                    </motion.a>
-                                ))}
+                            <div className="space-y-4 text-sm">
+                                <div className="space-y-2">
+                                    <p className="font-medium text-foreground">
+                                        WhatsApp
+                                    </p>
+
+                                    <ul className="space-y-2">
+                                        {whatsappContacts.map((contact) => (
+                                            <li key={contact.href}>
+                                                <a
+                                                    href={contact.href}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-muted-foreground hover:text-accent transition-colors"
+                                                >
+                                                    {contact.label}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <p className="font-medium text-foreground">
+                                        Correos
+                                    </p>
+
+                                    <ul className="space-y-2">
+                                        {emails.map((email) => (
+                                            <li key={email}>
+                                                <a
+                                                    href={`mailto:${email}`}
+                                                    className="text-muted-foreground hover:text-accent transition-colors break-all"
+                                                >
+                                                    {email}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </FadeUp>
@@ -185,8 +244,10 @@ export function Footer() {
 
                 {/* Bottom */}
                 <FadeUp delay={0.38}>
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-                        <p>&copy; 2024 DreamsPlanetXP. Todos los derechos reservados.</p>
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground text-center md:text-left">
+                        <p>
+                            &copy; 2026 DreamsPlanetXP. Todos los derechos reservados.
+                        </p>
 
                         <p>Diseñado con pasión para viajeros apasionados</p>
                     </div>

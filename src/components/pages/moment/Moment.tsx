@@ -27,61 +27,30 @@ export function Moment({ moments }: Props) {
         const groups = moments?.data ?? []
 
         groups.forEach((countryGroup) => {
-            result[countryGroup.country] = []
+            const country = countryGroup.country
 
-            countryGroup.mission_experiences.forEach((mission) => {
-                if (mission.experiences.length > 0) {
-                    mission.experiences.forEach((experience) => {
-                        const gallery = experience.images
-                            .map((image) => image.image_url)
-                            .filter(Boolean)
+            result[country] = []
 
-                        const mainImage = gallery[0] || mission.image_url || ''
+            const countryMoments = countryGroup.moments ?? []
 
-                        if (!mainImage) return
+            countryMoments.forEach((moment) => {
+                if (!moment.image) return
 
-                        result[countryGroup.country].push({
-                            id: `${countryGroup.country}-${mission.slug}-${experience.slug}`,
-                            destination: countryGroup.country,
-                            title: experience.name,
-                            image: mainImage,
-                            description:
-                                'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.',
-                            place: mission.name,
-                            experience: experience.name,
-                            moment: 'Durante la misión',
-                            emotion: 'Aventura y conexión',
-                            recommendation:
-                                'Explora esta experiencia y descubre una nueva forma de viajar.',
-                            gallery:
-                                gallery.length > 0
-                                    ? gallery
-                                    : mission.image_url
-                                      ? [mission.image_url]
-                                      : [],
-                        })
-                    })
-
-                    return
-                }
-
-                if (mission.image_url) {
-                    result[countryGroup.country].push({
-                        id: `${countryGroup.country}-${mission.slug}`,
-                        destination: countryGroup.country,
-                        title: mission.name,
-                        image: mission.image_url,
-                        description:
-                            'Muy pronto tendremos nuevos momentos disponibles para esta misión.',
-                        place: mission.name,
-                        experience: mission.name,
-                        moment: 'Próximamente',
-                        emotion: 'Aventura y conexión',
-                        recommendation:
-                            'Explora esta misión y descubre una nueva forma de viajar.',
-                        gallery: [mission.image_url],
-                    })
-                }
+                result[country].push({
+                    id: `${country}-${moment.slug}`,
+                    destination: country,
+                    title: moment.title,
+                    image: moment.image,
+                    description:
+                        'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.',
+                    place: country,
+                    experience: moment.title,
+                    moment: moment.title,
+                    emotion: 'Aventura y conexión',
+                    recommendation:
+                        'Explora este momento y descubre una nueva forma de viajar.',
+                    gallery: [moment.image],
+                })
             })
         })
 
@@ -98,7 +67,7 @@ export function Moment({ moments }: Props) {
         }
     }, [activeDestination, destinations])
 
-    const photos = (momentsData[activeDestination] || []).slice(0, 8)
+    const photos = (momentsData[activeDestination] || []).slice(0, 20)
 
     if (!moments) return null
 
