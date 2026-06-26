@@ -41,14 +41,23 @@ export type HomeMission = {
    Endpoint:
    /api/v1/public/home
 
-   Estructura actual:
-   moments.data[].experiences[]
-   moments.data[].experiences[].experiences[]
+   Estructura real del API:
+   moments.countries[]
+   moments.data[]
+   moments.data[].mission_experiences[]
+   moments.data[].mission_experiences[].experiences[]
+   moments.data[].mission_experiences[].experiences[].images[]
 ====================================================== */
+
+export type HomeMomentImage = {
+    name: string
+    image_url: string
+}
 
 export type HomeMomentExperience = {
     name: string
     slug: string
+    images: HomeMomentImage[]
 }
 
 export type HomeMomentMission = {
@@ -60,7 +69,7 @@ export type HomeMomentMission = {
 
 export type HomeMomentCountry = {
     country: string
-    experiences: HomeMomentMission[]
+    mission_experiences: HomeMomentMission[]
 }
 
 export type HomeMoments = {
@@ -72,7 +81,7 @@ export type HomeData = {
     hero: HomeHero
     next_departure: HomeNextDeparture | null
     missions: HomeMission[]
-    moments?: HomeMoments
+    moments: HomeMoments
 }
 
 export type HomeResponse = {

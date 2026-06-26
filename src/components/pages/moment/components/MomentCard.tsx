@@ -10,6 +10,8 @@ export function MomentCard({
     photo: Photo
     onClick: () => void
 }) {
+    const image = photo.image || '/images/placeholder.jpg'
+
     return (
         <ImageReveal>
             <button
@@ -18,7 +20,7 @@ export function MomentCard({
                 className="group relative aspect-square w-full rounded-lg overflow-hidden border border-border/50 bg-card/50 hover:border-accent/50 transition-all duration-300 cursor-pointer"
             >
                 <img
-                    src={photo.image}
+                    src={image}
                     alt={photo.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
@@ -27,6 +29,12 @@ export function MomentCard({
                     <h3 className="text-foreground font-semibold text-sm line-clamp-2 text-left">
                         {photo.title}
                     </h3>
+
+                    {photo.place && (
+                        <p className="mt-1 text-xs text-foreground/70 line-clamp-1 text-left">
+                            {photo.place}
+                        </p>
+                    )}
                 </div>
 
                 <div className="absolute inset-0 border border-accent/0 group-hover:border-accent/50 rounded-lg transition-colors duration-300" />

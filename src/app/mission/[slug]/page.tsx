@@ -8,7 +8,7 @@ import { MissionSummary } from '@/components/pages/mission/detail/MissionSummary
 import { MissionMain } from '@/components/pages/mission/detail/MissionMain'
 import { MissionCTA } from '@/components/pages/mission/detail/MissionCTA'
 
-import { getMissionBySlug, missions } from '@/data/missions'
+import { missionService } from '@/services/missionService'
 
 interface Props {
     params: Promise<{
@@ -16,35 +16,58 @@ interface Props {
     }>
 }
 
-export function generateStaticParams() {
-    return missions.map((m) => ({
-        slug: m.slug,
-    }))
+export async function generateStaticParams() {
+    try {
+        const response = await missionService.getAllMissions()
+
+        const slugs = response.data.flatMap((countryGroup) =>
+            countryGroup.mission_experiences.flatMap((mission) =>
+                mission.experiences.map((experience) => ({
+                    slug: experience.slug,
+                }))
+            )
+        )
+
+        return slugs
+    } catch (error) {
+        console.error('Error al generar rutas estáticas de experiencias:', error)
+        return []
+    }
 }
 
 export async function generateMetadata({ params }: Props) {
     const { slug } = await params
 
-    const mission = getMissionBySlug(slug)
+    try {
+        const experience = await missionService.getExperienceBySlug(slug)
 
-    if (!mission) {
         return {
-            title: 'Misión no encontrada | DreamsPlanetXP',
+            title: `${experience.name} | DreamsPlanetXP`,
+            description:
+                experience.short_description ||
+                experience.subtitle ||
+                'Experiencia premium de DreamsPlanetXP',
         }
-    }
-
-    return {
-        title: `${mission.name} | DreamsPlanetXP`,
-        description: mission.description,
+    } catch {
+        return {
+            title: 'Experiencia no encontrada | DreamsPlanetXP',
+        }
     }
 }
 
 export default async function MissionDetailPage({ params }: Props) {
     const { slug } = await params
 
-    const mission = getMissionBySlug(slug)
+    let experience = null
 
-    if (!mission) {
+    try {
+        experience = await missionService.getExperienceBySlug(slug)
+    } catch (error) {
+        console.error('Error al obtener experiencia:', error)
+        notFound()
+    }
+
+    if (!experience) {
         notFound()
     }
 
@@ -52,12 +75,13 @@ export default async function MissionDetailPage({ params }: Props) {
         <>
             <Header />
 
-            <MissionHero mission={mission} />
-            <MissionSummary mission={mission} />
+            <MissionHero mission={experience} />
 
-            <MissionMain mission={mission} />
+            <MissionSummary mission={experience} />
 
-            <MissionCTA mission={mission} />
+            <MissionMain mission={experience} />
+
+            <MissionCTA mission={experience} />
 
             <Footer />
         </>

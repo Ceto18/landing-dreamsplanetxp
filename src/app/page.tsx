@@ -24,7 +24,7 @@ export default async function Page() {
 
       <Mission missions={home.missions} />
 
-      <Moment />
+      <Moment moments={home.moments} />
       <Team />
       <Review />
       <About />

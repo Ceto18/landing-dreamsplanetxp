@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+
 import { AnimatedCard } from '@/components/animations/animated-card'
 import { Photo } from '../types'
 
@@ -30,6 +31,9 @@ export function MomentModal({
 
     if (!photo || !mounted) return null
 
+    const gallery = photo.gallery.length > 0 ? photo.gallery : [photo.image]
+    const currentImage = gallery[index] || gallery[0]
+
     const modalContent = (
         <AnimatePresence>
             <motion.div
@@ -39,13 +43,11 @@ export function MomentModal({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
             >
-                {/* overlay */}
                 <div
                     className="absolute inset-0 bg-black/70"
                     onClick={onClose}
                 />
 
-                {/* MODAL CONTAINER */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.94, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -62,7 +64,6 @@ export function MomentModal({
                         space-y-6 shadow-2xl
                     "
                 >
-                    {/* CLOSE */}
                     <button
                         type="button"
                         onClick={onClose}
@@ -78,13 +79,12 @@ export function MomentModal({
                     </button>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* IMAGE */}
                         <div className="lg:col-span-2 space-y-4">
                             <div className="relative h-80 sm:h-96 lg:h-[420px] rounded-xl overflow-hidden border border-border/50">
                                 <AnimatePresence mode="wait">
                                     <motion.img
-                                        key={photo.gallery[index]}
-                                        src={photo.gallery[index]}
+                                        key={currentImage}
+                                        src={currentImage}
                                         alt={photo.title}
                                         className="w-full h-full object-cover"
                                         initial={{ opacity: 0, scale: 1.04 }}
@@ -94,9 +94,10 @@ export function MomentModal({
                                     />
                                 </AnimatePresence>
 
-                                {photo.gallery.length > 1 && (
+                                {gallery.length > 1 && (
                                     <>
                                         <button
+                                            type="button"
                                             onClick={onPrev}
                                             className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full border border-accent/30 text-accent hover:bg-accent/20"
                                         >
@@ -104,6 +105,7 @@ export function MomentModal({
                                         </button>
 
                                         <button
+                                            type="button"
                                             onClick={onNext}
                                             className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full border border-accent/30 text-accent hover:bg-accent/20"
                                         >
@@ -113,12 +115,12 @@ export function MomentModal({
                                 )}
                             </div>
 
-                            {/* THUMBNAILS */}
-                            {photo.gallery.length > 1 && (
+                            {gallery.length > 1 && (
                                 <div className="flex gap-2 overflow-x-auto pb-2">
-                                    {photo.gallery.map((img, i) => (
+                                    {gallery.map((img, i) => (
                                         <button
-                                            key={i}
+                                            key={`${img}-${i}`}
+                                            type="button"
                                             onClick={() => onSelectImage(i)}
                                             className={`
                                                 w-20 h-20 flex-shrink-0
@@ -134,6 +136,7 @@ export function MomentModal({
                                         >
                                             <img
                                                 src={img}
+                                                alt={`${photo.title} ${i + 1}`}
                                                 className="w-full h-full object-cover"
                                             />
                                         </button>
@@ -142,7 +145,6 @@ export function MomentModal({
                             )}
                         </div>
 
-                        {/* CONTENT */}
                         <div className="space-y-6">
                             <div className="space-y-3">
                                 <p className="text-accent text-sm uppercase tracking-widest font-semibold">
@@ -154,7 +156,8 @@ export function MomentModal({
                                 </h3>
 
                                 <p className="text-lg text-muted-foreground leading-relaxed">
-                                    {photo.description}
+                                    {photo.description ||
+                                        'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.'}
                                 </p>
                             </div>
 
@@ -166,27 +169,41 @@ export function MomentModal({
 
                                     <div className="space-y-2">
                                         <p>
-                                            <span className="text-muted-foreground">Lugar:</span>{' '}
+                                            <span className="text-muted-foreground">
+                                                Lugar:
+                                            </span>{' '}
                                             {photo.place}
                                         </p>
+
                                         <p>
-                                            <span className="text-muted-foreground">Experiencia:</span>{' '}
+                                            <span className="text-muted-foreground">
+                                                Experiencia:
+                                            </span>{' '}
                                             {photo.experience}
                                         </p>
+
                                         <p>
-                                            <span className="text-muted-foreground">Momento ideal:</span>{' '}
-                                            {photo.moment}
+                                            <span className="text-muted-foreground">
+                                                Momento ideal:
+                                            </span>{' '}
+                                            {photo.moment || 'Durante la misión'}
                                         </p>
+
                                         <p>
-                                            <span className="text-muted-foreground">Sensación:</span>{' '}
-                                            {photo.emotion}
+                                            <span className="text-muted-foreground">
+                                                Sensación:
+                                            </span>{' '}
+                                            {photo.emotion || 'Aventura y conexión'}
                                         </p>
                                     </div>
                                 </div>
 
                                 <AnimatedCard className="bg-accent/10 border border-accent/30 rounded-lg p-4">
                                     <p className="italic text-foreground">
-                                        "{photo.recommendation}"
+                                        "
+                                        {photo.recommendation ||
+                                            'Explora esta experiencia y descubre una nueva forma de viajar.'}
+                                        "
                                     </p>
                                 </AnimatedCard>
                             </div>

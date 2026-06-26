@@ -17,21 +17,35 @@ export function useMomentGallery() {
 
     const nextImage = () => {
         if (!selectedPhoto) return
-        setCurrentImageIndex(
-            (prev) => (prev + 1) % selectedPhoto.gallery.length
-        )
+
+        const totalImages = selectedPhoto.gallery?.length ?? 0
+
+        if (totalImages <= 1) return
+
+        setCurrentImageIndex((prev) => (prev + 1) % totalImages)
     }
 
     const prevImage = () => {
         if (!selectedPhoto) return
+
+        const totalImages = selectedPhoto.gallery?.length ?? 0
+
+        if (totalImages <= 1) return
+
         setCurrentImageIndex(
-            (prev) =>
-                (prev - 1 + selectedPhoto.gallery.length) %
-                selectedPhoto.gallery.length
+            (prev) => (prev - 1 + totalImages) % totalImages
         )
     }
 
-    const setImage = (index: number) => setCurrentImageIndex(index)
+    const setImage = (index: number) => {
+        if (!selectedPhoto) return
+
+        const totalImages = selectedPhoto.gallery?.length ?? 0
+
+        if (index < 0 || index >= totalImages) return
+
+        setCurrentImageIndex(index)
+    }
 
     return {
         selectedPhoto,
