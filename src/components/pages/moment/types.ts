@@ -1,5 +1,6 @@
 export interface Photo {
     id: string
+    slug?: string
     destination: string
     title: string
     image: string

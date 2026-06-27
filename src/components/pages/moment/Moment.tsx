@@ -9,6 +9,8 @@ import { MomentsGrid } from './components/MomentsGrid'
 import { MomentModal } from './components/MomentModal'
 import { MoreMomentsButton } from './components/MoreMomentsButton'
 
+import { missionService } from '@/services/missionService'
+
 import { HomeMoments } from '@/types/home'
 import { Photo } from './types'
 
@@ -38,6 +40,7 @@ export function Moment({ moments }: Props) {
 
                 result[country].push({
                     id: `${country}-${moment.slug}`,
+                    slug: moment.slug,
                     destination: country,
                     title: moment.title,
                     image: moment.image,
@@ -60,6 +63,7 @@ export function Moment({ moments }: Props) {
     const [activeDestination, setActiveDestination] = useState('')
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [isLoadingMoment, setIsLoadingMoment] = useState(false)
 
     useEffect(() => {
         if (!activeDestination && destinations.length > 0) {
@@ -68,6 +72,56 @@ export function Moment({ moments }: Props) {
     }, [activeDestination, destinations])
 
     const photos = (momentsData[activeDestination] || []).slice(0, 20)
+
+    const handleSelectMoment = async (photo: Photo) => {
+        if (!photo.slug) {
+            setSelectedPhoto(photo)
+            setCurrentImageIndex(0)
+            return
+        }
+
+        try {
+            setIsLoadingMoment(true)
+
+            const detail = await missionService.getMomentBySlug(photo.slug)
+
+            const gallery =
+                detail.images
+                    ?.map((image) => image.image_url)
+                    .filter(Boolean) ?? []
+
+            const formattedPhoto: Photo = {
+                ...photo,
+                id: detail.slug,
+                slug: detail.slug,
+                destination: detail.mission ?? photo.destination,
+                title: detail.title,
+                image: gallery[0] ?? photo.image,
+                description: detail.description ?? photo.description,
+                place: detail.place ?? photo.place,
+                experience:
+                    detail.mission_experience ??
+                    detail.experience ??
+                    photo.experience,
+                moment: detail.ideal ?? photo.moment,
+                emotion: detail.sensation ?? photo.emotion,
+                recommendation:
+                    detail.proverb ??
+                    'Explora este momento y descubre una nueva forma de viajar.',
+                gallery: gallery.length > 0 ? gallery : photo.gallery,
+            }
+
+            setSelectedPhoto(formattedPhoto)
+            setCurrentImageIndex(0)
+        } catch (error) {
+            console.error('Error obteniendo detalle del momento:', error)
+
+            setSelectedPhoto(photo)
+            setCurrentImageIndex(0)
+        } finally {
+            setIsLoadingMoment(false)
+        }
+    }
 
     if (!moments) return null
 
@@ -97,13 +151,18 @@ export function Moment({ moments }: Props) {
 
                 <MomentsGrid
                     photos={photos}
-                    onSelect={(photo) => {
-                        setSelectedPhoto(photo)
-                        setCurrentImageIndex(0)
-                    }}
+                    onSelect={handleSelectMoment}
                 />
 
                 <MoreMomentsButton />
+
+                {isLoadingMoment && (
+                    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                        <div className="rounded-2xl bg-white px-6 py-4 text-sm font-medium text-gray-700 shadow-xl">
+                            Cargando momento...
+                        </div>
+                    </div>
+                )}
 
                 <MomentModal
                     photo={selectedPhoto}

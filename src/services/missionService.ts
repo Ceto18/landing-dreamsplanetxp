@@ -79,6 +79,25 @@ export type MissionExperienceDetail = {
     itineraries: MissionItinerary[]
 }
 
+export type MissionMomentImage = {
+    name: string
+    image_url: string
+}
+
+export type MissionMomentDetail = {
+    title: string
+    slug: string
+    description: string | null
+    proverb: string | null
+    place: string | null
+    experience: string | null
+    ideal: string | null
+    sensation: string | null
+    mission: string | null
+    mission_experience: string | null
+    images: MissionMomentImage[]
+}
+
 export const missionService = {
     async getAllMissions(): Promise<PublicMissionsAllResponse> {
         const response = await api.get('/public/missions/all')
@@ -91,6 +110,14 @@ export const missionService = {
 
     async getExperienceBySlug(slug: string): Promise<MissionExperienceDetail> {
         const response = await api.get(`/public/missions/experiences/${slug}`)
+
+        return response.data?.data
+    },
+
+    async getMomentBySlug(slug: string): Promise<MissionMomentDetail> {
+        const response = await api.get(
+            `/public/missions/experiences/moments/${slug}`
+        )
 
         return response.data?.data
     },

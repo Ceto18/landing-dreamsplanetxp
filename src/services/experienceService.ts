@@ -10,7 +10,6 @@ export const experienceService = {
         const response = await api.get<MissionExperienceDetailResponse>(
             `/public/missions/experiences/${slug}`
         )
-
         return response.data.data
     },
 }

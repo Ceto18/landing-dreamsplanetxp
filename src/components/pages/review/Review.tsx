@@ -90,14 +90,14 @@ export function Review() {
                         />
 
                         {/* Button */}
-                        <FadeUp delay={0.32}>
+                        {/* <FadeUp delay={0.32}>
                             <Link
                                 href="/review"
                                 className="inline-flex px-8 py-3 border border-accent text-accent font-semibold rounded-lg hover:bg-accent/10 transition-colors no-underline"
                             >
                                 Ver todas las reseñas
                             </Link>
-                        </FadeUp>
+                        </FadeUp> */}
                     </div>
 
                     {/* Right - Video Mockup & Metrics */}
