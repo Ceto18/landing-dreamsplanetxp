@@ -31,7 +31,7 @@ export function MomentModal({
 
     if (!photo || !mounted) return null
 
-    const gallery = photo.gallery.length > 0 ? photo.gallery : [photo.image]
+    const gallery = photo.gallery?.length > 0 ? photo.gallery : [photo.image]
     const currentImage = gallery[index] || gallery[0]
 
     const modalContent = (
@@ -172,14 +172,14 @@ export function MomentModal({
                                             <span className="text-muted-foreground">
                                                 Lugar:
                                             </span>{' '}
-                                            {photo.place}
+                                            {photo.place || '-'}
                                         </p>
 
                                         <p>
                                             <span className="text-muted-foreground">
                                                 Experiencia:
                                             </span>{' '}
-                                            {photo.experience}
+                                            {photo.experience || '-'}
                                         </p>
 
                                         <p>
@@ -200,26 +200,27 @@ export function MomentModal({
 
                                 <AnimatedCard className="bg-accent/10 border border-accent/30 rounded-lg p-4">
                                     <p className="italic text-foreground">
-                                        "
+                                        “
                                         {photo.recommendation ||
-                                            'Explora esta experiencia y descubre una nueva forma de viajar.'}
-                                        "
+                                            'Explora este momento y descubre una nueva forma de viajar.'}
+                                        ”
                                     </p>
                                 </AnimatedCard>
                             </div>
 
-                            <a
-                                href="#misiones"
+                            <button
+                                type="button"
                                 onClick={onClose}
                                 className="
                                     block w-full text-center
                                     bg-accent text-background
                                     font-semibold py-3
-                                    rounded-lg hover:bg-accent/90
+                                    rounded-lg transition
+                                    hover:bg-accent/90
                                 "
                             >
-                                Explorar misión
-                            </a>
+                                Cerrar momento
+                            </button>
                         </div>
                     </div>
                 </motion.div>

@@ -12,4 +12,7 @@ export interface Photo {
     moment?: string
     emotion?: string
     recommendation?: string
+
+    missionSlug?: string
+    firstExperienceSlug?: string | null
 }

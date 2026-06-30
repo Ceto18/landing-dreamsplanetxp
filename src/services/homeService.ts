@@ -1,5 +1,10 @@
 import { api } from './api'
-import type { HomeData, HomeResponse } from '@/types/home'
+import type {
+    HomeData,
+    HomeResponse,
+    HomeMissionMomentsData,
+    HomeMissionMomentsResponse,
+} from '@/types/home'
 
 export const homeService = {
     async getHome(): Promise<HomeData> {
@@ -9,6 +14,15 @@ export const homeService = {
         // console.log('🟢 [homeService] response.data.data:', response.data.data)
         // console.log('🟢 [homeService] moments:', response.data.data?.moments)
 
+        return response.data.data
+    },
+
+    async getMissionMoments(
+        missionSlug: string
+    ): Promise<HomeMissionMomentsData> {
+        const response = await api.get<HomeMissionMomentsResponse>(
+            `/public/home/missions/moments/${missionSlug}`
+        )
 
         return response.data.data
     },

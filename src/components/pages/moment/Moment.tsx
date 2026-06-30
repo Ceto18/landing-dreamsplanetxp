@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { Skeleton } from 'antd'
 
 import { SectionHeader } from '@/components/animations/section-header'
 
@@ -9,61 +10,95 @@ import { MomentsGrid } from './components/MomentsGrid'
 import { MomentModal } from './components/MomentModal'
 import { MoreMomentsButton } from './components/MoreMomentsButton'
 
+import { homeService } from '@/services/homeService'
 import { missionService } from '@/services/missionService'
 
-import { HomeMoments } from '@/types/home'
+import { HomeMission, HomeVisibleMissionTab } from '@/types/home'
 import { Photo } from './types'
 
 type Props = {
-    moments?: HomeMoments
+    visibleMissionsTabs?: HomeVisibleMissionTab[]
+    missions?: HomeMission[]
 }
 
-export function Moment({ moments }: Props) {
+function MomentsGridSkeleton() {
+    return (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
+            {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                    key={index}
+                    className="aspect-square w-full overflow-hidden rounded-lg border border-border/50 bg-card/50"
+                >
+                    <Skeleton.Image
+                        active
+                        className="!h-full !w-full"
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    />
+                </div>
+            ))}
+        </div>
+    )
+}
+
+function MomentDetailSkeleton() {
+    return (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/30 backdrop-blur-sm">
+            <div className="w-[320px] rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900">
+                <Skeleton active paragraph={{ rows: 3 }} />
+            </div>
+        </div>
+    )
+}
+
+export function Moment({
+    visibleMissionsTabs = [],
+    missions = [],
+}: Props) {
     const destinations = useMemo(() => {
-        return moments?.countries ?? []
-    }, [moments])
+        if (visibleMissionsTabs.length > 0) {
+            return Array.from(
+                new Set(
+                    visibleMissionsTabs
+                        .map((tab) => tab.country?.trim())
+                        .filter(Boolean) as string[]
+                )
+            )
+        }
 
-    const momentsData = useMemo<Record<string, Photo[]>>(() => {
-        const result: Record<string, Photo[]> = {}
+        return Array.from(
+            new Set(
+                missions
+                    .map((mission) => mission.country?.trim())
+                    .filter(Boolean) as string[]
+            )
+        )
+    }, [visibleMissionsTabs, missions])
 
-        const groups = moments?.data ?? []
+    const missionsByCountry = useMemo(() => {
+        return missions.reduce<Record<string, HomeMission[]>>((acc, mission) => {
+            const country = mission.country?.trim()
 
-        groups.forEach((countryGroup) => {
-            const country = countryGroup.country
+            if (!country) return acc
 
-            result[country] = []
+            if (!acc[country]) {
+                acc[country] = []
+            }
 
-            const countryMoments = countryGroup.moments ?? []
+            acc[country].push(mission)
 
-            countryMoments.forEach((moment) => {
-                if (!moment.image) return
-
-                result[country].push({
-                    id: `${country}-${moment.slug}`,
-                    slug: moment.slug,
-                    destination: country,
-                    title: moment.title,
-                    image: moment.image,
-                    description:
-                        'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.',
-                    place: country,
-                    experience: moment.title,
-                    moment: moment.title,
-                    emotion: 'Aventura y conexión',
-                    recommendation:
-                        'Explora este momento y descubre una nueva forma de viajar.',
-                    gallery: [moment.image],
-                })
-            })
-        })
-
-        return result
-    }, [moments])
+            return acc
+        }, {})
+    }, [missions])
 
     const [activeDestination, setActiveDestination] = useState('')
+    const [photos, setPhotos] = useState<Photo[]>([])
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [isLoadingMoment, setIsLoadingMoment] = useState(false)
+    const [isLoadingMomentDetail, setIsLoadingMomentDetail] = useState(false)
 
     useEffect(() => {
         if (!activeDestination && destinations.length > 0) {
@@ -71,7 +106,85 @@ export function Moment({ moments }: Props) {
         }
     }, [activeDestination, destinations])
 
-    const photos = (momentsData[activeDestination] || []).slice(0, 20)
+    useEffect(() => {
+        const loadMomentsByDestination = async () => {
+            if (!activeDestination) return
+
+            const countryMissions = missionsByCountry[activeDestination] ?? []
+
+            if (!countryMissions.length) {
+                setPhotos([])
+                return
+            }
+
+            try {
+                setIsLoadingMoment(true)
+
+                const responses = await Promise.all(
+                    countryMissions.map(async (mission) => {
+                        try {
+                            const detail = await homeService.getMissionMoments(
+                                mission.slug
+                            )
+
+                            return {
+                                mission,
+                                detail,
+                            }
+                        } catch (error) {
+                            console.error(
+                                `Error obteniendo momentos de ${mission.slug}:`,
+                                error
+                            )
+
+                            return {
+                                mission,
+                                detail: null,
+                            }
+                        }
+                    })
+                )
+
+                const formattedPhotos: Photo[] = responses.flatMap(
+                    ({ mission, detail }) => {
+                        const moments = detail?.moments ?? []
+
+                        return moments
+                            .filter((moment) => Boolean(moment.image_url))
+                            .map((moment) => ({
+                                id: `${mission.slug}-${moment.slug}`,
+                                slug: moment.slug,
+                                missionSlug: mission.slug,
+                                firstExperienceSlug:
+                                    mission.first_experience_slug,
+                                destination: detail?.country ?? mission.country,
+                                title: moment.title,
+                                image: moment.image_url,
+                                description:
+                                    mission.label ||
+                                    'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.',
+                                place: detail?.country ?? mission.country,
+                                experience: detail?.name ?? mission.name,
+                                moment: moment.title,
+                                emotion: 'Aventura y conexión',
+                                recommendation:
+                                    'Explora este momento y descubre una nueva forma de viajar.',
+                                gallery: [moment.image_url],
+                            }))
+                    }
+                )
+
+                setPhotos(formattedPhotos)
+            } catch (error) {
+                console.error('Error cargando momentos:', error)
+                setPhotos([])
+            } finally {
+                setIsLoadingMoment(false)
+            }
+        }
+
+        loadMomentsByDestination()
+    }, [activeDestination, missionsByCountry])
 
     const handleSelectMoment = async (photo: Photo) => {
         if (!photo.slug) {
@@ -81,7 +194,7 @@ export function Moment({ moments }: Props) {
         }
 
         try {
-            setIsLoadingMoment(true)
+            setIsLoadingMomentDetail(true)
 
             const detail = await missionService.getMomentBySlug(photo.slug)
 
@@ -119,11 +232,11 @@ export function Moment({ moments }: Props) {
             setSelectedPhoto(photo)
             setCurrentImageIndex(0)
         } finally {
-            setIsLoadingMoment(false)
+            setIsLoadingMomentDetail(false)
         }
     }
 
-    if (!moments) return null
+    if (!missions.length) return null
 
     return (
         <section
@@ -142,27 +255,25 @@ export function Moment({ moments }: Props) {
                 <DestinationTabs
                     destinations={destinations}
                     active={activeDestination}
-                    onChange={(destination) => {
+                    onChange={(destination: string) => {
                         setActiveDestination(destination)
                         setSelectedPhoto(null)
                         setCurrentImageIndex(0)
                     }}
                 />
 
-                <MomentsGrid
-                    photos={photos}
-                    onSelect={handleSelectMoment}
-                />
+                {isLoadingMoment ? (
+                    <MomentsGridSkeleton />
+                ) : (
+                    <MomentsGrid
+                        photos={photos.slice(0, 20)}
+                        onSelect={handleSelectMoment}
+                    />
+                )}
 
                 <MoreMomentsButton />
 
-                {isLoadingMoment && (
-                    <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-                        <div className="rounded-2xl bg-white px-6 py-4 text-sm font-medium text-gray-700 shadow-xl">
-                            Cargando momento...
-                        </div>
-                    </div>
-                )}
+                {isLoadingMomentDetail && <MomentDetailSkeleton />}
 
                 <MomentModal
                     photo={selectedPhoto}

@@ -11,14 +11,18 @@ export function DestinationTabs({
     active,
     onChange,
 }: DestinationTabsProps) {
-    if (!destinations.length) return null
+    const cleanDestinations = Array.from(
+        new Set(destinations.map((destination) => destination.trim()).filter(Boolean))
+    )
 
-    const currentActive = active || destinations[0]
+    if (!cleanDestinations.length) return null
+
+    const currentActive = active || cleanDestinations[0]
 
     return (
         <FadeUp delay={0.15} className="mb-12 flex justify-center">
             <div className="flex max-w-4xl flex-wrap justify-center gap-3">
-                {destinations.map((destination, idx) => {
+                {cleanDestinations.map((destination, idx) => {
                     const isActive = currentActive === destination
 
                     return (

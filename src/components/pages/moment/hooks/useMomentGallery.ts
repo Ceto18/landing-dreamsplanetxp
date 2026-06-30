@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import { Photo } from '../types'
 
+type MissionPhoto = Photo & {
+    missionSlug?: string
+    firstExperienceSlug?: string | null
+}
+
 export function useMomentGallery() {
-    const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
+    const [selectedPhoto, setSelectedPhoto] = useState<MissionPhoto | null>(null)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-    const openPhoto = (photo: Photo) => {
+    const openPhoto = (photo: MissionPhoto) => {
         setSelectedPhoto(photo)
         setCurrentImageIndex(0)
     }

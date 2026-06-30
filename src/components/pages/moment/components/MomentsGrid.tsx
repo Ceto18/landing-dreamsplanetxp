@@ -1,12 +1,17 @@
 import { Photo } from '../types'
 import { MomentCard } from './MomentCard'
 
+type MissionPhoto = Photo & {
+    missionSlug?: string
+    firstExperienceSlug?: string | null
+}
+
 export function MomentsGrid({
     photos,
     onSelect,
 }: {
-    photos: Photo[]
-    onSelect: (photo: Photo) => void
+    photos: MissionPhoto[]
+    onSelect: (photo: MissionPhoto) => void
 }) {
     if (!photos.length) {
         return (
@@ -22,7 +27,10 @@ export function MomentsGrid({
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
             {photos.map((photo, idx) => (
                 <MomentCard
-                    key={`${photo.destination}-${photo.title}-${idx}`}
+                    key={
+                        photo.id ||
+                        `${photo.missionSlug ?? 'mission'}-${photo.slug ?? 'moment'}-${idx}`
+                    }
                     photo={photo}
                     onClick={() => onSelect(photo)}
                 />
