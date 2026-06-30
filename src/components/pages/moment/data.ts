@@ -21,7 +21,7 @@ export const createPhotos = (
     gallery: string[]
 ): Photo[] =>
     Array.from({ length: 8 }, (_, i) => ({
-        id: i + 1,
+        id: `${destination}-${i + 1}`,
         destination,
         title: `${baseTitle} ${i + 1}`,
         image,
