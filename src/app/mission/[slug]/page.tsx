@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { notFound } from 'next/navigation'
 
 import { Header } from '@/components/header'
@@ -14,54 +17,6 @@ interface Props {
     params: Promise<{
         slug: string
     }>
-}
-
-const EXPERIENCES_PER_PAGE = 9
-
-export async function generateStaticParams() {
-    try {
-        const tabs = await missionService.getMissionTabs()
-
-        const slugs: { slug: string }[] = []
-
-        for (const tab of tabs) {
-            const firstPage =
-                await missionService.getExperiencesByMissionSlug(
-                    tab.slug,
-                    1,
-                    EXPERIENCES_PER_PAGE
-                )
-
-            firstPage.data.forEach((experience) => {
-                slugs.push({
-                    slug: experience.slug,
-                })
-            })
-
-            const totalPages = firstPage.last_page ?? 1
-
-            for (let page = 2; page <= totalPages; page += 1) {
-                const response =
-                    await missionService.getExperiencesByMissionSlug(
-                        tab.slug,
-                        page,
-                        EXPERIENCES_PER_PAGE
-                    )
-
-                response.data.forEach((experience) => {
-                    slugs.push({
-                        slug: experience.slug,
-                    })
-                })
-            }
-        }
-
-        return slugs
-    } catch (error) {
-        console.error('Error al generar rutas estáticas de experiencias:', error)
-
-        return []
-    }
 }
 
 export async function generateMetadata({ params }: Props) {
