@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 import { Header } from '@/components/header'
 import { Hero } from '@/components/hero'
 import { Mission } from '@/components/pages/mission/mission'
