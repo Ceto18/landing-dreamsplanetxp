@@ -11,7 +11,7 @@ type Props = {
 }
 
 export function MissionGallery({ mission }: Props) {
-    const images = mission.images ?? []
+    const images = (mission.images ?? []).filter((item) => Boolean(item.image))
 
     return (
         <div className="space-y-6">
@@ -22,12 +22,12 @@ export function MissionGallery({ mission }: Props) {
             </FadeUp>
 
             {images.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     {images.map((item, index) => (
                         <AnimatedCard
                             key={`${item.image}-${index}`}
                             delay={index * 0.08}
-                            className="relative h-72 rounded-2xl overflow-hidden border border-border/60 group bg-card/40"
+                            className="group relative h-72 overflow-hidden rounded-2xl border border-border/60 bg-card/40"
                         >
                             <Image
                                 src={item.image}
@@ -37,7 +37,7 @@ export function MissionGallery({ mission }: Props) {
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                             />
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         </AnimatedCard>
                     ))}
                 </div>

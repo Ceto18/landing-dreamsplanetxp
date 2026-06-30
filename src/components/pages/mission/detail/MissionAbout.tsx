@@ -9,23 +9,26 @@ type Props = {
 
 export function MissionAbout({ mission }: Props) {
     const description =
-        mission.long_description ||
-        mission.short_description ||
+        mission.long_description?.trim() ||
+        mission.short_description?.trim() ||
         'Información disponible pronto.'
+
+    const title =
+        mission.subtitle?.trim() ||
+        'Una experiencia diseñada para transformar tu forma de viajar'
 
     return (
         <FadeUp>
             <div className="space-y-5">
-                <p className="text-accent text-sm font-semibold uppercase tracking-[0.3em]">
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent">
                     Sobre esta experiencia
                 </p>
 
-                <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
-                    {mission.subtitle ||
-                        'Una experiencia diseñada para transformar tu forma de viajar'}
+                <h2 className="text-4xl font-bold text-foreground sm:text-5xl">
+                    {title}
                 </h2>
 
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-lg leading-relaxed text-muted-foreground">
                     {description}
                 </p>
             </div>

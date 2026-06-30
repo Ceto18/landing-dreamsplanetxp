@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Skeleton } from 'antd'
 
 import { Header } from '@/components/header'
@@ -15,13 +15,12 @@ import {
 
 import { missionService } from '@/services/missionService'
 import type {
-    MissionCountryGroup,
-    MissionItem,
+    MissionExperienceCard,
+    MissionTabItem,
 } from '@/services/missionService'
+import { MissionsPagination } from '@/components/pages/mission/content/MissionsPagination'
 
-type MissionGridItem = MissionItem & {
-    country: string
-}
+const EXPERIENCES_PER_PAGE = 9
 
 function MissionsGridSkeleton() {
     return (
@@ -104,55 +103,102 @@ function MissionsGridSkeleton() {
 }
 
 export default function MissionsPage() {
-    const [activeCategory, setActiveCategory] = useState('Todos')
-    const [categories, setCategories] = useState<string[]>(['Todos'])
-    const [missionGroups, setMissionGroups] = useState<MissionCountryGroup[]>([])
-    const [loading, setLoading] = useState(true)
+    const [tabs, setTabs] = useState<MissionTabItem[]>([])
+    const [activeMissionSlug, setActiveMissionSlug] = useState('')
+    const [experiences, setExperiences] = useState<MissionExperienceCard[]>([])
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [total, setTotal] = useState(0)
+
+    const [loadingTabs, setLoadingTabs] = useState(true)
+    const [loadingExperiences, setLoadingExperiences] = useState(false)
 
     useEffect(() => {
-        const fetchMissions = async () => {
+        const fetchTabs = async () => {
             try {
-                setLoading(true)
+                setLoadingTabs(true)
 
-                const response = await missionService.getAllMissions()
+                const response = await missionService.getMissionTabs()
 
-                setCategories(
-                    response.countries?.length ? response.countries : ['Todos']
-                )
+                setTabs(response)
 
-                setMissionGroups(response.data ?? [])
+                if (response.length > 0) {
+                    setActiveMissionSlug(response[0].slug)
+                    setCurrentPage(1)
+                }
             } catch (error) {
-                console.error('Error al obtener misiones:', error)
+                console.error('Error al obtener tabs de misiones:', error)
 
-                setCategories(['Todos'])
-                setMissionGroups([])
+                setTabs([])
+                setActiveMissionSlug('')
+                setExperiences([])
+                setCurrentPage(1)
+                setTotalPages(1)
+                setTotal(0)
             } finally {
-                setLoading(false)
+                setLoadingTabs(false)
             }
         }
 
-        fetchMissions()
+        fetchTabs()
     }, [])
 
-    const missions = useMemo<MissionGridItem[]>(() => {
-        return missionGroups.flatMap((group) =>
-            group.mission_experiences.map((mission) => ({
-                ...mission,
-                country: group.country,
-            }))
-        )
-    }, [missionGroups])
+    useEffect(() => {
+        if (!activeMissionSlug) return
 
-    const filteredMissions = useMemo<MissionGridItem[]>(() => {
-        if (activeCategory.toLowerCase() === 'todos') {
-            return missions
+        const fetchExperiences = async () => {
+            try {
+                setLoadingExperiences(true)
+
+                const response =
+                    await missionService.getExperiencesByMissionSlug(
+                        activeMissionSlug,
+                        currentPage,
+                        EXPERIENCES_PER_PAGE
+                    )
+
+                setExperiences(response?.data ?? [])
+                setCurrentPage(response?.current_page ?? 1)
+                setTotalPages(response?.last_page ?? 1)
+                setTotal(response?.total ?? 0)
+            } catch (error) {
+                console.error('Error al obtener experiencias:', error)
+
+                setExperiences([])
+                setCurrentPage(1)
+                setTotalPages(1)
+                setTotal(0)
+            } finally {
+                setLoadingExperiences(false)
+            }
         }
 
-        return missions.filter(
-            (mission) =>
-                mission.country.toLowerCase() === activeCategory.toLowerCase()
-        )
-    }, [activeCategory, missions])
+        fetchExperiences()
+    }, [activeMissionSlug, currentPage])
+
+    const categories = tabs.map((tab) => tab.name)
+
+    const activeCategory =
+        tabs.find((tab) => tab.slug === activeMissionSlug)?.name ?? ''
+
+    const handleCategoryChange = (categoryName: string) => {
+        const selectedTab = tabs.find((tab) => tab.name === categoryName)
+
+        if (!selectedTab || selectedTab.slug === activeMissionSlug) return
+
+        setActiveMissionSlug(selectedTab.slug)
+        setCurrentPage(1)
+    }
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page)
+
+        window.scrollTo({
+            top: 520,
+            behavior: 'smooth',
+        })
+    }
 
     return (
         <>
@@ -164,13 +210,22 @@ export default function MissionsPage() {
                 <MissionsFilters
                     categories={categories}
                     activeCategory={activeCategory}
-                    onChange={setActiveCategory}
+                    onChange={handleCategoryChange}
                 />
 
-                {loading ? (
+                {loadingTabs || loadingExperiences ? (
                     <MissionsGridSkeleton />
                 ) : (
-                    <MissionsGrid missions={filteredMissions} />
+                    <>
+                        <MissionsGrid experiences={experiences} />
+
+                        <MissionsPagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            total={total}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
                 )}
 
                 <MissionsCTA />

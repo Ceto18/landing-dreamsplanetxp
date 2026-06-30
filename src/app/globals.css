@@ -224,3 +224,12 @@ html {
 .text-muted-premium {
   color: var(--muted-foreground);
 }
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}

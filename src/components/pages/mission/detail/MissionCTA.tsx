@@ -11,7 +11,7 @@ type Props = {
 }
 
 function formatCountry(country?: string | null) {
-    if (!country) return 'esta experiencia'
+    if (!country?.trim()) return 'esta experiencia'
 
     return country.charAt(0).toUpperCase() + country.slice(1)
 }
@@ -20,23 +20,24 @@ export function MissionCTA({ mission }: Props) {
     const destination = formatCountry(mission.mission?.country)
 
     return (
-        <section className="relative py-20 bg-secondary/30 border-t border-border/50">
-            <div className="max-w-5xl mx-auto px-4 text-center">
+        <section className="relative border-t border-border/50 bg-secondary/30 py-20">
+            <div className="mx-auto max-w-5xl px-4 text-center">
                 <FadeUp>
-                    <div className="rounded-3xl border border-border/60 bg-card/50 glass-effect p-8 sm:p-12 shadow-2xl">
-                        <div className="flex justify-center mb-5">
-                            <div className="w-16 h-16 rounded-2xl border border-accent/30 bg-accent/10 flex items-center justify-center">
-                                <Sparkles className="w-8 h-8 text-accent" />
+                    <div className="rounded-3xl border border-border/60 bg-card/50 p-8 shadow-2xl glass-effect sm:p-12">
+                        <div className="mb-5 flex justify-center">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10">
+                                <Sparkles className="h-8 w-8 text-accent" />
                             </div>
                         </div>
 
-                        <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+                        <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
                             ¿Listo para vivir {destination}?
                         </h2>
 
-                        <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                            Escríbenos y recibe asesoría personalizada para la experiencia{' '}
-                            <span className="text-foreground font-semibold">
+                        <p className="mx-auto mb-8 max-w-2xl text-muted-foreground">
+                            Escríbenos y recibe asesoría personalizada para la
+                            experiencia{' '}
+                            <span className="font-semibold text-foreground">
                                 {mission.name}
                             </span>
                             .
@@ -47,7 +48,7 @@ export function MissionCTA({ mission }: Props) {
                             className="btn-gold inline-flex items-center gap-2 no-underline"
                         >
                             Solicitar información
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="h-5 w-5" />
                         </Link>
                     </div>
                 </FadeUp>

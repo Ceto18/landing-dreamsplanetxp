@@ -23,31 +23,33 @@ export function MissionItinerary({ mission }: Props) {
                 <div className="space-y-4">
                     {itineraries
                         .slice()
-                        .sort((a, b) => a.order - b.order)
+                        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
                         .map((item, index) => (
                             <AnimatedCard
-                                key={`${item.day}-${item.order}`}
+                                key={`${item.day}-${item.order}-${index}`}
                                 delay={index * 0.08}
                                 className="rounded-2xl border border-border/60 bg-card/40 p-6 glass-effect"
                             >
                                 <div className="flex gap-5">
-                                    <div className="w-14 h-14 rounded-2xl border border-accent/30 bg-accent/10 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-accent font-bold">
+                                    <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10">
+                                        <span className="font-bold text-accent">
                                             {index + 1}
                                         </span>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <p className="text-accent text-xs font-semibold uppercase tracking-widest">
-                                            {item.day}
+                                        <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+                                            {item.day || `Día ${index + 1}`}
                                         </p>
 
                                         <h4 className="text-xl font-bold text-foreground">
-                                            {item.title}
+                                            {item.title ||
+                                                'Actividad por confirmar'}
                                         </h4>
 
-                                        <p className="text-muted-foreground leading-relaxed">
-                                            {item.description}
+                                        <p className="leading-relaxed text-muted-foreground">
+                                            {item.description ||
+                                                'La descripción de esta actividad estará disponible pronto.'}
                                         </p>
                                     </div>
                                 </div>
@@ -55,7 +57,7 @@ export function MissionItinerary({ mission }: Props) {
                         ))}
                 </div>
             ) : (
-                <AnimatedCard className="rounded-2xl border border-border/60 bg-card/40 p-6 glass-effect text-center">
+                <AnimatedCard className="rounded-2xl border border-border/60 bg-card/40 p-6 text-center glass-effect">
                     <p className="text-muted-foreground">
                         Itinerario disponible pronto.
                     </p>

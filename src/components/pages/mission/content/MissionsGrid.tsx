@@ -2,17 +2,13 @@
 
 import { MissionCard } from './MissionCard'
 import { MissionsEmpty } from './MissionsEmpty'
-import type { MissionItem } from '@/services/missionService'
-
-type MissionGridItem = MissionItem & {
-    country: string
-}
+import type { MissionExperienceCard } from '@/services/missionService'
 
 type Props = {
-    missions: MissionGridItem[]
+    experiences: MissionExperienceCard[]
 }
 
-export function MissionsGrid({ missions }: Props) {
+export function MissionsGrid({ experiences }: Props) {
     return (
         <section className="relative py-16 overflow-hidden">
             {/* GLOW DECORATIVO */}
@@ -20,19 +16,19 @@ export function MissionsGrid({ missions }: Props) {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8">
                 {/* EMPTY STATE */}
-                {missions.length === 0 ? (
+                {experiences.length === 0 ? (
                     <MissionsEmpty />
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {missions.map((mission, index) => (
+                        {experiences.map((experience, index) => (
                             <div
-                                key={`${mission.country}-${mission.slug}`}
+                                key={experience.slug}
                                 className="animate-fade-up"
                                 style={{
                                     animationDelay: `${index * 80}ms`,
                                 }}
                             >
-                                <MissionCard mission={mission} />
+                                <MissionCard experience={experience} />
                             </div>
                         ))}
                     </div>

@@ -21,7 +21,7 @@ export const homeService = {
         missionSlug: string
     ): Promise<HomeMissionMomentsData> {
         const response = await api.get<HomeMissionMomentsResponse>(
-            `/public/home/missions/moments/${missionSlug}`
+            `/public/home/missions/${missionSlug}/moments`
         )
 
         return response.data.data

@@ -13,14 +13,14 @@ type Props = {
 
 export function MissionMain({ mission }: Props) {
     return (
-        <section className="relative py-24 overflow-hidden">
+        <section className="relative overflow-hidden py-24">
             {/* DECORACIÓN */}
-            <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
+            <div className="absolute right-0 top-24 -mr-48 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
                     {/* LEFT */}
-                    <div className="lg:col-span-2 space-y-14">
+                    <div className="space-y-14 lg:col-span-2">
                         <MissionAbout mission={mission} />
                         <MissionGallery mission={mission} />
                         <MissionItinerary mission={mission} />

@@ -2,9 +2,51 @@
 
 import { api } from './api'
 
+export type MissionTabItem = {
+    country: string
+    slug: string
+    name: string
+}
+
 export type MissionExperienceImage = {
     name: string
     image_url: string
+}
+
+export type MissionExperienceFirstImage = {
+    name: string
+    image_url: string
+}
+
+export type MissionExperienceCard = {
+    name: string
+    slug: string
+    short_description: string | null
+    release_date: string | null
+    number_seats: number
+    seats_used: number
+    available_seats: number
+    days: number
+    nights: number
+    raiting: number | string | null
+    investment: number
+    features: string[]
+    first_image: MissionExperienceFirstImage | null
+}
+
+export type MissionExperiencesPaginatedResponse = {
+    current_page: number
+    data: MissionExperienceCard[]
+    first_page_url: string | null
+    from: number | null
+    last_page: number
+    last_page_url: string | null
+    next_page_url: string | null
+    path: string
+    per_page: number
+    prev_page_url: string | null
+    to: number | null
+    total: number
 }
 
 export type MissionItinerary = {
@@ -12,40 +54,6 @@ export type MissionItinerary = {
     order: number
     title: string
     description: string
-}
-
-export type MissionExperience = {
-    name: string
-    slug: string
-    short_description: string | null
-    release_date: string | null
-    number_seats: number
-    seats_used: number
-    days: number
-    nights: number
-    raiting: string | null
-    subtitle: string | null
-    investment: number
-    images: MissionExperienceImage[]
-    features: string[]
-    itineraries: MissionItinerary[]
-}
-
-export type MissionItem = {
-    name: string
-    slug: string
-    image_url: string | null
-    experiences: MissionExperience[]
-}
-
-export type MissionCountryGroup = {
-    country: string
-    mission_experiences: MissionItem[]
-}
-
-export type PublicMissionsAllResponse = {
-    countries: string[]
-    data: MissionCountryGroup[]
 }
 
 export type MissionExperienceDetailImage = {
@@ -68,7 +76,7 @@ export type MissionExperienceDetail = {
     release_date: string | null
     days: number
     nights: number
-    raiting: string | null
+    raiting: number | string | null
     investment: number
     number_seats: number
     seats_used: number
@@ -99,25 +107,38 @@ export type MissionMomentDetail = {
 }
 
 export const missionService = {
-    async getAllMissions(): Promise<PublicMissionsAllResponse> {
-        const response = await api.get('/public/missions/all')
+    async getMissionTabs(): Promise<MissionTabItem[]> {
+        const response = await api.get('/public/missions/tabs')
 
-        return {
-            countries: response.data?.data?.countries ?? [],
-            data: response.data?.data?.data ?? [],
-        }
+        return response.data?.data ?? []
+    },
+
+    async getExperiencesByMissionSlug(
+        missionSlug: string,
+        page = 1,
+        perPage = 9
+    ): Promise<MissionExperiencesPaginatedResponse> {
+        const response = await api.get(
+            `/public/missions/${missionSlug}/experiences`,
+            {
+                params: {
+                    page,
+                    per_page: perPage,
+                },
+            }
+        )
+
+        return response.data?.data
     },
 
     async getExperienceBySlug(slug: string): Promise<MissionExperienceDetail> {
-        const response = await api.get(`/public/missions/experiences/${slug}`)
+        const response = await api.get(`/public/experiences/${slug}`)
 
         return response.data?.data
     },
 
     async getMomentBySlug(slug: string): Promise<MissionMomentDetail> {
-        const response = await api.get(
-            `/public/missions/experiences/moments/${slug}`
-        )
+        const response = await api.get(`/public/moments/${slug}`)
 
         return response.data?.data
     },
