@@ -97,7 +97,7 @@ export function MissionHero({ mission }: Props) {
                                     className="inline-flex items-center gap-2 rounded-lg border border-accent px-6 py-2.5 font-semibold text-accent no-underline transition-all hover:bg-accent/10"
                                 >
                                     <Download className="h-5 w-5" />
-                                    Descargar PDF
+                                    Descargar Itinerario
                                 </Link>
                             )}
                         </div>

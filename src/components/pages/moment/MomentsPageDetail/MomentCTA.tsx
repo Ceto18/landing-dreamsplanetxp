@@ -7,12 +7,9 @@ import { FadeUp } from '@/components/animations/fade-up'
 export function MomentCTA() {
     return (
         <section className="py-20 bg-secondary/30 border-t border-border/50">
-
             <div className="max-w-5xl mx-auto px-4 text-center">
-
                 <FadeUp>
-                    <div className="p-10 rounded-3xl border border-border/60 bg-card/50">
-
+                    <div className="p-10 rounded-3xl border border-border/60 bg-card/50 glass-effect">
                         <Sparkles className="w-8 h-8 text-accent mx-auto mb-4" />
 
                         <h2 className="text-3xl font-bold mb-4">
@@ -20,22 +17,20 @@ export function MomentCTA() {
                         </h2>
 
                         <p className="text-muted-foreground mb-8">
-                            Explora nuestras misiones y crea tus propios recuerdos.
+                            Explora nuestras misiones y descubre experiencias
+                            diseñadas para crear recuerdos únicos.
                         </p>
 
                         <Link
-                            href="/#contacto"
+                            href="/mission"
                             className="btn-gold inline-flex items-center gap-2 no-underline"
                         >
-                            Solicitar información
+                            Ver misiones
                             <ArrowRight className="w-5 h-5" />
                         </Link>
-
                     </div>
                 </FadeUp>
-
             </div>
-
         </section>
     )
 }

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
+
 import { MomentDetailContent } from '@/components/pages/moment/MomentsPageDetail/MomentDetailContent'
-import { getAllMoments, getMomentBySlug } from '@/data/moments'
+import { experienceService } from '@/services/experienceService'
 
 interface Props {
     params: Promise<{
@@ -8,35 +9,36 @@ interface Props {
     }>
 }
 
-export function generateStaticParams() {
-    return getAllMoments().map((moment) => ({
-        slug: moment.slug,
-    }))
-}
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export async function generateMetadata({ params }: Props) {
     const { slug } = await params
-    const moment = getMomentBySlug(slug)
 
-    if (!moment) {
+    try {
+        const moment = await experienceService.getMomentBySlug(slug)
+
+        return {
+            title: `${moment.title} | DreamsPlanetXP`,
+            description: moment.description,
+        }
+    } catch (error) {
         return {
             title: 'Momento no encontrado | DreamsPlanetXP',
+            description:
+                'No se pudo encontrar la información de este momento.',
         }
-    }
-
-    return {
-        title: `${moment.title} | DreamsPlanetXP`,
-        description: moment.description,
     }
 }
 
 export default async function MomentDetailPage({ params }: Props) {
     const { slug } = await params
-    const moment = getMomentBySlug(slug)
 
-    if (!moment) {
+    try {
+        const moment = await experienceService.getMomentBySlug(slug)
+
+        return <MomentDetailContent moment={moment} />
+    } catch (error) {
         notFound()
     }
-
-    return <MomentDetailContent moment={moment} />
 }

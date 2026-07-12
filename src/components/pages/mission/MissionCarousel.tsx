@@ -107,103 +107,123 @@ export function MissionCarousel({ missions }: Props) {
         <>
             <FadeUp delay={0.15} className="mb-10 sm:mb-16">
                 {/* ================= DESKTOP ================= */}
-                <div className="hidden lg:block relative overflow-hidden">
-                    <div
-                        className="flex gap-6 pb-6 transition-transform duration-700 ease-out"
-                        style={{
-                            transform: `translateX(calc(50% - ${
-                                missions
-                                    .slice(0, activeIndex)
-                                    .reduce((total, _, i) => {
-                                        const distance = Math.abs(i - activeIndex)
-                                        const w =
-                                            distance === 0
-                                                ? 384
-                                                : distance === 1
-                                                  ? 192
-                                                  : 160
+                <div className="hidden lg:block relative">
+                    <div className="overflow-hidden">
+                        <div
+                            className="flex gap-6 pb-6 transition-transform duration-700 ease-out"
+                            style={{
+                                transform: `translateX(calc(50% - ${
+                                    missions
+                                        .slice(0, activeIndex)
+                                        .reduce((total, _, i) => {
+                                            const distance = Math.abs(
+                                                i - activeIndex
+                                            )
 
-                                        return total + w + 24
-                                    }, 0) +
-                                384 / 2
-                            }px))`,
-                        }}
-                    >
-                        {missions.map((mission, idx) => {
-                            const distance = Math.abs(idx - activeIndex)
-                            const isActive = distance === 0
-                            const isNear = distance === 1
+                                            const w =
+                                                distance === 0
+                                                    ? 384
+                                                    : distance === 1
+                                                      ? 192
+                                                      : 160
 
-                            const width = isActive ? 384 : isNear ? 192 : 160
-                            const opacity = isActive ? 1 : isNear ? 0.6 : 0.3
+                                            return total + w + 24
+                                        }, 0) +
+                                    384 / 2
+                                }px))`,
+                            }}
+                        >
+                            {missions.map((mission, idx) => {
+                                const distance = Math.abs(idx - activeIndex)
+                                const isActive = distance === 0
+                                const isNear = distance === 1
 
-                            return (
-                                <Link
-                                    key={getMissionKey(mission, idx)}
-                                    href={getMissionHref(mission)}
-                                    className="flex-shrink-0 transition-all duration-700"
-                                    style={{
-                                        width: `${width}px`,
-                                        height: '384px',
-                                        opacity,
-                                    }}
-                                >
-                                    <div
-                                        className={`relative w-full h-full rounded-xl overflow-hidden border border-border/40 group ${
-                                            isActive ? 'glow-gold' : ''
-                                        }`}
+                                const width = isActive
+                                    ? 384
+                                    : isNear
+                                      ? 192
+                                      : 160
+
+                                const opacity = isActive
+                                    ? 1
+                                    : isNear
+                                      ? 0.6
+                                      : 0.3
+
+                                return (
+                                    <Link
+                                        key={getMissionKey(mission, idx)}
+                                        href={getMissionHref(mission)}
+                                        className="flex-shrink-0 transition-all duration-700"
+                                        style={{
+                                            width: `${width}px`,
+                                            height: '384px',
+                                            opacity,
+                                        }}
                                     >
-                                        <Image
-                                            src={getMissionImage(mission)}
-                                            alt={mission.name}
-                                            fill
-                                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                            sizes="384px"
-                                        />
+                                        <div
+                                            className={`relative w-full h-full rounded-xl overflow-hidden border border-border/40 group ${
+                                                isActive ? 'glow-gold' : ''
+                                            }`}
+                                        >
+                                            <Image
+                                                src={getMissionImage(mission)}
+                                                alt={mission.name}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                sizes="384px"
+                                            />
 
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
 
-                                        {!mission.slug && (
-                                            <div className="absolute top-4 right-4 bg-accent text-background px-3 py-1 rounded-full text-xs font-bold">
-                                                Sorpresa
+                                            {!mission.slug && (
+                                                <div className="absolute top-4 right-4 bg-accent text-background px-3 py-1 rounded-full text-xs font-bold">
+                                                    Sorpresa
+                                                </div>
+                                            )}
+
+                                            <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
+                                                <p className="text-accent text-xs font-semibold uppercase">
+                                                    {mission.country ||
+                                                        'MISIÓN'}
+                                                </p>
+
+                                                <h3 className="text-xl font-bold text-foreground">
+                                                    {mission.name}
+                                                </h3>
+
+                                                <p className="text-muted-foreground text-sm">
+                                                    {mission.label}
+                                                </p>
                                             </div>
-                                        )}
-
-                                        <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
-                                            <p className="text-accent text-xs font-semibold uppercase">
-                                                {mission.country || 'MISIÓN'}
-                                            </p>
-
-                                            <h3 className="text-xl font-bold text-foreground">
-                                                {mission.name}
-                                            </h3>
-
-                                            <p className="text-muted-foreground text-sm">
-                                                {mission.label}
-                                            </p>
                                         </div>
-                                    </div>
-                                </Link>
-                            )
-                        })}
+                                    </Link>
+                                )
+                            })}
+                        </div>
                     </div>
 
-                    {/* arrows */}
-                    <button
-                        type="button"
-                        onClick={handlePrev}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-16 p-3 rounded-full border border-accent/50 hover:bg-accent/10"
-                    >
-                        <ChevronLeft className="w-6 h-6 text-accent" />
-                    </button>
+                    {missions.length > 1 && (
+                        <>
+                            <button
+                                type="button"
+                                onClick={handlePrev}
+                                aria-label="Misión anterior"
+                                className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-accent/40 bg-background/80 text-accent shadow-lg backdrop-blur-md transition hover:bg-accent hover:text-background"
+                            >
+                                <ChevronLeft className="h-6 w-6" />
+                            </button>
 
-                    <button
-                        type="button"
-                        onClick={handleNext}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-16 p-3 rounded-full border border-accent/50 hover:bg-accent/10"
-                    >
-                        <ChevronRight className="w-6 h-6 text-accent" />
-                    </button>
+                            <button
+                                type="button"
+                                onClick={handleNext}
+                                aria-label="Siguiente misión"
+                                className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-accent/40 bg-background/80 text-accent shadow-lg backdrop-blur-md transition hover:bg-accent hover:text-background"
+                            >
+                                <ChevronRight className="h-6 w-6" />
+                            </button>
+                        </>
+                    )}
                 </div>
 
                 {/* ================= MOBILE ================= */}

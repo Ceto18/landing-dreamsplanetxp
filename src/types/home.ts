@@ -114,6 +114,144 @@ export type HomeResponse = {
 }
 
 /* ======================================================
+   MISSION EXPERIENCES LIST
+   Endpoint:
+   /api/v1/public/missions/{missionSlug}/experiences
+====================================================== */
+
+export type MissionExperienceImage = {
+    image_url: string
+    name: string
+}
+
+export type MissionExperience = {
+    name: string
+    slug: string
+    short_description: string
+    release_date: string
+    number_seats: number
+    seats_used: number
+    available_seats: number
+    days: number
+    nights: number
+    raiting: number
+    investment: number
+    features: string[]
+    first_image: MissionExperienceImage | null
+}
+
+export type MissionExperiencesPaginationLink = {
+    url: string | null
+    label: string
+    page: number | null
+    active: boolean
+}
+
+export type MissionExperiencesPagination = {
+    current_page: number
+    data: MissionExperience[]
+    first_page_url: string | null
+    from: number | null
+    last_page: number
+    last_page_url: string | null
+    links: MissionExperiencesPaginationLink[]
+    next_page_url: string | null
+    path: string
+    per_page: number
+    prev_page_url: string | null
+    to: number | null
+    total: number
+}
+
+export type MissionExperiencesResponse = {
+    success: boolean
+    message: string
+    data: MissionExperiencesPagination
+}
+
+/* ======================================================
+   MISSION MOMENTS LIST
+   Endpoint:
+   /api/v1/public/missions/{missionSlug}/moments
+====================================================== */
+
+export type MissionMomentImage = {
+    name: string
+    slug: string
+    image_url: string
+}
+
+export type MissionMoment = {
+    title: string
+    description: string
+    proverb: string
+    place: string
+    slug: string
+    country: string
+    first_image: MissionMomentImage | null
+}
+
+export type MissionMomentsPaginationLink = {
+    url: string | null
+    label: string
+    page: number | null
+    active: boolean
+}
+
+export type MissionMomentsPagination = {
+    current_page: number
+    data: MissionMoment[]
+    first_page_url: string | null
+    from: number | null
+    last_page: number
+    last_page_url: string | null
+    links: MissionMomentsPaginationLink[]
+    next_page_url: string | null
+    path: string
+    per_page: number
+    prev_page_url: string | null
+    to: number | null
+    total: number
+}
+
+export type MissionMomentsResponse = {
+    success: boolean
+    message: string
+    data: MissionMomentsPagination
+}
+
+/* ======================================================
+   MOMENT DETAIL
+   Endpoint:
+   /api/v1/public/moments/{slug}
+====================================================== */
+
+export type MomentDetailImage = {
+    name: string
+    image_url: string
+}
+
+export type MomentDetail = {
+    title: string
+    slug: string
+    description: string
+    proverb: string
+    place: string
+    experience: string | null
+    ideal: string
+    sensation: string
+    mission: string
+    mission_experience: string
+    images: MomentDetailImage[]
+}
+
+export type MomentDetailResponse = {
+    success: boolean
+    message: string
+    data: MomentDetail
+}
+
+/* ======================================================
    EXPERIENCE DETAIL
    Endpoint:
    /api/v1/public/missions/experiences/{slug}

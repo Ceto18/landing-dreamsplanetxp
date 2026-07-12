@@ -1,9 +1,22 @@
+'use client'
+
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { ArrowLeft, Camera } from 'lucide-react'
 import { FadeUp } from '@/components/animations/fade-up'
 import { SectionHeader } from '@/components/animations/section-header'
 
 export function MomentsHero() {
+    const params = useParams()
+
+    const routeMissionSlug = params?.missionSlug ?? params?.slug
+
+    const missionSlug = Array.isArray(routeMissionSlug)
+        ? routeMissionSlug[0]
+        : routeMissionSlug
+
+    const backHref = missionSlug ? `/mission/${missionSlug}` : '/mission'
+
     return (
         <section className="relative overflow-hidden pt-32 pb-16">
             <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
@@ -11,19 +24,9 @@ export function MomentsHero() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <FadeUp>
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-accent mb-10 no-underline"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        Volver al inicio
-                    </Link>
-                </FadeUp>
-
                 <SectionHeader
-                    title="Todos los Momentos"
-                    description="Una galería de experiencias reales, destinos memorables y recuerdos capturados durante nuestras misiones."
+                    title="Momentos de la misión"
+                    description="Explora los momentos especiales de esta misión, sus lugares, sensaciones y experiencias memorables."
                 />
 
                 <FadeUp delay={0.2}>
@@ -33,15 +36,16 @@ export function MomentsHero() {
                         </div>
 
                         <h2 className="text-2xl font-bold mb-3">
-                            Recuerdos que cuentan historias
+                            Descubre los momentos que puedes vivir
                         </h2>
 
                         <p className="text-muted-foreground">
-                            Cada imagen representa una experiencia y emoción única.
+                            Cada momento representa una escena única del viaje:
+                            lugares, emociones y recuerdos diseñados para
+                            conectar con el destino.
                         </p>
                     </div>
                 </FadeUp>
-
             </div>
         </section>
     )

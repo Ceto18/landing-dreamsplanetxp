@@ -33,7 +33,7 @@ function formatCurrency(value?: number | null) {
 
     return new Intl.NumberFormat('es-PE', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'EUR',
         maximumFractionDigits: 0,
     }).format(value)
 }
