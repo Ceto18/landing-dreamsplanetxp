@@ -300,3 +300,57 @@ export type MissionExperienceDetailResponse = {
     message: string
     data: MissionExperienceDetail
 }
+
+/* ======================================================
+   MISSION PEOPLE / TEAMS
+   Endpoint:
+   /api/v1/public/missions/{missionSlug}/people/{role}
+====================================================== */
+
+export type MissionTeamRole = string
+
+export type MissionTeamPerson = {
+    first_name: string
+    last_name: string
+    fullname: string
+    slug: string
+    experience: string | null
+    specialty: string | null
+    photo_url: string | null
+    role: MissionTeamRole
+    languages: string[]
+}
+
+export type MissionTeamPaginationLink = {
+    url: string | null
+    label: string
+    page: number | null
+    active: boolean
+}
+
+export type MissionTeamPagination = {
+    current_page: number
+    data: MissionTeamPerson[]
+    first_page_url: string | null
+    from: number | null
+    last_page: number
+    last_page_url: string | null
+    links: MissionTeamPaginationLink[]
+    next_page_url: string | null
+    path: string
+    per_page: number
+    prev_page_url: string | null
+    to: number | null
+    total: number
+}
+
+export type MissionTeamResponse = {
+    success: boolean
+    message: string
+    data: MissionTeamPagination
+}
+
+export type MissionTeamParams = {
+    page?: number
+    per_page?: number
+}

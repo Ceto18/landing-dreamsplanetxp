@@ -37,13 +37,10 @@ export default function RootLayout({
       className={`${montserrat.variable} ${geistMono.variable} dark`}
     >
 
-      {/* 🧠 IMPORTANTE: base sólida para contraste del navegador */}
       <body className="font-sans antialiased bg-black text-foreground relative">
 
-        {/* 🌌 BACKGROUND GLOBAL (CAPA VISUAL) */}
         <GlobalAtmosphere />
 
-        {/* 📦 CONTENIDO ENCIMA DEL FONDO */}
         <div className="relative z-10">
           {children}
         </div>

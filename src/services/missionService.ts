@@ -8,6 +8,11 @@ export type MissionTabItem = {
     name: string
 }
 
+export type MissionDifficulty =
+    | 'basic'
+    | 'intermediate'
+    | 'advanced'
+
 export type MissionExperienceImage = {
     name: string
     image_url: string
@@ -80,6 +85,7 @@ export type MissionExperienceDetail = {
     investment: number
     number_seats: number
     seats_used: number
+    difficulty: MissionDifficulty
     file: string | null
     mission: MissionExperienceDetailMission
     images: MissionExperienceDetailImage[]

@@ -1,10 +1,11 @@
 'use client'
 
-import { TeamMember } from '@/data/team'
+import type { TeamPerson } from '@/services/teamService'
+
 import { TeamCard } from './TeamCard'
 
 type Props = {
-    members: TeamMember[]
+    members: TeamPerson[]
 }
 
 export function TeamGrid({ members }: Props) {
