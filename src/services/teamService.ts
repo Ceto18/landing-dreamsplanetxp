@@ -54,11 +54,6 @@ export type TeamPaginatedResponse = {
    /api/v1/public/people/{personSlug}
 ====================================================== */
 
-export type TeamPersonDetailImage = {
-    name: string
-    image_url: string
-}
-
 export type TeamPersonDetailMission = {
     name: string
     country: string
@@ -72,8 +67,42 @@ export type TeamPersonDetail = {
     bio: string | null
     photo_url: string | null
     languages: string[]
-    images: TeamPersonDetailImage[]
     missions: TeamPersonDetailMission[]
+}
+
+/* ======================================================
+   PERSON IMAGES
+   Endpoint:
+   /api/v1/public/people/{personSlug}/images
+====================================================== */
+
+export type TeamPersonDetailImage = {
+    name: string
+    image: string
+    image_url: string
+}
+
+export type TeamPersonImagesPaginationLink = {
+    url: string | null
+    label: string
+    page: number | null
+    active: boolean
+}
+
+export type TeamPersonImagesPaginatedResponse = {
+    current_page: number
+    data: TeamPersonDetailImage[]
+    first_page_url: string | null
+    from: number | null
+    last_page: number
+    last_page_url: string | null
+    links: TeamPersonImagesPaginationLink[]
+    next_page_url: string | null
+    path: string
+    per_page: number
+    prev_page_url: string | null
+    to: number | null
+    total: number
 }
 
 export const teamService = {
@@ -93,7 +122,23 @@ export const teamService = {
             }
         )
 
-        return response.data?.data
+        const data = response.data?.data
+
+        return {
+            current_page: data?.current_page ?? 1,
+            data: Array.isArray(data?.data) ? data.data : [],
+            first_page_url: data?.first_page_url ?? null,
+            from: data?.from ?? null,
+            last_page: data?.last_page ?? 1,
+            last_page_url: data?.last_page_url ?? null,
+            links: Array.isArray(data?.links) ? data.links : [],
+            next_page_url: data?.next_page_url ?? null,
+            path: data?.path ?? '',
+            per_page: data?.per_page ?? perPage,
+            prev_page_url: data?.prev_page_url ?? null,
+            to: data?.to ?? null,
+            total: data?.total ?? 0,
+        }
     },
 
     async getPersonBySlug(
@@ -103,6 +148,54 @@ export const teamService = {
             `/public/people/${personSlug}`
         )
 
-        return response.data?.data
+        const data = response.data?.data
+
+        return {
+            fullname: data?.fullname ?? '',
+            experience: data?.experience ?? null,
+            specialty: data?.specialty ?? null,
+            bio: data?.bio ?? null,
+            photo_url: data?.photo_url ?? null,
+            languages: Array.isArray(data?.languages)
+                ? data.languages
+                : [],
+            missions: Array.isArray(data?.missions)
+                ? data.missions
+                : [],
+        }
+    },
+
+    async getPersonImages(
+        personSlug: string,
+        page = 1,
+        perPage = 10
+    ): Promise<TeamPersonImagesPaginatedResponse> {
+        const response = await api.get(
+            `/public/people/${personSlug}/images`,
+            {
+                params: {
+                    page,
+                    per_page: perPage,
+                },
+            }
+        )
+
+        const data = response.data?.data
+
+        return {
+            current_page: data?.current_page ?? 1,
+            data: Array.isArray(data?.data) ? data.data : [],
+            first_page_url: data?.first_page_url ?? null,
+            from: data?.from ?? null,
+            last_page: data?.last_page ?? 1,
+            last_page_url: data?.last_page_url ?? null,
+            links: Array.isArray(data?.links) ? data.links : [],
+            next_page_url: data?.next_page_url ?? null,
+            path: data?.path ?? '',
+            per_page: data?.per_page ?? perPage,
+            prev_page_url: data?.prev_page_url ?? null,
+            to: data?.to ?? null,
+            total: data?.total ?? 0,
+        }
     },
 }

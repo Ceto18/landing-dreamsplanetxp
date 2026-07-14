@@ -44,9 +44,21 @@ export default async function InfluencerDetailPage({
     const { slug } = await params
 
     try {
-        const member = await teamService.getPersonBySlug(slug)
+        const [member, imagesResponse] = await Promise.all([
+            teamService.getPersonBySlug(slug),
+            teamService.getPersonImages(slug, 1, 10),
+        ])
 
-        return <InfluencerDetailContent member={member} />
+        const images = Array.isArray(imagesResponse?.data)
+            ? imagesResponse.data
+            : []
+
+        return (
+            <InfluencerDetailContent
+                member={member}
+                images={images}
+            />
+        )
     } catch (error) {
         console.error(
             `Error obteniendo el influencer ${slug}:`,

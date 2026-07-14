@@ -1,7 +1,10 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 
-import type { TeamPersonDetail } from '@/services/teamService'
+import type {
+    TeamPersonDetail,
+    TeamPersonDetailImage,
+} from '@/services/teamService'
 
 import {
     InfluencerBiography,
@@ -17,9 +20,13 @@ import {
 
 type Props = {
     member: TeamPersonDetail
+    images: TeamPersonDetailImage[]
 }
 
-export function InfluencerDetailContent({ member }: Props) {
+export function InfluencerDetailContent({
+    member,
+    images,
+}: Props) {
     return (
         <>
             <Header />
@@ -34,14 +41,18 @@ export function InfluencerDetailContent({ member }: Props) {
                     bio={member.bio}
                 />
 
-                <InfluencerMissions missions={member.missions} />
+                <InfluencerMissions
+                    missions={member.missions ?? []}
+                />
 
                 <InfluencerGallery
                     fullname={member.fullname}
-                    images={member.images}
+                    images={images ?? []}
                 />
 
-                <InfluencerCta fullname={member.fullname} />
+                <InfluencerCta
+                    fullname={member.fullname}
+                />
             </main>
 
             <Footer />

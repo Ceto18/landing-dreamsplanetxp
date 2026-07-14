@@ -9,14 +9,16 @@ import { MomentHero } from './MomentHero'
 import { MomentDetailsGrid } from './MomentDetailsGrid'
 import { MomentGallery } from './MomentGallery'
 import { MomentCTA } from './MomentCTA'
+import { MomentComments } from '../components/MomentComment/MomentComments'
 
-import { MomentComments } from '@/components/ui/MomentComment'
 
 interface Props {
     moment: MomentDetail
 }
 
-export function MomentDetailContent({ moment }: Props) {
+export function MomentDetailContent({
+    moment,
+}: Props) {
     return (
         <>
             <Header />
@@ -28,11 +30,7 @@ export function MomentDetailContent({ moment }: Props) {
 
                 <MomentGallery moment={moment} />
 
-                <section className="mt-12">
-                    <div className="max-w-7xl mx-auto px-4">
-                        <MomentComments />
-                    </div>
-                </section>
+                <MomentComments slug={moment.slug} />
 
                 <MomentCTA />
             </main>

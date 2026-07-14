@@ -46,7 +46,7 @@ export function InfluencerMissions({
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {missions.map((mission, index) => (
                     <AnimatedCard
-                        key={`${mission.name}-${index}`}
+                        key={`${mission.name}-${mission.country}-${index}`}
                         delay={index * 0.08}
                         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-0 transition-all duration-500 hover:border-accent/40 hover:shadow-xl"
                     >
@@ -55,6 +55,7 @@ export function InfluencerMissions({
                                 <img
                                     src={mission.image_url}
                                     alt={mission.name}
+                                    loading="lazy"
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                             ) : (
@@ -73,7 +74,7 @@ export function InfluencerMissions({
 
                             {mission.country && (
                                 <div className="mt-2 flex items-center gap-2 text-sm capitalize text-muted-foreground">
-                                    <MapPin className="h-4 w-4 text-accent" />
+                                    <MapPin className="h-4 w-4 shrink-0 text-accent" />
 
                                     <span>{mission.country}</span>
                                 </div>
@@ -111,18 +112,20 @@ export function InfluencerGallery({
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {images.map((image, index) => (
                     <AnimatedCard
-                        key={`${image.image_url}-${index}`}
+                        key={`${image.image}-${index}`}
                         delay={index * 0.08}
                         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-0 transition-all duration-500 hover:border-accent/40 hover:shadow-xl"
                     >
-                        <div className="h-64 overflow-hidden bg-muted">
+                        <div className="relative h-64 overflow-hidden bg-muted">
                             {image.image_url ? (
                                 <img
                                     src={image.image_url}
                                     alt={
-                                        image.name ||
-                                        `Fotografía de ${fullname}`
+                                        image.name
+                                            ? image.name
+                                            : `Fotografía de ${fullname}`
                                     }
+                                    loading="lazy"
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                             ) : (
@@ -130,6 +133,8 @@ export function InfluencerGallery({
                                     Sin imagen disponible
                                 </div>
                             )}
+
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         </div>
                     </AnimatedCard>
                 ))}
