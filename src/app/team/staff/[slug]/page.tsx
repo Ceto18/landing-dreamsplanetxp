@@ -7,6 +7,7 @@ interface Props {
     params: Promise<{
         slug: string
     }>
+
     searchParams: Promise<{
         role?: string
     }>
@@ -19,7 +20,8 @@ export async function generateMetadata({ params }: Props) {
     const { slug } = await params
 
     try {
-        const member = await teamService.getPersonBySlug(slug)
+        const member =
+            await teamService.getPersonBySlug(slug)
 
         return {
             title: `${member.fullname} | DreamsPlanetXP`,
@@ -44,15 +46,29 @@ export default async function StaffDetailPage({
     const { role } = await searchParams
 
     try {
-        const member = await teamService.getPersonBySlug(slug)
+        const [member, imagesResponse] =
+            await Promise.all([
+                teamService.getPersonBySlug(slug),
+                teamService.getPersonImages(
+                    slug,
+                    1,
+                    20
+                ),
+            ])
 
         return (
             <StaffDetailContent
                 member={member}
+                images={imagesResponse.data}
                 role={role}
             />
         )
-    } catch {
+    } catch (error) {
+        console.error(
+            `Error cargando el perfil staff ${slug}:`,
+            error
+        )
+
         notFound()
     }
 }

@@ -1,27 +1,27 @@
-'use client'
+import type { AboutStat } from './AboutPageStats'
 
 import { SectionHeader } from '@/components/animations/section-header'
 import { AboutPageStats } from './AboutPageStats'
 
-type Stat = {
-    label: string
-    value: string | number
-}
-
 type Props = {
-    stats: Stat[]
+    subtitle: string
+    stats: AboutStat[]
 }
 
-export function AboutHero({ stats }: Props) {
+export function AboutHero({
+    subtitle,
+    stats,
+}: Props) {
     return (
-        <section className="relative overflow-hidden pt-28 pb-16">
-            <div className="absolute top-24 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
+        <section className="relative overflow-hidden pb-16 pt-28">
+            <div className="absolute right-0 top-24 -mr-48 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="absolute bottom-0 left-0 -ml-48 h-96 w-96 rounded-full bg-accent/[0.03] blur-3xl" />
+
+            <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Quiénes Somos"
-                    description="Creamos experiencias de viaje premium para personas que buscan descubrir el mundo con seguridad, autenticidad y propósito."
+                    description={subtitle}
                 />
 
                 <AboutPageStats stats={stats} />

@@ -8,7 +8,7 @@ import { Moment } from '@/components/pages/moment/Moment'
 import { Team } from '@/components/pages/team/Team'
 import { Review } from '@/components/pages/review/Review'
 import { About } from '@/components/pages/about/About'
-import { Contact } from '@/components/contact'
+import { Contact } from '@/components/pages/contact/contact'
 import { Footer } from '@/components/footer'
 
 import { homeService } from '@/services/homeService'

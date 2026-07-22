@@ -354,3 +354,93 @@ export type MissionTeamParams = {
     page?: number
     per_page?: number
 }
+
+/* ======================================================
+   HOME REVIEWS
+   Endpoint:
+   /api/v1/public/home/reviews
+====================================================== */
+
+export type HomeReview = {
+    name: string
+    comment: string
+    rating: number
+    video_url: string | null
+    mission_name: string | null
+}
+
+export type HomeReviewsResponse = {
+    success: boolean
+    message: string
+    data: HomeReview[]
+}
+
+/* ======================================================
+   COMPANY HOME
+   Endpoint:
+   /api/v1/public/company/home
+====================================================== */
+
+export type CompanyHome = {
+    satisfied_travelers: number
+    destinations_explored: number
+    average_rating: number
+    years_of_experience: number
+    info: string
+}
+
+export type CompanyHomeResponse = {
+    success: boolean
+    message: string
+    data: CompanyHome
+}
+
+/* ======================================================
+   COMPANY HISTORY
+   Endpoint:
+   /api/v1/public/company/history
+====================================================== */
+
+export type CompanyTimeline = {
+    stage: string
+    image_url: string | null
+    title: string
+    description: string
+    event_date: string
+}
+
+export type CompanyHistory = {
+    satisfied_travelers: number
+    destinations_explored: number
+    average_rating: number
+    years_of_experience: number
+    info: string
+    subtitle: string
+    timelines: CompanyTimeline[]
+}
+
+export type CompanyHistoryResponse = {
+    success: boolean
+    message: string
+    data: CompanyHistory
+}
+
+/* ======================================================
+   SOCIAL NETWORK PROFILES
+   Endpoint:
+   /api/v1/public/social-network-profiles
+====================================================== */
+
+export type SocialNetworkProfile = {
+    nickname: string
+    label: string
+    url: string
+    social_network_name: string
+    social_network_icon: string | null
+}
+
+export type SocialNetworkProfilesResponse = {
+    success: boolean
+    message: string
+    data: SocialNetworkProfile[]
+}

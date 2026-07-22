@@ -1,27 +1,27 @@
-'use client'
-
 import { SectionHeader } from '@/components/animations/section-header'
+
+import type { CompanyTimeline } from '@/types/home'
+
 import { AboutTimelineItem } from './AboutTimelineItem'
 
-type TimelineItem = {
-    id: string | number
-    year: string
-    title: string
-    description: string
-    image: string
-}
-
 type Props = {
-    timeline: TimelineItem[]
+    timeline: CompanyTimeline[]
 }
 
-export function AboutTimelineSection({ timeline }: Props) {
-    return (
-        <section className="relative py-20 overflow-hidden">
-            <div className="absolute top-20 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
-            <div className="absolute bottom-20 left-0 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl -ml-48" />
+export function AboutTimelineSection({
+    timeline,
+}: Props) {
+    if (timeline.length === 0) {
+        return null
+    }
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    return (
+        <section className="relative overflow-hidden py-20">
+            <div className="absolute right-0 top-20 -mr-48 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />
+
+            <div className="absolute bottom-20 left-0 -ml-48 h-96 w-96 rounded-full bg-accent/[0.03] blur-3xl" />
+
+            <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Nuestra Cronología"
                     description="Un camino de experiencias, aprendizajes y momentos que han construido la esencia de DreamsPlanetXP."
@@ -29,17 +29,17 @@ export function AboutTimelineSection({ timeline }: Props) {
 
                 <div className="relative mt-20">
                     {/* Línea central desktop */}
-                    <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
+                    <div className="absolute bottom-0 left-1/2 top-0 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-accent/50 to-transparent lg:block" />
 
                     {/* Línea móvil */}
-                    <div className="lg:hidden absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-accent/60 to-transparent" />
+                    <div className="absolute bottom-0 left-5 top-0 w-px bg-gradient-to-b from-transparent via-accent/60 to-transparent lg:hidden" />
 
                     <div className="space-y-16 lg:space-y-24">
-                        {timeline.map((item, idx) => (
+                        {timeline.map((item, index) => (
                             <AboutTimelineItem
-                                key={item.id}
+                                key={`${item.stage}-${item.event_date}-${item.title}`}
                                 item={item}
-                                index={idx}
+                                index={index}
                             />
                         ))}
                     </div>

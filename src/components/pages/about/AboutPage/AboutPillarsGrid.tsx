@@ -1,11 +1,11 @@
-'use client'
+import type { ElementType } from 'react'
 
 import { AboutPillarCard } from './AboutPillarCard'
 
 type Pillar = {
     title: string
     description: string
-    icon: React.ElementType
+    icon: ElementType
 }
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 
 export function AboutPillarsGrid({ pillars }: Props) {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {pillars.map((pillar, idx) => (
                 <AboutPillarCard
                     key={pillar.title}

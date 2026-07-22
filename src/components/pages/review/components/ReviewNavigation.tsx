@@ -1,14 +1,12 @@
 'use client'
 
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { FadeUp } from '@/components/animations/fade-up'
 
-interface ReviewItem {
-    id: string | number
-}
+import { FadeUp } from '@/components/animations/fade-up'
+import type { HomeReview } from '@/services/reviewService'
 
 interface Props {
-    reviews: ReviewItem[]
+    reviews: HomeReview[]
     activeIndex: number
     onPrev: () => void
     onNext: () => void
@@ -22,39 +20,48 @@ export function ReviewNavigation({
     onNext,
     onSelectReview,
 }: Props) {
+    if (reviews.length <= 1) {
+        return null
+    }
+
     return (
         <FadeUp delay={0.26}>
             <div className="flex items-center gap-4">
                 <button
                     type="button"
                     onClick={onPrev}
-                    className="p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
+                    className="rounded-full border border-accent/50 p-3 transition-all hover:border-accent hover:bg-accent/10"
                     aria-label="Reseña anterior"
                 >
-                    <ChevronLeft className="w-5 h-5 text-accent" />
+                    <ChevronLeft className="h-5 w-5 text-accent" />
                 </button>
 
                 <button
                     type="button"
                     onClick={onNext}
-                    className="p-3 rounded-full border border-accent/50 hover:border-accent hover:bg-accent/10 transition-all"
+                    className="rounded-full border border-accent/50 p-3 transition-all hover:border-accent hover:bg-accent/10"
                     aria-label="Siguiente reseña"
                 >
-                    <ChevronRight className="w-5 h-5 text-accent" />
+                    <ChevronRight className="h-5 w-5 text-accent" />
                 </button>
 
                 <div className="ml-auto flex gap-1">
-                    {reviews.map((_, idx) => (
+                    {reviews.map((review, idx) => (
                         <button
-                            key={idx}
+                            key={`${review.name}-${review.mission_name ?? 'sin-mision'}-${idx}`}
                             type="button"
                             onClick={() => onSelectReview(idx)}
                             className={`h-2 rounded-full transition-all ${
                                 idx === activeIndex
-                                    ? 'bg-accent w-8'
-                                    : 'bg-accent/30 w-2'
+                                    ? 'w-8 bg-accent'
+                                    : 'w-2 bg-accent/30'
                             }`}
                             aria-label={`Ver reseña ${idx + 1}`}
+                            aria-current={
+                                idx === activeIndex
+                                    ? 'true'
+                                    : undefined
+                            }
                         />
                     ))}
                 </div>

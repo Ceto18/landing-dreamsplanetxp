@@ -62,7 +62,6 @@ export function Header() {
         <header
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-sm
             ${
-                // 🔥 FIX REAL: desktop transparente, mobile sólido automático
                 isHome && !isScrolled
                     ? 'lg:bg-transparent bg-[#0b0b0b]'
                     : 'bg-[#0b0b0b]'
@@ -145,7 +144,6 @@ export function Header() {
                 </div>
             </div>
 
-            {/* 🔥 OVERLAY */}
             {isOpen && (
                 <div
                     className="fixed inset-0 z-40 bg-black/80"
@@ -153,7 +151,6 @@ export function Header() {
                 />
             )}
 
-            {/* 📱 MOBILE DRAWER (100% SOLIDO REAL FIX) */}
             <div
                 className={`fixed top-0 right-0 h-full w-[80%] max-w-sm z-50
                 bg-[#0b0b0b] border-l border-white/10 shadow-2xl

@@ -1,7 +1,10 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 
-import type { TeamPersonDetail } from '@/services/teamService'
+import type {
+    TeamPersonDetail,
+    TeamPersonDetailImage,
+} from '@/services/teamService'
 
 import { StaffHero } from './StaffHero'
 import { StaffInfo } from './StaffInfo'
@@ -12,6 +15,7 @@ import { StaffCta } from './StaffCta'
 
 type Props = {
     member: TeamPersonDetail
+    images: TeamPersonDetailImage[]
     role?: string
 }
 
@@ -30,6 +34,7 @@ function getRoleLabel(role?: string) {
 
 export function StaffDetailContent({
     member,
+    images,
     role,
 }: Props) {
     const roleLabel = getRoleLabel(role)
@@ -58,7 +63,7 @@ export function StaffDetailContent({
 
                 <StaffGallery
                     fullname={member.fullname}
-                    images={member.images}
+                    images={images}
                 />
 
                 <StaffCta />
