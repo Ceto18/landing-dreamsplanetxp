@@ -1,19 +1,32 @@
+// src/services/socialNetworkProfileService.ts
+
 import { api } from './api'
 
-import type {
-    SocialNetworkProfile,
-    SocialNetworkProfilesResponse,
-} from '@/types/home'
+export type PublicSocialNetworkProfile = {
+    nickname: string
+    label: string
+    url: string
+    social_network_name: string
+    social_network_icon: string | null
+}
 
-export const socialNetworkService = {
-    async getSocialNetworkProfiles(): Promise<
-        SocialNetworkProfile[]
+export type PublicSocialNetworkProfilesResponse = {
+    success: boolean
+    message: string
+    data: PublicSocialNetworkProfile[]
+}
+
+export const socialNetworkProfileService = {
+    async getProfiles(): Promise<
+        PublicSocialNetworkProfile[]
     > {
         const response =
-            await api.get<SocialNetworkProfilesResponse>(
+            await api.get<PublicSocialNetworkProfilesResponse>(
                 '/public/social-network-profiles'
             )
 
-        return response.data.data
+        return Array.isArray(response.data?.data)
+            ? response.data.data
+            : []
     },
 }
