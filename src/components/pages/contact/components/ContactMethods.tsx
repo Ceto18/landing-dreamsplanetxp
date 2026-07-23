@@ -162,7 +162,7 @@ export function ContactMethods() {
 
             <ContactMethodCard
                 title="Ubicación"
-                value="Atención desde Lima, Perú"
+                value="Atención Calle San Gerardo 10, Madrid, España 28035"
                 icon={MapPin}
                 delay={
                     0.3 +
