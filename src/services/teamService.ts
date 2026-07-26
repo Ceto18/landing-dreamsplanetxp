@@ -58,6 +58,7 @@ export type TeamPersonDetailMission = {
     name: string
     country: string
     image_url: string | null
+    first_experience_slug: string | null
 }
 
 export type TeamPersonDetail = {

@@ -45,42 +45,47 @@ export function InfluencerMissions({
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {missions.map((mission, index) => (
-                    <AnimatedCard
+                    <Link
                         key={`${mission.name}-${mission.country}-${index}`}
-                        delay={index * 0.08}
-                        className="group overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-0 transition-all duration-500 hover:border-accent/40 hover:shadow-xl"
+                        href="/mission"
+                        className="block"
                     >
-                        <div className="relative h-56 overflow-hidden bg-muted">
-                            {mission.image_url ? (
-                                <img
-                                    src={mission.image_url}
-                                    alt={mission.name}
-                                    loading="lazy"
-                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                            ) : (
-                                <div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-                                    Sin imagen disponible
-                                </div>
-                            )}
+                        <AnimatedCard
+                            delay={index * 0.08}
+                            className="group overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-0 transition-all duration-500 hover:border-accent/40 hover:shadow-xl"
+                        >
+                            <div className="relative h-56 overflow-hidden bg-muted">
+                                {mission.image_url ? (
+                                    <img
+                                        src={mission.image_url}
+                                        alt={mission.name}
+                                        loading="lazy"
+                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+                                        Sin imagen disponible
+                                    </div>
+                                )}
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
-                        </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
+                            </div>
 
-                        <div className="p-5">
-                            <h3 className="text-xl font-bold text-foreground">
-                                {mission.name}
-                            </h3>
+                            <div className="p-5">
+                                <h3 className="text-xl font-bold text-foreground">
+                                    {mission.name}
+                                </h3>
 
-                            {mission.country && (
-                                <div className="mt-2 flex items-center gap-2 text-sm capitalize text-muted-foreground">
-                                    <MapPin className="h-4 w-4 shrink-0 text-accent" />
+                                {mission.country && (
+                                    <div className="mt-2 flex items-center gap-2 text-sm capitalize text-muted-foreground">
+                                        <MapPin className="h-4 w-4 shrink-0 text-accent" />
 
-                                    <span>{mission.country}</span>
-                                </div>
-                            )}
-                        </div>
-                    </AnimatedCard>
+                                        <span>{mission.country}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </AnimatedCard>
+                    </Link>
                 ))}
             </div>
         </section>

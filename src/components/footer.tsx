@@ -374,7 +374,7 @@ export function Footer() {
                             <ul className="space-y-2 text-sm">
                                 <li>
                                     <a
-                                        href="#quienes-somos"
+                                        href="/about"
                                         className="text-muted-foreground transition-colors hover:text-accent"
                                     >
                                         Sobre Nosotros
