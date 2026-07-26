@@ -1,14 +1,28 @@
+// MomentSidebar.tsx
+
 'use client'
 
 import { ReservationForm } from '@/components/ui/ReservationForm'
 
 import type { MomentDetail } from '@/types/home'
 
-export function MomentSidebar({ moment }: { moment: MomentDetail }) {
+export function MomentSidebar({
+    moment,
+}: {
+    moment: MomentDetail
+}) {
     return (
         <aside className="space-y-6">
             <div className="sticky top-28">
-                <ReservationForm momentTitle={moment.title} />
+                <ReservationForm
+                    momentTitle={
+                        moment.mission_experience ||
+                        moment.title
+                    }
+                    momentSlug={
+                        moment.experience_slug ?? undefined
+                    }
+                />
             </div>
         </aside>
     )

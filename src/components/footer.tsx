@@ -6,7 +6,7 @@ import {
     useState,
 } from 'react'
 
-import { Spin } from 'antd'
+import { Skeleton } from 'antd'
 import { motion } from 'motion/react'
 
 import { FadeUp } from '@/components/animations/fade-up'
@@ -100,6 +100,56 @@ function getDisplayUrl(
     }
 
     return url
+}
+
+/* =========================================================
+   SKELETON REDES SOCIALES
+========================================================= */
+function SocialProfilesSkeleton() {
+    return (
+        <>
+            {Array.from({ length: 4 }).map(
+                (_, index) => (
+                    <Skeleton.Button
+                        key={index}
+                        active
+                        shape="circle"
+                        className="!h-9 !w-9 !min-w-9"
+                    />
+                )
+            )}
+        </>
+    )
+}
+
+/* =========================================================
+   SKELETON CONTACTOS
+========================================================= */
+function ContactProfilesSkeleton() {
+    return (
+        <div className="space-y-4">
+            {Array.from({ length: 3 }).map(
+                (_, index) => (
+                    <div
+                        key={index}
+                        className="space-y-2"
+                    >
+                        <Skeleton.Input
+                            active
+                            size="small"
+                            className="!h-4 !w-20"
+                        />
+
+                        <Skeleton.Input
+                            active
+                            size="small"
+                            className="!h-4 !w-full max-w-[190px]"
+                        />
+                    </div>
+                )
+            )}
+        </div>
+    )
 }
 
 export function Footer() {
@@ -202,7 +252,8 @@ export function Footer() {
         <footer className="border-t border-border">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-4">
-                    {/* Brand */}
+
+                    {/* ================= BRAND ================= */}
                     <FadeUp delay={0.05}>
                         <div className="space-y-4">
                             <h3 className="text-xl font-bold">
@@ -222,7 +273,7 @@ export function Footer() {
 
                             <div className="flex min-h-9 items-center gap-3 pt-2">
                                 {loadingProfiles ? (
-                                    <Spin size="small" />
+                                    <SocialProfilesSkeleton />
                                 ) : (
                                     socialProfiles.map(
                                         (social) => (
@@ -266,7 +317,7 @@ export function Footer() {
                         </div>
                     </FadeUp>
 
-                    {/* Enlaces rápidos */}
+                    {/* ================= ENLACES RÁPIDOS ================= */}
                     <FadeUp delay={0.12}>
                         <div className="space-y-4">
                             <h4 className="font-semibold text-foreground">
@@ -313,7 +364,7 @@ export function Footer() {
                         </div>
                     </FadeUp>
 
-                    {/* Empresa */}
+                    {/* ================= EMPRESA ================= */}
                     <FadeUp delay={0.19}>
                         <div className="space-y-4">
                             <h4 className="font-semibold text-foreground">
@@ -362,7 +413,7 @@ export function Footer() {
                         </div>
                     </FadeUp>
 
-                    {/* Contactos */}
+                    {/* ================= CONTACTOS ================= */}
                     <FadeUp delay={0.26}>
                         <div className="space-y-4">
                             <h4 className="font-semibold text-foreground">
@@ -370,67 +421,48 @@ export function Footer() {
                             </h4>
 
                             {loadingProfiles ? (
-                                <div className="py-2">
-                                    <Spin size="small" />
-                                </div>
-                            ) : contactProfiles.length >
-                                0 ? (
+                                <ContactProfilesSkeleton />
+                            ) : contactProfiles.length > 0 ? (
                                 <div className="space-y-4 text-sm">
-                                    {contactProfiles.map(
-                                        (profile) => {
-                                            const displayUrl =
-                                                getDisplayUrl(
-                                                    profile
-                                                )
+                                    {contactProfiles.map((profile) => {
+                                        return (
+                                            <div
+                                                key={`${profile.social_network_name}-${profile.url}`}
+                                                className="space-y-1"
+                                            >
+                                                <p className="font-medium text-foreground">
+                                                    {getContactLabel(
+                                                        profile.social_network_name
+                                                    )}
+                                                </p>
 
-                                            return (
-                                                <div
-                                                    key={`${profile.social_network_name}-${profile.url}`}
-                                                    className="space-y-1"
-                                                >
-                                                    <p className="font-medium text-foreground">
-                                                        {getContactLabel(
-                                                            profile.social_network_name
-                                                        )}
-                                                    </p>
-
-                                                    <p className="break-all text-muted-foreground">
-                                                        {
-                                                            displayUrl
-                                                        }
-                                                    </p>
-                                                </div>
-                                            )
-                                        }
-                                    )}
+                                                <p className="break-all text-muted-foreground">
+                                                    {profile.nickname}
+                                                </p>
+                                            </div>
+                                        )
+                                    })}
                                 </div>
                             ) : (
                                 <p className="text-sm text-muted-foreground">
-                                    No hay contactos
-                                    registrados.
+                                    No hay contactos registrados.
                                 </p>
                             )}
                         </div>
                     </FadeUp>
                 </div>
 
-                {/* Divider */}
+                {/* ================= DIVIDER ================= */}
                 <FadeUp delay={0.32}>
                     <div className="my-8 h-px bg-accent/20" />
                 </FadeUp>
 
-                {/* Bottom */}
+                {/* ================= BOTTOM ================= */}
                 <FadeUp delay={0.38}>
                     <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-muted-foreground md:flex-row md:text-left">
                         <p>
-                            &copy; 2026
-                            DreamsPlanetXP. Todos
-                            los derechos reservados.
-                        </p>
-
-                        <p>
-                            Diseñado con pasión para
-                            viajeros apasionados
+                            &copy; 2026 DreamsPlanetXP.
+                            Todos los derechos reservados.
                         </p>
                     </div>
                 </FadeUp>

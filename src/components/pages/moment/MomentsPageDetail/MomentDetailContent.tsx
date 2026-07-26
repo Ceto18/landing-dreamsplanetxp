@@ -11,7 +11,6 @@ import { MomentGallery } from './MomentGallery'
 import { MomentCTA } from './MomentCTA'
 import { MomentComments } from '../components/MomentComment/MomentComments'
 
-
 interface Props {
     moment: MomentDetail
 }
@@ -24,13 +23,21 @@ export function MomentDetailContent({
             <Header />
 
             <main className="min-h-screen text-foreground">
-                <MomentHero moment={moment} />
+                <MomentHero
+                    moment={moment}
+                />
 
-                <MomentDetailsGrid moment={moment} />
+                <MomentDetailsGrid
+                    moment={moment}
+                />
 
-                <MomentGallery moment={moment} />
+                <MomentGallery
+                    moment={moment}
+                />
 
-                <MomentComments slug={moment.slug} />
+                <MomentComments
+                    slug={moment.slug}
+                />
 
                 <MomentCTA />
             </main>

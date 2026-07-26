@@ -203,7 +203,7 @@ export function ContactForm({
 
             setSuccessMessage(
                 response.message ||
-                    '¡Gracias! Tu solicitud fue enviada correctamente.'
+                '¡Gracias! Tu solicitud fue enviada correctamente.'
             )
 
             setFormData(
@@ -306,7 +306,7 @@ export function ContactForm({
                                 onChange={handleChange}
                                 required
                                 disabled={submitting}
-                                placeholder="+51 999 999 999"
+                                placeholder="+34 999 999 999"
                                 className="w-full rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                             />
                         </div>
@@ -430,11 +430,11 @@ export function ContactForm({
                                     {loadingExperiences
                                         ? 'Cargando experiencias...'
                                         : !hasSelectedMission
-                                          ? 'Selecciona una misión'
-                                          : experiences.length ===
-                                              0
-                                            ? 'No hay experiencias disponibles'
-                                            : 'Selecciona una experiencia'}
+                                            ? 'Selecciona una misión'
+                                            : experiences.length ===
+                                                0
+                                                ? 'No hay experiencias disponibles'
+                                                : 'Selecciona una experiencia'}
                                 </option>
 
                                 {experiences.map(
@@ -483,15 +483,15 @@ export function ContactForm({
                             submitting
                                 ? undefined
                                 : {
-                                      scale: 1.01,
-                                  }
+                                    scale: 1.01,
+                                }
                         }
                         whileTap={
                             submitting
                                 ? undefined
                                 : {
-                                      scale: 0.98,
-                                  }
+                                    scale: 0.98,
+                                }
                         }
                         disabled={
                             submitting ||

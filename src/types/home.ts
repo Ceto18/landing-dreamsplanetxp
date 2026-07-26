@@ -242,6 +242,7 @@ export type MomentDetail = {
     sensation: string
     mission: string
     mission_experience: string
+    experience_slug: string
     images: MomentDetailImage[]
 }
 
