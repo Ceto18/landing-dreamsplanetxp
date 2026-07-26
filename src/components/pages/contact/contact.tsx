@@ -1,4 +1,5 @@
 import { SectionHeader } from '@/components/animations/section-header'
+
 import {
     missionService,
     type MissionTabItem,
@@ -13,7 +14,8 @@ export async function Contact() {
     let missions: MissionTabItem[] = []
 
     try {
-        missions = await missionService.getMissionTabs()
+        missions =
+            await missionService.getMissionTabs()
     } catch (error) {
         console.error(
             'Error al obtener las misiones:',
@@ -46,7 +48,9 @@ export async function Contact() {
                     </div>
 
                     <div className="lg:col-span-2">
-                        <ContactForm missions={missions} />
+                        <ContactForm
+                            missions={missions}
+                        />
                     </div>
                 </div>
             </div>

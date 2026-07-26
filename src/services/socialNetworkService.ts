@@ -2,9 +2,13 @@
 
 import { api } from './api'
 
+export type PublicSocialNetworkProfileLabel =
+    | 'principal'
+    | 'secundario'
+
 export type PublicSocialNetworkProfile = {
     nickname: string
-    label: string
+    label: PublicSocialNetworkProfileLabel
     url: string
     social_network_name: string
     social_network_icon: string | null
@@ -13,7 +17,13 @@ export type PublicSocialNetworkProfile = {
 export type PublicSocialNetworkProfilesResponse = {
     success: boolean
     message: string
-    data: PublicSocialNetworkProfile[]
+    data: Array<{
+        nickname: string
+        label: string
+        url: string
+        social_network_name: string
+        social_network_icon: string | null
+    }>
 }
 
 export const socialNetworkProfileService = {
@@ -25,8 +35,25 @@ export const socialNetworkProfileService = {
                 '/public/social-network-profiles'
             )
 
-        return Array.isArray(response.data?.data)
+        const profiles = Array.isArray(
+            response.data?.data
+        )
             ? response.data.data
             : []
+
+        return profiles
+            .map((profile) => ({
+                ...profile,
+                label: profile.label
+                    .trim()
+                    .toLowerCase(),
+            }))
+            .filter(
+                (
+                    profile
+                ): profile is PublicSocialNetworkProfile =>
+                    profile.label === 'principal' ||
+                    profile.label === 'secundario'
+            )
     },
 }
