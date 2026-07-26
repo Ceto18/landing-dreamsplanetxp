@@ -1,23 +1,23 @@
 const particles = [
-  // 🔵 ESQUINA SUPERIOR IZQUIERDA (DENSO)
+  // ESQUINA SUPERIOR IZQUIERDA (DENSO)
   { top: '8%', left: '5%', color: '#ffffff', size: 4, opacity: 0.9 },
   { top: '12%', left: '12%', color: '#d4a24c', size: 3, opacity: 0.85 },
   { top: '18%', left: '18%', color: '#ffffff', size: 2, opacity: 0.8 },
   { top: '22%', left: '8%', color: '#ffffff', size: 2, opacity: 0.7 },
 
-  // 🔵 ESQUINA SUPERIOR DERECHA
+  // ESQUINA SUPERIOR DERECHA
   { top: '10%', left: '85%', color: '#ffffff', size: 4, opacity: 0.9 },
   { top: '15%', left: '92%', color: '#d4a24c', size: 3, opacity: 0.85 },
   { top: '22%', left: '88%', color: '#ffffff', size: 2, opacity: 0.8 },
   { top: '28%', left: '96%', color: '#ffffff', size: 2, opacity: 0.7 },
 
-  // 🔵 ESQUINA INFERIOR IZQUIERDA
+  // ESQUINA INFERIOR IZQUIERDA
   { top: '78%', left: '6%', color: '#ffffff', size: 4, opacity: 0.9 },
   { top: '85%', left: '12%', color: '#d4a24c', size: 3, opacity: 0.85 },
   { top: '90%', left: '18%', color: '#ffffff', size: 2, opacity: 0.8 },
   { top: '82%', left: '22%', color: '#ffffff', size: 2, opacity: 0.7 },
 
-  // 🔵 ESQUINA INFERIOR DERECHA
+  // ESQUINA INFERIOR DERECHA
   { top: '78%', left: '88%', color: '#ffffff', size: 4, opacity: 0.9 },
   { top: '85%', left: '92%', color: '#d4a24c', size: 3, opacity: 0.85 },
   { top: '90%', left: '86%', color: '#ffffff', size: 2, opacity: 0.8 },
@@ -35,13 +35,10 @@ export function GlobalAtmosphere() {
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
 
-      {/* 🌑 BASE PROFUNDA */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#141414_0%,#050505_55%,#000000_100%)]" />
 
-      {/* 🔥 GLOW CENTRAL SUAVE (NO MOLESTA TEXTO) */}
       <div className="absolute top-1/2 left-1/2 w-[900px] h-[900px] -translate-x-1/2 -translate-y-1/2 bg-[#b17f40]/6 blur-[200px] rounded-full" />
 
-      {/* 🌊 LÍNEAS FLUIDAS */}
       <svg className="absolute inset-0 w-full h-full opacity-[0.35]" viewBox="0 0 1440 900" fill="none">
 
         <path
@@ -73,7 +70,6 @@ export function GlobalAtmosphere() {
 
       </svg>
 
-      {/* ✨ STAR FIELD BASE */}
       <div
         className="absolute inset-0 opacity-[0.10]"
         style={{
@@ -86,7 +82,6 @@ export function GlobalAtmosphere() {
         }}
       />
 
-      {/* 💫 PARTICULAS PRO (VISIBLES + GLOW) */}
       <div className="absolute inset-0">
         {particles.map((p, i) => (
           <div
@@ -108,7 +103,6 @@ export function GlobalAtmosphere() {
         ))}
       </div>
 
-      {/* 🌫️ VIGNETTE SUAVE */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/25" />
 
     </div>

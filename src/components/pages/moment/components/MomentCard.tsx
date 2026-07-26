@@ -22,18 +22,16 @@ export function MomentCard({
             <button
                 type="button"
                 onClick={onClick}
-                className={`group relative aspect-square w-full rounded-lg overflow-hidden border border-border/50 bg-card/50 transition-all duration-300 ${
-                    hasExperience
+                className={`group relative aspect-square w-full rounded-lg overflow-hidden border border-border/50 bg-card/50 transition-all duration-300 ${hasExperience
                         ? 'cursor-pointer hover:border-accent/50'
                         : 'cursor-default opacity-90'
-                }`}
+                    }`}
             >
                 <img
                     src={image}
                     alt={photo.title}
-                    className={`w-full h-full object-cover transition-transform duration-500 ${
-                        hasExperience ? 'group-hover:scale-110' : ''
-                    }`}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${hasExperience ? 'group-hover:scale-110' : ''
+                        }`}
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
@@ -42,7 +40,7 @@ export function MomentCard({
                     </h3>
 
                     {photo.place && (
-                        <p className="mt-1 text-xs text-foreground/70 line-clamp-1 text-left">
+                        <p className="mt-1 text-xs capitalize text-foreground/70 line-clamp-1 text-left">
                             {photo.place}
                         </p>
                     )}

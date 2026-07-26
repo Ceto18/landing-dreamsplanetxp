@@ -10,7 +10,6 @@ const navigation = [
     { name: 'Misiones', href: '#misiones' },
     { name: 'Momentos', href: '#momentos' },
     { name: 'Equipo', href: '#equipo' },
-    { name: 'Reseñas', href: '#resenas' },
     { name: 'Quiénes Somos', href: '#quienes-somos' },
     { name: 'Contacto', href: '#contacto' },
 ]

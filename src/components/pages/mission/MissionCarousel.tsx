@@ -90,9 +90,15 @@ export function MissionCarousel({ missions }: Props) {
     }
 
     const getMissionHref = (mission: HomeMission) => {
-        if (!mission.slug) return '#contacto'
+        if (mission.first_experience_slug) {
+            return `/mission/${mission.first_experience_slug}`
+        }
 
-        return `/mission/${mission.slug}`
+        if (mission.slug) {
+            return `/mission/${mission.slug}`
+        }
+
+        return '#contacto'
     }
 
     const getMissionKey = (mission: HomeMission, index: number) => {
@@ -184,8 +190,7 @@ export function MissionCarousel({ missions }: Props) {
 
                                             <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
                                                 <p className="text-accent text-xs font-semibold uppercase">
-                                                    {mission.country ||
-                                                        'MISIÓN'}
+                                                    {mission.country || 'MISIÓN'}
                                                 </p>
 
                                                 <h3 className="text-xl font-bold text-foreground">
