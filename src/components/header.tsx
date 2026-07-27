@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 
+import { companyService } from '@/services/companyService'
+
 const navigation = [
     { name: 'Misiones', href: '#misiones' },
     { name: 'Momentos', href: '#momentos' },
@@ -18,25 +20,44 @@ export function Header() {
     const [isOpen, setIsOpen] = useState(false)
     const [activeLink, setActiveLink] = useState('')
     const [isScrolled, setIsScrolled] = useState(false)
+    const [companyImage, setCompanyImage] = useState<string | null>(null)
 
     const router = useRouter()
     const pathname = usePathname()
 
     const isHome = pathname === '/'
 
-    // scroll detection (solo para desktop hero behavior)
+    useEffect(() => {
+        const loadCompanyImage = async () => {
+            try {
+                const image = await companyService.getCompanyImage()
+                setCompanyImage(image)
+            } catch (error) {
+                console.error('Error al cargar la imagen de la empresa:', error)
+            }
+        }
+
+        loadCompanyImage()
+    }, [])
+
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 50)
+
         handleScroll()
+
         window.addEventListener('scroll', handleScroll)
+
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    // lock scroll when drawer open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden'
         } else {
+            document.body.style.overflow = ''
+        }
+
+        return () => {
             document.body.style.overflow = ''
         }
     }, [isOpen])
@@ -50,41 +71,52 @@ export function Header() {
                 router.push('/' + href)
             } else {
                 const el = document.querySelector(href)
-                if (el) el.scrollIntoView({ behavior: 'smooth' })
+
+                if (el) {
+                    el.scrollIntoView({
+                        behavior: 'smooth',
+                    })
+                }
             }
-        } else {
-            router.push(href)
+
+            return
         }
+
+        router.push(href)
     }
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-sm
-            ${
-                isHome && !isScrolled
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-sm ${isHome && !isScrolled
                     ? 'lg:bg-transparent bg-[#0b0b0b]'
                     : 'bg-[#0b0b0b]'
-            }`}
+                }`}
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
                 <div className="flex items-center justify-between h-24">
-
                     {/* LOGO */}
                     <Link href="/" className="flex items-center gap-4 group">
                         <div className="relative w-14 h-14 overflow-hidden">
-                            <Image
-                                src="/logodreams.png"
-                                alt="DreamsPlanetXP"
-                                fill
-                                className="object-contain p-1"
-                                priority
-                            />
+                            {companyImage && (
+                                <Image
+                                    src={companyImage}
+                                    alt="DreamsPlanetXP"
+                                    fill
+                                    sizes="56px"
+                                    className="object-contain p-1"
+                                    priority
+                                />
+                            )}
                         </div>
 
                         <div className="hidden sm:block">
                             <h1 className="text-lg font-bold text-foreground">
-                                Dreams<span className="text-accent">Planetxp</span>
+                                Dreams
+                                <span className="text-accent">
+                                    Planetxp
+                                </span>
                             </h1>
+
                             <p className="text-sm text-muted-foreground">
                                 Experiencias Premium
                             </p>
@@ -100,18 +132,18 @@ export function Header() {
                                 <button
                                     key={item.name}
                                     onClick={() => handleNavClick(item.href)}
-                                    className={`relative text-base font-semibold transition-colors duration-300 ${
-                                        isActive
+                                    className={`relative text-base font-semibold transition-colors duration-300 ${isActive
                                             ? 'text-accent'
                                             : 'text-muted-foreground hover:text-foreground'
-                                    } group`}
+                                        } group`}
                                 >
                                     {item.name}
 
                                     <span
-                                        className={`absolute left-0 -bottom-1 h-[2px] bg-accent transition-all duration-300 ${
-                                            isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                                        }`}
+                                        className={`absolute left-0 -bottom-1 h-[2px] bg-accent transition-all duration-300 ${isActive
+                                                ? 'w-full'
+                                                : 'w-0 group-hover:w-full'
+                                            }`}
                                     />
                                 </button>
                             )
@@ -153,14 +185,20 @@ export function Header() {
             <div
                 className={`fixed top-0 right-0 h-full w-[80%] max-w-sm z-50
                 bg-[#0b0b0b] border-l border-white/10 shadow-2xl
-                transform transition-transform duration-300 ${
-                    isOpen ? 'translate-x-0' : 'translate-x-full'
-                }`}
+                transform transition-transform duration-300 ${isOpen
+                        ? 'translate-x-0'
+                        : 'translate-x-full'
+                    }`}
             >
                 <div className="flex items-center justify-between px-6 h-24 border-b border-white/10">
-                    <span className="font-bold text-white">Menú</span>
+                    <span className="font-bold text-white">
+                        Menú
+                    </span>
 
-                    <button onClick={() => setIsOpen(false)}>
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                    >
                         <X className="w-6 h-6 text-white" />
                     </button>
                 </div>
@@ -177,6 +215,7 @@ export function Header() {
                     ))}
 
                     <button
+                        type="button"
                         onClick={() => handleNavClick('#contacto')}
                         className="w-full mt-6 px-4 py-3 bg-accent text-black rounded-lg"
                     >

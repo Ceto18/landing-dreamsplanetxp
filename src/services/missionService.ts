@@ -98,6 +98,11 @@ export type MissionMomentImage = {
     image_url: string
 }
 
+export type MissionMomentVideo = {
+    title: string
+    video_url: string
+}
+
 export type MissionMomentDetail = {
     title: string
     slug: string
@@ -109,7 +114,9 @@ export type MissionMomentDetail = {
     sensation: string | null
     mission: string | null
     mission_experience: string | null
+    experience_slug: string | null
     images: MissionMomentImage[]
+    videos: MissionMomentVideo[]
 }
 
 /* ======================================================
@@ -239,7 +246,29 @@ export const missionService = {
             `/public/moments/${slug}`
         )
 
-        return response.data?.data
+        const data = response.data?.data
+
+        return {
+            title: data?.title ?? '',
+            slug: data?.slug ?? '',
+            description: data?.description ?? null,
+            proverb: data?.proverb ?? null,
+            place: data?.place ?? null,
+            experience: data?.experience ?? null,
+            ideal: data?.ideal ?? null,
+            sensation: data?.sensation ?? null,
+            mission: data?.mission ?? null,
+            mission_experience:
+                data?.mission_experience ?? null,
+            experience_slug:
+                data?.experience_slug ?? null,
+            images: Array.isArray(data?.images)
+                ? data.images
+                : [],
+            videos: Array.isArray(data?.videos)
+                ? data.videos
+                : [],
+        }
     },
 
     async getMomentReviews(
@@ -327,10 +356,6 @@ export const missionService = {
                     onUploadProgress: (
                         progressEvent
                     ) => {
-                        /*
-                         * Algunos navegadores o adaptadores pueden
-                         * no proporcionar el tamaño total.
-                         */
                         if (!progressEvent.total) {
                             return
                         }

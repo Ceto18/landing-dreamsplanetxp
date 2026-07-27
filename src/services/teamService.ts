@@ -67,6 +67,7 @@ export type TeamPersonDetail = {
     specialty: string | null
     bio: string | null
     photo_url: string | null
+    video_url: string | null
     languages: string[]
     missions: TeamPersonDetailMission[]
 }
@@ -157,6 +158,7 @@ export const teamService = {
             specialty: data?.specialty ?? null,
             bio: data?.bio ?? null,
             photo_url: data?.photo_url ?? null,
+            video_url: data?.video_url ?? null,
             languages: Array.isArray(data?.languages)
                 ? data.languages
                 : [],

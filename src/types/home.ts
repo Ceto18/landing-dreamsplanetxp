@@ -231,6 +231,11 @@ export type MomentDetailImage = {
     image_url: string
 }
 
+export type MomentDetailVideo = {
+    title: string
+    video_url: string
+}
+
 export type MomentDetail = {
     title: string
     slug: string
@@ -244,6 +249,7 @@ export type MomentDetail = {
     mission_experience: string
     experience_slug: string
     images: MomentDetailImage[]
+    videos: MomentDetailVideo[]
 }
 
 export type MomentDetailResponse = {
@@ -426,6 +432,20 @@ export type CompanyHistoryResponse = {
     message: string
     data: CompanyHistory
 }
+
+
+/* ======================================================
+   COMPANY IMAGE
+   Endpoint:
+   /api/v1/public/company/image
+====================================================== */
+
+export type CompanyImageResponse = {
+    success: boolean
+    message: string
+    data: string
+}
+
 
 /* ======================================================
    SOCIAL NETWORK PROFILES

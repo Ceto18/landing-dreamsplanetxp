@@ -8,6 +8,7 @@ import { Footer } from '@/components/footer'
 import { MomentHero } from './MomentHero'
 import { MomentDetailsGrid } from './MomentDetailsGrid'
 import { MomentGallery } from './MomentGallery'
+import { MomentVideos } from './MomentVideos'
 import { MomentCTA } from './MomentCTA'
 import { MomentComments } from '../components/MomentComment/MomentComments'
 
@@ -33,6 +34,10 @@ export function MomentDetailContent({
 
                 <MomentGallery
                     moment={moment}
+                />
+
+                <MomentVideos
+                    videos={moment.videos ?? []}
                 />
 
                 <MomentComments

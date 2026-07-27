@@ -17,6 +17,7 @@ import {
     InfluencerGallery,
     InfluencerMissions,
 } from './InfluencerMissions'
+import { InfluencerVideo } from './InfluencerVideo'
 
 type Props = {
     member: TeamPersonDetail
@@ -43,6 +44,11 @@ export function InfluencerDetailContent({
 
                 <InfluencerMissions
                     missions={member.missions ?? []}
+                />
+
+                <InfluencerVideo
+                    fullname={member.fullname}
+                    videoUrl={member.video_url}
                 />
 
                 <InfluencerGallery
