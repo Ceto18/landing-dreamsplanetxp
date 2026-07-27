@@ -390,7 +390,7 @@ export function ContactForm({
                             <PhoneInput
                                 id="telefono"
                                 international
-                                defaultCountry="PE"
+                                defaultCountry="ES"
                                 countryCallingCodeEditable={
                                     false
                                 }

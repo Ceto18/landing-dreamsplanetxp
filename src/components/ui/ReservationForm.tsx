@@ -228,7 +228,7 @@ export function ReservationForm({
                 {/* Teléfono internacional */}
                 <PhoneInput
                     international
-                    defaultCountry="PE"
+                    defaultCountry="ES"
                     countryCallingCodeEditable={
                         false
                     }
