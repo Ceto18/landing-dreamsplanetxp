@@ -15,39 +15,20 @@ import {
     motion,
 } from 'motion/react'
 
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
+
+import {
+    isPossiblePhoneNumber,
+    isValidPhoneNumber,
+} from 'libphonenumber-js'
+
 import { reservationService } from '@/services/reservationService'
 
 interface ReservationFormProps {
     momentTitle?: string
     momentSlug?: string
 }
-
-const travelerOptions = [
-    {
-        value: '1',
-        label: '1 viajero',
-    },
-    {
-        value: '2',
-        label: '2 viajeros',
-    },
-    {
-        value: '3',
-        label: '3 viajeros',
-    },
-    {
-        value: '4',
-        label: '4 viajeros',
-    },
-    {
-        value: '5',
-        label: '5 viajeros',
-    },
-    {
-        value: '6',
-        label: '6 viajeros',
-    },
-]
 
 export function ReservationForm({
     momentTitle,
@@ -90,6 +71,39 @@ export function ReservationForm({
             return
         }
 
+        /*
+         * TELÉFONO
+         */
+        if (!phone) {
+            setErrorMessage(
+                'Ingresa tu número de teléfono.'
+            )
+
+            return
+        }
+
+        if (!isPossiblePhoneNumber(phone)) {
+            setErrorMessage(
+                'El número de teléfono no tiene una longitud válida para el país seleccionado.'
+            )
+
+            return
+        }
+
+        if (!isValidPhoneNumber(phone)) {
+            setErrorMessage(
+                'Ingresa un número de teléfono válido.'
+            )
+
+            return
+        }
+
+        /*
+         * PASAJEROS
+         *
+         * travelers se mantiene como string en el estado,
+         * y aquí se convierte a number.
+         */
         const passengers = Number(
             travelers
         )
@@ -99,7 +113,7 @@ export function ReservationForm({
             passengers <= 0
         ) {
             setErrorMessage(
-                'Selecciona una cantidad válida de viajeros.'
+                'Ingresa una cantidad válida de viajeros.'
             )
 
             return
@@ -113,14 +127,19 @@ export function ReservationForm({
                     {
                         experience_slug:
                             momentSlug,
+
                         full_name:
                             name.trim(),
+
                         email:
                             email.trim(),
+
                         phone:
                             phone.trim(),
+
                         message:
                             message.trim(),
+
                         passengers,
                     }
                 )
@@ -206,23 +225,53 @@ export function ReservationForm({
                     disabled={submitting}
                 />
 
-                {/* Teléfono */}
-                <input
-                    type="tel"
-                    placeholder="Teléfono"
-                    className="w-full rounded-lg border border-border bg-transparent px-4 py-3 text-foreground transition-all placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
+                {/* Teléfono internacional */}
+                <PhoneInput
+                    international
+                    defaultCountry="PE"
+                    countryCallingCodeEditable={
+                        false
+                    }
                     value={phone}
-                    onChange={(event) =>
+                    onChange={(value) =>
                         setPhone(
-                            event.target.value
+                            value ?? ''
                         )
                     }
-                    required
                     disabled={submitting}
+                    placeholder="Ingresa tu teléfono"
+                    className="
+                        w-full
+                        rounded-lg
+                        border
+                        border-border
+                        bg-transparent
+                        px-4
+                        py-3
+                        transition-all
+
+                        focus-within:border-accent
+                        focus-within:ring-1
+                        focus-within:ring-accent/30
+
+                        [&_.PhoneInputCountry]:mr-3
+
+                        [&_.PhoneInputCountrySelect]:cursor-pointer
+                        [&_.PhoneInputCountrySelect]:bg-background
+                        [&_.PhoneInputCountrySelect]:text-foreground
+
+                        [&_.PhoneInputInput]:border-none
+                        [&_.PhoneInputInput]:bg-transparent
+                        [&_.PhoneInputInput]:text-foreground
+                        [&_.PhoneInputInput]:outline-none
+
+                        [&_.PhoneInputInput::placeholder]:text-muted-foreground
+                    "
                 />
 
-                {/* Viajeros */}
-                <select
+                {/* Número de viajeros */}
+                <input
+                    type="number"
                     value={travelers}
                     onChange={(event) =>
                         setTravelers(
@@ -230,30 +279,12 @@ export function ReservationForm({
                         )
                     }
                     required
+                    min={1}
+                    step={1}
                     disabled={submitting}
-                    className="w-full cursor-pointer appearance-none rounded-lg border border-border bg-background px-4 py-3 text-foreground transition-all focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                    <option value="">
-                        Número de viajeros
-                    </option>
-
-                    {travelerOptions.map(
-                        (option) => (
-                            <option
-                                key={
-                                    option.value
-                                }
-                                value={
-                                    option.value
-                                }
-                            >
-                                {
-                                    option.label
-                                }
-                            </option>
-                        )
-                    )}
-                </select>
+                    placeholder="Número de viajeros"
+                    className="w-full rounded-lg border border-border bg-transparent px-4 py-3 text-foreground transition-all placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
+                />
 
                 {/* Mensaje */}
                 <textarea
@@ -292,11 +323,13 @@ export function ReservationForm({
                     {submitting ? (
                         <>
                             <LoaderCircle className="h-5 w-5 animate-spin" />
+
                             Enviando reserva...
                         </>
                     ) : (
                         <>
                             Enviar reserva
+
                             <ArrowRight className="h-5 w-5" />
                         </>
                     )}
