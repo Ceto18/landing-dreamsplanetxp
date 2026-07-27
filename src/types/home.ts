@@ -388,6 +388,7 @@ export type CompanyHome = {
     average_rating: number
     years_of_experience: number
     info: string
+    subtitle: string
 }
 
 export type CompanyHomeResponse = {
