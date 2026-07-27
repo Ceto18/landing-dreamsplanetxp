@@ -30,10 +30,6 @@ export const metadata: Metadata = {
 
   applicationName: 'DreamsPlanetXP',
 
-  alternates: {
-    canonical: '/',
-  },
-
   robots: {
     index: true,
     follow: true,
@@ -46,7 +42,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    url: 'https://dreamsplanetxp.es',
     siteName: 'DreamsPlanetXP',
     title: 'DreamsPlanetXP | Experiencias de Viaje Premium',
     description:

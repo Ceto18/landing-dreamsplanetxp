@@ -207,20 +207,6 @@ export function MomentModal({
                                     </p>
                                 </AnimatedCard>
                             </div>
-
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="
-                                    block w-full text-center
-                                    bg-accent text-background
-                                    font-semibold py-3
-                                    rounded-lg transition
-                                    hover:bg-accent/90
-                                "
-                            >
-                                Cerrar momento
-                            </button>
                         </div>
                     </div>
                 </motion.div>

@@ -22,6 +22,7 @@ export function Review() {
     const [activeIndex, setActiveIndex] = useState(0)
     const [autoScroll, setAutoScroll] = useState(true)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(false)
 
     const resumeTimeoutRef =
         useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -32,6 +33,7 @@ export function Review() {
         const loadReviews = async () => {
             try {
                 setLoading(true)
+                setError(false)
 
                 const data =
                     await reviewService.getHomeReviews()
@@ -48,6 +50,7 @@ export function Review() {
 
                 if (isMounted) {
                     setReviews([])
+                    setError(true)
                 }
             } finally {
                 if (isMounted) {
@@ -63,16 +66,6 @@ export function Review() {
         }
     }, [])
 
-    /**
-     * Cambio automático de reseña.
-     *
-     * El intervalo solamente funciona cuando:
-     * - autoScroll está activo.
-     * - Hay más de una reseña.
-     *
-     * Cuando comienza la reproducción de un video,
-     * autoScroll pasa a false y este intervalo se elimina.
-     */
     useEffect(() => {
         if (
             !autoScroll ||
@@ -94,10 +87,6 @@ export function Review() {
         }
     }, [autoScroll, reviews.length])
 
-    /**
-     * Limpia cualquier timeout pendiente cuando
-     * el componente se desmonta.
-     */
     useEffect(() => {
         return () => {
             if (resumeTimeoutRef.current) {
@@ -108,13 +97,6 @@ export function Review() {
         }
     }, [])
 
-    /**
-     * Pausa temporalmente el carrusel cuando
-     * el usuario navega manualmente.
-     *
-     * Después de 5 segundos vuelve a activar
-     * el desplazamiento automático.
-     */
     const pauseAutoScroll = () => {
         setAutoScroll(false)
 
@@ -174,10 +156,6 @@ export function Review() {
         setActiveIndex(index)
     }
 
-    /**
-     * Detiene completamente el carrusel cuando
-     * el usuario comienza a reproducir el video.
-     */
     const handleVideoPlay = () => {
         setAutoScroll(false)
 
@@ -190,28 +168,43 @@ export function Review() {
         }
     }
 
-    /**
-     * Cuando el usuario pausa el video,
-     * se vuelve a activar el carrusel.
-     *
-     * El siguiente comentario aparecerá después
-     * de 5 segundos, no inmediatamente.
-     */
     const handleVideoPause = () => {
         setAutoScroll(true)
     }
 
-    /**
-     * Cuando el video termina, se reactiva
-     * el cambio automático de reseñas.
-     */
     const handleVideoEnded = () => {
         setAutoScroll(true)
     }
 
     const review = reviews[activeIndex]
 
-    if (loading || !review) {
+    if (loading) {
+        return (
+            <section
+                id="resenas"
+                className="relative overflow-hidden bg-secondary/30 py-24"
+            >
+                <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <SectionHeader
+                        title="Reseñas"
+                        description="Historias reales de viajeros que vivieron experiencias únicas, auténticas e inolvidables."
+                    />
+
+                    <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+                        <div className="space-y-6">
+                            <div className="h-10 w-56 animate-pulse rounded-full bg-muted" />
+
+                            <div className="h-[320px] animate-pulse rounded-3xl bg-muted" />
+                        </div>
+
+                        <div className="h-[500px] animate-pulse rounded-3xl bg-muted" />
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    if (error || !review) {
         return null
     }
 
