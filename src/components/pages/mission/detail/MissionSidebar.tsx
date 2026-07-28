@@ -26,16 +26,27 @@ function formatCurrency(value?: number | null) {
     }).format(value)
 }
 
-function formatDate(date?: string | null) {
-    if (!date) return 'Próximamente'
+function formatDate(value?: string | null): string {
+    if (!value) return 'Próximamente'
+
+    const normalizedValue = /^\d{4}-\d{2}-\d{2}$/.test(value)
+        ? `${value}T00:00:00Z`
+        : value
+
+    const parsedDate = new Date(normalizedValue)
+
+    if (Number.isNaN(parsedDate.getTime())) {
+        console.warn('MissionSidebar recibió una fecha inválida:', value)
+        return 'Próximamente'
+    }
 
     return new Intl.DateTimeFormat('es-PE', {
         day: '2-digit',
         month: 'long',
         year: 'numeric',
-    }).format(new Date(`${date}T00:00:00`))
+        timeZone: 'UTC',
+    }).format(parsedDate)
 }
-
 function formatCountry(country?: string | null) {
     if (!country) return 'Destino por confirmar'
 
