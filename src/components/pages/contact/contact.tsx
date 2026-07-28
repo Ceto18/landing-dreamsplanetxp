@@ -25,7 +25,7 @@ export async function Contact() {
 
     return (
         <section
-            id="contacto"
+            id="contact"
             className="relative overflow-hidden bg-secondary/30 py-24"
         >
             <div className="absolute bottom-0 right-0 -mb-48 -mr-48 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />

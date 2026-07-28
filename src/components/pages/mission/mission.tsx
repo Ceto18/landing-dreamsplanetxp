@@ -12,7 +12,7 @@ type Props = {
 
 export function Mission({ missions }: Props) {
     return (
-        <section id="misiones" className="relative py-20 sm:py-24 overflow-hidden">
+        <section id="missions" className="relative py-20 sm:py-24 overflow-hidden">
             {/* Background */}
             <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -mr-48" />
             <div className="absolute top-20 left-10 w-72 h-72 bg-accent/[0.03] rounded-full blur-3xl" />

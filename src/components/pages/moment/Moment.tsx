@@ -329,7 +329,7 @@ export function Moment({
 
     return (
         <section
-            id="momentos"
+            id="moments"
             className="relative overflow-hidden bg-secondary/30 py-24"
         >
             <div className="absolute left-0 top-0 -ml-48 -mt-48 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />

@@ -1,21 +1,8 @@
-// src/components/ui/MomentComment/MomentReviewForm.tsx
-
 'use client'
 
-import {
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
-
-import type {
-    ChangeEvent,
-    FormEvent,
-} from 'react'
-
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
 import axios from 'axios'
-
 import {
     ArrowRight,
     CheckCircle2,
@@ -30,11 +17,11 @@ import {
 
 import { AnimatedCard } from '@/components/animations/animated-card'
 import { FadeUp } from '@/components/animations/fade-up'
-
 import { missionService } from '@/services/missionService'
+import { reviewService } from '@/services/reviewService'
 
 type Props = {
-    slug: string
+    slug?: string
     onSubmitted?: () => Promise<void> | void
 }
 
@@ -47,49 +34,34 @@ type UploadStage =
     | 'error'
 
 const MAX_RATING = 5
-
-/*
- * Este valor debe coincidir con el límite configurado
- * en Laravel, PHP, Nginx o el servidor donde subes videos.
- */
 const MAX_VIDEO_SIZE_MB = 200
-
-const MAX_VIDEO_SIZE_BYTES =
-    MAX_VIDEO_SIZE_MB * 1024 * 1024
+const MAX_VIDEO_SIZE_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024
 
 function formatFileSize(bytes: number) {
-    if (bytes <= 0) {
-        return '0 B'
-    }
+    if (bytes <= 0) return '0 B'
 
     const units = ['B', 'KB', 'MB', 'GB']
-
     const unitIndex = Math.min(
         Math.floor(Math.log(bytes) / Math.log(1024)),
         units.length - 1
     )
-
     const value = bytes / 1024 ** unitIndex
 
-    return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${
-        units[unitIndex]
-    }`
+    return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`
 }
 
 function getBackendErrorMessage(error: unknown) {
-    if (!axios.isAxiosError(error)) {
-        return null
-    }
+    if (!axios.isAxiosError(error)) return null
 
-    const responseData = error.response?.data
+    const data = error.response?.data
 
     if (
-        responseData &&
-        typeof responseData === 'object' &&
-        'message' in responseData &&
-        typeof responseData.message === 'string'
+        data &&
+        typeof data === 'object' &&
+        'message' in data &&
+        typeof data.message === 'string'
     ) {
-        return responseData.message
+        return data.message
     }
 
     return null
@@ -100,53 +72,33 @@ export function MomentReviewForm({
     onSubmitted,
 }: Props) {
     const videoInputRef = useRef<HTMLInputElement>(null)
-
-    const abortControllerRef =
-        useRef<AbortController | null>(null)
+    const abortControllerRef = useRef<AbortController | null>(null)
 
     const [name, setName] = useState('')
     const [comment, setComment] = useState('')
     const [rating, setRating] = useState(5)
-
-    const [videoFile, setVideoFile] =
-        useState<File | null>(null)
-
+    const [videoFile, setVideoFile] = useState<File | null>(null)
     const [submitting, setSubmitting] = useState(false)
-
-    const [uploadProgress, setUploadProgress] =
-        useState(0)
-
+    const [uploadProgress, setUploadProgress] = useState(0)
     const [uploadStage, setUploadStage] =
         useState<UploadStage>('idle')
+    const [formError, setFormError] = useState<string | null>(null)
+    const [successMessage, setSuccessMessage] =
+        useState<string | null>(null)
 
-    const [formError, setFormError] = useState<
-        string | null
-    >(null)
-
-    const [successMessage, setSuccessMessage] = useState<
-        string | null
-    >(null)
-
-    const videoPreviewUrl = useMemo(() => {
-        if (!videoFile) {
-            return null
-        }
-
-        return URL.createObjectURL(videoFile)
-    }, [videoFile])
+    const videoPreviewUrl = useMemo(
+        () => (videoFile ? URL.createObjectURL(videoFile) : null),
+        [videoFile]
+    )
 
     useEffect(() => {
         return () => {
-            if (videoPreviewUrl) {
-                URL.revokeObjectURL(videoPreviewUrl)
-            }
+            if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl)
         }
     }, [videoPreviewUrl])
 
     useEffect(() => {
-        return () => {
-            abortControllerRef.current?.abort()
-        }
+        return () => abortControllerRef.current?.abort()
     }, [])
 
     const clearVideo = () => {
@@ -173,56 +125,45 @@ export function MomentReviewForm({
     const handleVideoChange = (
         event: ChangeEvent<HTMLInputElement>
     ) => {
-        const selectedFile =
-            event.target.files?.[0] ?? null
+        const file = event.target.files?.[0] ?? null
 
         setFormError(null)
         setSuccessMessage(null)
         resetUploadState()
 
-        if (!selectedFile) {
+        if (!file) {
             setVideoFile(null)
             return
         }
 
-        if (!selectedFile.type.startsWith('video/')) {
-            setFormError(
-                'El archivo seleccionado debe ser un video.'
-            )
-
+        if (!file.type.startsWith('video/')) {
+            setFormError('El archivo seleccionado debe ser un video.')
             event.target.value = ''
             setVideoFile(null)
-
             return
         }
 
-        if (selectedFile.size > MAX_VIDEO_SIZE_BYTES) {
+        if (file.size > MAX_VIDEO_SIZE_BYTES) {
             setFormError(
-                `El video supera el límite de ${MAX_VIDEO_SIZE_MB} MB. El archivo seleccionado pesa ${formatFileSize(
-                    selectedFile.size
+                `El video supera el límite de ${MAX_VIDEO_SIZE_MB} MB. El archivo pesa ${formatFileSize(
+                    file.size
                 )}.`
             )
-
             event.target.value = ''
             setVideoFile(null)
-
             return
         }
 
-        setVideoFile(selectedFile)
+        setVideoFile(file)
     }
 
     const cancelUpload = () => {
         abortControllerRef.current?.abort()
         abortControllerRef.current = null
-
         setSubmitting(false)
         setUploadProgress(0)
         setUploadStage('idle')
-
-        setFormError(
-            'La subida del video fue cancelada.'
-        )
+        setFormError('La subida del video fue cancelada.')
     }
 
     const handleSubmit = async (
@@ -230,9 +171,7 @@ export function MomentReviewForm({
     ) => {
         event.preventDefault()
 
-        if (submitting) {
-            return
-        }
+        if (submitting) return
 
         const cleanName = name.trim()
         const cleanComment = comment.trim()
@@ -240,14 +179,6 @@ export function MomentReviewForm({
         setFormError(null)
         setSuccessMessage(null)
         setUploadProgress(0)
-
-        if (!slug) {
-            setFormError(
-                'No se pudo identificar el momento.'
-            )
-
-            return
-        }
 
         if (!cleanName) {
             setFormError('Ingresa tu nombre.')
@@ -260,51 +191,45 @@ export function MomentReviewForm({
         }
 
         if (rating < 1 || rating > MAX_RATING) {
-            setFormError(
-                'Selecciona una calificación entre 1 y 5.'
-            )
-
+            setFormError('Selecciona una calificación entre 1 y 5.')
             return
         }
 
         const controller = new AbortController()
-
         abortControllerRef.current = controller
+
+        const payload = {
+            name: cleanName,
+            comment: cleanComment,
+            rating,
+            video: videoFile,
+        }
+
+        const options = {
+            signal: controller.signal,
+            onUploadProgress: (progress: number) => {
+                setUploadProgress(progress)
+                setUploadStage(
+                    progress >= 100 ? 'processing' : 'uploading'
+                )
+            },
+        }
 
         try {
             setSubmitting(true)
             setUploadStage('preparing')
 
-            const response =
-                await missionService.createMomentReview(
-                    slug,
-                    {
-                        name: cleanName,
-                        comment: cleanComment,
-                        rating,
-                        video: videoFile,
-                    },
-                    {
-                        signal: controller.signal,
-
-                        onUploadProgress: (progress) => {
-                            setUploadProgress(progress)
-
-                            if (progress >= 100) {
-                                setUploadStage('processing')
-                                return
-                            }
-
-                            setUploadStage('uploading')
-                        },
-                    }
-                )
+            const response = slug
+                ? await missionService.createMomentReview(
+                      slug,
+                      payload,
+                      options
+                  )
+                : await reviewService.createReview(payload, options)
 
             setUploadProgress(100)
             setUploadStage('success')
-
             resetForm()
-
             setSuccessMessage(
                 response?.message ||
                     'Tu reseña fue enviada y está pendiente de aprobación.'
@@ -320,17 +245,15 @@ export function MomentReviewForm({
             }
 
             console.error(
-                `Error publicando reseña del momento ${slug}:`,
+                slug
+                    ? `Error publicando reseña del momento ${slug}:`
+                    : 'Error publicando reseña general:',
                 error
             )
 
             setUploadStage('error')
-
-            const backendMessage =
-                getBackendErrorMessage(error)
-
             setFormError(
-                backendMessage ||
+                getBackendErrorMessage(error) ||
                     'No se pudo enviar tu reseña. Verifica el tamaño del video e inténtalo nuevamente.'
             )
         } finally {
@@ -339,49 +262,32 @@ export function MomentReviewForm({
         }
     }
 
-    const uploadStageText = (() => {
-        switch (uploadStage) {
-            case 'preparing':
-                return 'Preparando los datos...'
-
-            case 'uploading':
-                return videoFile
-                    ? `Subiendo video: ${uploadProgress}%`
-                    : 'Enviando reseña...'
-
-            case 'processing':
-                return 'Procesando...'
-
-            case 'success':
-                return 'Reseña enviada correctamente.'
-
-            case 'error':
-                return 'Ocurrió un error durante el envío.'
-
-            default:
-                return ''
-        }
-    })()
+    const uploadStageText = {
+        idle: '',
+        preparing: 'Preparando los datos...',
+        uploading: videoFile
+            ? `Subiendo video: ${uploadProgress}%`
+            : 'Enviando reseña...',
+        processing: 'Procesando...',
+        success: 'Reseña enviada correctamente.',
+        error: 'Ocurrió un error durante el envío.',
+    }[uploadStage]
 
     return (
         <FadeUp delay={0.1}>
-            <AnimatedCard className="rounded-3xl border border-border/60 bg-card/50 p-6 shadow-2xl sm:p-8 lg:sticky lg:top-28">
+            <AnimatedCard className="rounded-3xl border border-border/60 bg-card/50 p-6 shadow-2xl sm:p-8">
                 <div className="mb-6">
                     <h4 className="text-xl font-bold text-foreground">
                         Comparte tu experiencia
                     </h4>
 
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                        Tu comentario será revisado antes de
-                        aparecer públicamente.
+                        Tu reseña será revisada antes de aparecer
+                        públicamente.
                     </p>
                 </div>
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-5"
-                >
-                    {/* Nombre */}
+                <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="space-y-2">
                         <label
                             htmlFor="reviewName"
@@ -404,41 +310,38 @@ export function MomentReviewForm({
                         />
                     </div>
 
-                    {/* Calificación */}
                     <div className="space-y-2">
                         <span className="text-sm font-semibold text-foreground">
                             Calificación
                         </span>
 
                         <div className="flex flex-wrap items-center gap-2">
-                            {Array.from({
-                                length: MAX_RATING,
-                            }).map((_, index) => {
-                                const value = index + 1
-                                const active =
-                                    value <= rating
+                            {Array.from({ length: MAX_RATING }).map(
+                                (_, index) => {
+                                    const value = index + 1
 
-                                return (
-                                    <button
-                                        key={value}
-                                        type="button"
-                                        disabled={submitting}
-                                        onClick={() =>
-                                            setRating(value)
-                                        }
-                                        aria-label={`Calificar con ${value} estrellas`}
-                                        className="rounded-lg p-1 transition-transform hover:scale-110 disabled:cursor-not-allowed disabled:opacity-60"
-                                    >
-                                        <Star
-                                            className={`h-7 w-7 transition-colors ${
-                                                active
-                                                    ? 'fill-accent text-accent'
-                                                    : 'text-muted-foreground/30 hover:text-accent/60'
-                                            }`}
-                                        />
-                                    </button>
-                                )
-                            })}
+                                    return (
+                                        <button
+                                            key={value}
+                                            type="button"
+                                            disabled={submitting}
+                                            onClick={() =>
+                                                setRating(value)
+                                            }
+                                            aria-label={`Calificar con ${value} estrellas`}
+                                            className="rounded-lg p-1 transition-transform hover:scale-110 disabled:cursor-not-allowed disabled:opacity-60"
+                                        >
+                                            <Star
+                                                className={`h-7 w-7 transition-colors ${
+                                                    value <= rating
+                                                        ? 'fill-accent text-accent'
+                                                        : 'text-muted-foreground/30 hover:text-accent/60'
+                                                }`}
+                                            />
+                                        </button>
+                                    )
+                                }
+                            )}
 
                             <span className="ml-2 text-sm font-semibold text-accent">
                                 {rating}/5
@@ -446,7 +349,6 @@ export function MomentReviewForm({
                         </div>
                     </div>
 
-                    {/* Comentario */}
                     <div className="space-y-2">
                         <label
                             htmlFor="reviewComment"
@@ -469,7 +371,6 @@ export function MomentReviewForm({
                         />
                     </div>
 
-                    {/* Video */}
                     <div className="space-y-3">
                         <div className="flex items-center justify-between gap-3">
                             <span className="text-sm font-semibold text-foreground">
@@ -554,25 +455,17 @@ export function MomentReviewForm({
                                     preload="metadata"
                                     playsInline
                                     className="max-h-72 w-full bg-black object-contain"
-                                >
-                                    Tu navegador no puede reproducir
-                                    este video.
-                                </video>
+                                />
                             </div>
                         )}
                     </div>
 
-                    {/* Progreso de subida */}
                     {submitting && (
-                        <div
-                            className="overflow-hidden rounded-2xl border border-accent/30 bg-accent/[0.05] p-4"
-                            aria-live="polite"
-                        >
+                        <div className="overflow-hidden rounded-2xl border border-accent/30 bg-accent/[0.05] p-4">
                             <div className="flex items-center justify-between gap-4">
                                 <div className="flex min-w-0 items-center gap-3">
                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
-                                        {uploadStage ===
-                                        'processing' ? (
+                                        {uploadStage === 'processing' ? (
                                             <LoaderCircle className="h-5 w-5 animate-spin text-accent" />
                                         ) : (
                                             <Upload className="h-5 w-5 text-accent" />
@@ -586,8 +479,7 @@ export function MomentReviewForm({
 
                                         {videoFile && (
                                             <p className="mt-1 truncate text-xs text-muted-foreground">
-                                                {videoFile.name}
-                                                {' · '}
+                                                {videoFile.name} ·{' '}
                                                 {formatFileSize(
                                                     videoFile.size
                                                 )}
@@ -601,16 +493,9 @@ export function MomentReviewForm({
                                 </span>
                             </div>
 
-                            <div
-                                className="mt-4 h-2.5 overflow-hidden rounded-full bg-border/70"
-                                role="progressbar"
-                                aria-valuemin={0}
-                                aria-valuemax={100}
-                                aria-valuenow={uploadProgress}
-                                aria-label="Progreso de subida"
-                            >
+                            <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-border/70">
                                 <div
-                                    className="h-full rounded-full bg-accent transition-[width] duration-300 ease-out"
+                                    className="h-full rounded-full bg-accent transition-[width] duration-300"
                                     style={{
                                         width: `${uploadProgress}%`,
                                     }}
@@ -635,29 +520,19 @@ export function MomentReviewForm({
                         </div>
                     )}
 
-                    {/* Mensaje de error */}
                     {formError && (
-                        <div
-                            className="rounded-xl border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500"
-                            role="alert"
-                        >
+                        <div className="rounded-xl border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500">
                             {formError}
                         </div>
                     )}
 
-                    {/* Mensaje exitoso */}
                     {successMessage && (
-                        <div
-                            className="flex items-start gap-3 rounded-xl border border-green-500/30 bg-green-500/5 px-4 py-3 text-sm text-green-600"
-                            role="status"
-                        >
+                        <div className="flex items-start gap-3 rounded-xl border border-green-500/30 bg-green-500/5 px-4 py-3 text-sm text-green-600">
                             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
-
                             <span>{successMessage}</span>
                         </div>
                     )}
 
-                    {/* Botón */}
                     <button
                         type="submit"
                         disabled={submitting}
@@ -666,7 +541,6 @@ export function MomentReviewForm({
                         {submitting ? (
                             <>
                                 <LoaderCircle className="h-5 w-5 animate-spin" />
-
                                 {uploadStage === 'processing'
                                     ? 'Procesando reseña...'
                                     : videoFile
@@ -675,7 +549,7 @@ export function MomentReviewForm({
                             </>
                         ) : (
                             <>
-                                Publicar comentario
+                                Publicar reseña
                                 <ArrowRight className="h-5 w-5" />
                             </>
                         )}

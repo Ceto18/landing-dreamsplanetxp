@@ -329,7 +329,7 @@ export function Team() {
 
     return (
         <section
-            id="equipo"
+            id="team"
             className="relative overflow-hidden py-24"
         >
             <div className="absolute bottom-0 right-0 -mb-48 -mr-48 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />

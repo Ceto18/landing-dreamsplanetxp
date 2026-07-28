@@ -17,7 +17,7 @@ export async function About() {
 
     return (
         <section
-            id="quienes-somos"
+            id="about"
             className="relative overflow-hidden py-24"
         >
             {/* Background decoration */}

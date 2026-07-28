@@ -1,5 +1,3 @@
-// src/components/ui/MomentComment/MomentComments.tsx
-
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
@@ -21,10 +19,9 @@ type Props = {
 export function MomentComments({ slug }: Props) {
     const [reviews, setReviews] = useState<MomentReview[]>([])
     const [loadingReviews, setLoadingReviews] = useState(true)
-
-    const [reviewsError, setReviewsError] = useState<
-        string | null
-    >(null)
+    const [reviewsError, setReviewsError] = useState<string | null>(
+        null
+    )
 
     const loadReviews = useCallback(async () => {
         if (!slug) {
@@ -33,10 +30,10 @@ export function MomentComments({ slug }: Props) {
             return
         }
 
-        setLoadingReviews(true)
-        setReviewsError(null)
-
         try {
+            setLoadingReviews(true)
+            setReviewsError(null)
+
             const response =
                 await missionService.getMomentReviews(slug, {
                     page: 1,
@@ -76,7 +73,7 @@ export function MomentComments({ slug }: Props) {
                     </p>
 
                     <h3 className="mt-3 text-3xl font-bold text-foreground">
-                        Comentarios
+                        Valoraciones
                     </h3>
 
                     <p className="mt-2 max-w-2xl text-muted-foreground">

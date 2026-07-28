@@ -1,141 +1,126 @@
 export type Review = {
     id: number
-    slug: string
-    quote: string
-    traveler: string
-    mission: string
-    rating: number
-    title: string
-    date: string
+    name: string
     location: string
-    experience: string
-    highlights: string[]
+    comment: string
+    rating: number
+    missionName: string
+    momentName: string
+    momentSlug: string
+    videoUrl?: string | null
+    imageUrl?: string | null
+    createdAt: string
 }
 
-export type ReviewMetric = {
-    label: string
-    value: string
+export type ReviewMomentOption = {
+    title: string
+    slug: string
 }
 
-export const reviews: Review[] = [
+const reviews: Review[] = [
     {
         id: 1,
-        slug: 'maria-gonzalez-marruecos',
-        quote: 'Una experiencia que transformó mi forma de viajar. Cada detalle fue perfecto.',
-        traveler: 'María González',
-        mission: 'Marruecos',
+        name: 'María Fernández',
+        location: 'Madrid, España',
+        comment:
+            'Una experiencia inolvidable. La organización y el acompañamiento superaron mis expectativas.',
         rating: 5,
-        title: 'Increíble',
-        date: 'Abril 2025',
-        location: 'Marruecos',
-        experience:
-            'Desde el primer día sentí que todo estaba organizado con mucho cuidado. Los paisajes, la cultura, la comida y el acompañamiento hicieron que el viaje fuera una experiencia muy especial.',
-        highlights: [
-            'Acompañamiento constante durante la misión',
-            'Itinerario bien organizado',
-            'Experiencias culturales auténticas',
-            'Guías atentos y profesionales',
-        ],
+        missionName: 'Misión Islandia',
+        momentName: 'Auroras boreales',
+        momentSlug: 'auroras-boreales',
+        imageUrl: '/reviews/review-1.jpg',
+        videoUrl: null,
+        createdAt: '2026-06-18',
     },
     {
         id: 2,
-        slug: 'carlos-rodriguez-vietnam',
-        quote: 'Los guías fueron excepcionales, la comida deliciosa, y los momentos inolvidables.',
-        traveler: 'Carlos Rodríguez',
-        mission: 'Vietnam',
+        name: 'Carlos Mendoza',
+        location: 'Lima, Perú',
+        comment:
+            'Cada momento estuvo cuidadosamente preparado. Fue una experiencia distinta y muy especial.',
         rating: 5,
-        title: 'Recomendado',
-        date: 'Julio 2025',
-        location: 'Vietnam',
-        experience:
-            'Vietnam fue una misión llena de aprendizajes y momentos únicos. Cada actividad estuvo pensada para conectar con la cultura local y disfrutar el destino con tranquilidad.',
-        highlights: [
-            'Excelente atención de los guías',
-            'Gastronomía local memorable',
-            'Actividades bien planificadas',
-            'Ambiente seguro y organizado',
-        ],
+        missionName: 'Misión Australia',
+        momentName: 'Australian Camp',
+        momentSlug: 'australian-camp',
+        imageUrl: '/reviews/review-2.jpg',
+        videoUrl: null,
+        createdAt: '2026-05-12',
     },
     {
         id: 3,
-        slug: 'ana-martinez-tailandia',
-        quote: 'Superó todas mis expectativas. Volvería en un segundo.',
-        traveler: 'Ana Martínez',
-        mission: 'Tailandia',
-        rating: 5,
-        title: 'Perfecto',
-        date: 'Agosto 2025',
-        location: 'Tailandia',
-        experience:
-            'La misión combinó aventura, descanso y cultura de una manera increíble. Me sentí acompañada en todo momento y pude disfrutar sin preocuparme por la organización.',
-        highlights: [
-            'Destino lleno de energía y cultura',
-            'Buena coordinación del equipo',
-            'Experiencias visualmente increíbles',
-            'Momentos ideales para conectar con otros viajeros',
-        ],
-    },
-    {
-        id: 4,
-        slug: 'juan-perez-japon',
-        quote: 'La mejor inversión que he hecho en mi vida. Gracias por todo.',
-        traveler: 'Juan Pérez',
-        mission: 'Japón',
-        rating: 5,
-        title: 'Vida Cambiada',
-        date: 'Octubre 2025',
-        location: 'Japón',
-        experience:
-            'Japón fue una experiencia que me marcó. La mezcla entre tradición, tecnología, orden y cultura hizo que cada día se sintiera diferente e inolvidable.',
-        highlights: [
-            'Experiencia cultural profunda',
-            'Itinerario variado y ordenado',
-            'Excelente manejo de tiempos',
-            'Acompañamiento profesional',
-        ],
-    },
-    {
-        id: 5,
-        slug: 'isabel-sanchez-nepal',
-        quote: 'Profesionalismo, seguridad y diversión garantizados en cada paso del camino.',
-        traveler: 'Isabel Sánchez',
-        mission: 'Nepal',
-        rating: 5,
-        title: 'Excelencia',
-        date: 'Noviembre 2025',
-        location: 'Nepal',
-        experience:
-            'Nepal fue una misión llena de paisajes, aprendizaje y conexión personal. La organización permitió vivir la aventura con confianza y seguridad.',
-        highlights: [
-            'Paisajes impresionantes',
-            'Sensación de seguridad durante el viaje',
-            'Equipo humano muy atento',
-            'Experiencia espiritual y cultural',
-        ],
+        name: 'Lucía Romero',
+        location: 'Barcelona, España',
+        comment:
+            'Me llevo recuerdos increíbles, nuevas amistades y muchas ganas de volver a viajar con ellos.',
+        rating: 4,
+        missionName: 'Misión Marruecos',
+        momentName: 'Atardecer en el desierto',
+        momentSlug: 'atardecer-en-el-desierto',
+        imageUrl: '/reviews/review-3.jpg',
+        videoUrl: '/reviews/videos/australian-camp.mp4',
+        createdAt: '2026-04-25',
     },
 ]
 
-export const reviewMetrics: ReviewMetric[] = [
-    { label: 'Viajeros Satisfechos', value: '500+' },
-    { label: 'Destinos Explorados', value: '6' },
-    { label: 'Calificación Promedio', value: '4.9★' },
-    { label: 'Años de Experiencia', value: '5' },
+export const reviewMomentOptions: ReviewMomentOption[] = [
+    {
+        title: 'Auroras boreales',
+        slug: 'auroras-boreales',
+    },
+    {
+        title: 'Australian Camp',
+        slug: 'australian-camp',
+    },
+    {
+        title: 'Atardecer en el desierto',
+        slug: 'atardecer-en-el-desierto',
+    },
 ]
 
-export function getAllReviews() {
+export function getAllReviews(): Review[] {
     return reviews
 }
 
-export function getFeaturedReviews(limit = 5) {
-    return reviews.slice(0, limit)
-}
+const totalReviews = reviews.length
 
-export function getReviewBySlug(slug: string) {
-    return reviews.find((review) => review.slug === slug)
-}
+const averageRating =
+    totalReviews > 0
+        ? reviews.reduce(
+              (total, review) => total + review.rating,
+              0
+          ) / totalReviews
+        : 0
 
-export function getRelatedReviews(currentSlug: string, limit = 3) {
-    return reviews
-        .filter((review) => review.slug !== currentSlug)
-        .slice(0, limit)
-}
+const fiveStarReviews = reviews.filter(
+    (review) => review.rating === 5
+).length
+
+const satisfactionPercentage =
+    totalReviews > 0
+        ? Math.round(
+              (fiveStarReviews / totalReviews) * 100
+          )
+        : 0
+
+const uniqueMoments = new Set(
+    reviews.map((review) => review.momentSlug)
+).size
+
+export const reviewMetrics = [
+    {
+        label: 'Reseñas publicadas',
+        value: totalReviews,
+    },
+    {
+        label: 'Valoración promedio',
+        value: `${averageRating.toFixed(1)}/5`,
+    },
+    {
+        label: 'Momentos valorados',
+        value: uniqueMoments,
+    },
+    {
+        label: 'Satisfacción',
+        value: `${satisfactionPercentage}%`,
+    },
+]

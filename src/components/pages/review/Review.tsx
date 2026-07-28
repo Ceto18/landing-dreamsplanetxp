@@ -1,13 +1,16 @@
 'use client'
 
+import Link from 'next/link'
 import {
     useEffect,
     useRef,
     useState,
 } from 'react'
+import { ArrowRight } from 'lucide-react'
 
 import { FadeUp } from '@/components/animations/fade-up'
 import { SectionHeader } from '@/components/animations/section-header'
+
 import {
     reviewService,
     type HomeReview,
@@ -181,7 +184,7 @@ export function Review() {
     if (loading) {
         return (
             <section
-                id="resenas"
+                id="review"
                 className="relative overflow-hidden bg-secondary/30 py-24"
             >
                 <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -205,12 +208,35 @@ export function Review() {
     }
 
     if (error || !review) {
-        return null
+        return (
+            <section
+                id="review"
+                className="relative overflow-hidden bg-secondary/30 py-24"
+            >
+                <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <SectionHeader
+                        title="Reseñas"
+                        description="Historias reales de viajeros que vivieron experiencias únicas, auténticas e inolvidables."
+                    />
+
+                    <div className="mx-auto max-w-2xl rounded-3xl border border-border/60 bg-card/50 p-8 text-center shadow-xl">
+                        <p className="text-lg font-semibold text-foreground">
+                            Aún no hay reseñas disponibles
+                        </p>
+
+                        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                            Muy pronto podrás conocer las experiencias compartidas por nuestros viajeros.
+                        </p>
+
+                    </div>
+                </div>
+            </section>
+        )
     }
 
     return (
         <section
-            id="resenas"
+            id="review"
             className="relative overflow-hidden bg-secondary/30 py-24"
         >
             {/* Background decoration */}
@@ -236,9 +262,7 @@ export function Review() {
                         <ReviewMainCard
                             review={review}
                             activeIndex={activeIndex}
-                            totalReviews={
-                                reviews.length
-                            }
+                            totalReviews={reviews.length}
                         />
 
                         <ReviewNavigation
@@ -276,6 +300,31 @@ export function Review() {
                         />
                     </div>
                 </div>
+
+                {/* Botón para ver todas las reseñas */}
+                <FadeUp delay={0.2}>
+                    <div className="mt-14 flex justify-center">
+                        <Link
+                            href="/review"
+                            className="
+                                group inline-flex items-center justify-center
+                                gap-2 rounded-xl border border-accent/50
+                                bg-accent/10 px-6 py-3
+                                text-sm font-semibold text-accent
+                                no-underline transition-all duration-300
+                                hover:border-accent
+                                hover:bg-accent
+                                hover:text-accent-foreground
+                                hover:shadow-lg
+                                hover:shadow-accent/20
+                            "
+                        >
+                            Ver más reseñas
+
+                            <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                        </Link>
+                    </div>
+                </FadeUp>
             </div>
         </section>
     )
