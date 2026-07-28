@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { companyService } from '@/services/companyService'
 
@@ -33,7 +33,10 @@ export function Header() {
                 const image = await companyService.getCompanyImage()
                 setCompanyImage(image)
             } catch (error) {
-                console.error('Error al cargar la imagen de la empresa:', error)
+                console.error(
+                    'Error al cargar la imagen de la empresa:',
+                    error,
+                )
             }
         }
 
@@ -41,62 +44,117 @@ export function Header() {
     }, [])
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 50)
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50)
+        }
 
         handleScroll()
 
         window.addEventListener('scroll', handleScroll)
 
-        return () => window.removeEventListener('scroll', handleScroll)
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+        }
     }, [])
 
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden'
-        } else {
-            document.body.style.overflow = ''
-        }
+        document.body.style.overflow = isOpen ? 'hidden' : ''
 
         return () => {
             document.body.style.overflow = ''
         }
     }, [isOpen])
 
-    const handleNavClick = (href: string) => {
-        setActiveLink(href)
-        setIsOpen(false)
-
-        if (href.startsWith('#')) {
-            if (pathname !== '/') {
-                router.push('/' + href)
-            } else {
-                const el = document.querySelector(href)
-
-                if (el) {
-                    el.scrollIntoView({
-                        behavior: 'smooth',
-                    })
-                }
-            }
-
+    useEffect(() => {
+        if (!isHome) {
+            setActiveLink('')
             return
         }
 
-        router.push(href)
+        const hash = window.location.hash
+
+        if (!hash) {
+            setActiveLink('')
+            return
+        }
+
+        setActiveLink(hash)
+
+        const timeout = window.setTimeout(() => {
+            const element = document.querySelector(hash)
+
+            element?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            })
+        }, 100)
+
+        return () => {
+            window.clearTimeout(timeout)
+        }
+    }, [isHome])
+
+    const handleNavClick = (href: string) => {
+        setIsOpen(false)
+
+        if (!href.startsWith('#')) {
+            setActiveLink('')
+            router.push(href)
+            return
+        }
+
+        setActiveLink(href)
+
+        /*
+         * Si estamos en otra página, navegamos al inicio
+         * incluyendo solamente un hash.
+         *
+         * Resultado: /#contacto
+         */
+        if (pathname !== '/') {
+            router.push(`/${href}`)
+            return
+        }
+
+        /*
+         * Si ya estamos en el inicio, actualizamos la URL
+         * y desplazamos hacia la sección.
+         */
+        const element = document.querySelector(href)
+
+        if (!element) return
+
+        window.history.replaceState(
+            null,
+            '',
+            `${window.location.pathname}${href}`,
+        )
+
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        })
     }
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 shadow-sm ${isHome && !isScrolled
-                    ? 'lg:bg-transparent bg-[#0b0b0b]'
+            className={`fixed top-0 right-0 left-0 z-50 border-b border-white/10 shadow-sm transition-all duration-300 ${isHome && !isScrolled
+                    ? 'bg-[#0b0b0b] lg:bg-transparent'
                     : 'bg-[#0b0b0b]'
                 }`}
         >
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="flex items-center justify-between h-24">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                <div className="flex h-24 items-center justify-between">
                     {/* LOGO */}
-                    <Link href="/" className="flex items-center gap-4 group">
-                        <div className="relative w-14 h-14 overflow-hidden">
+                    <Link
+                        href="/"
+                        onClick={() => {
+                            setActiveLink('')
+                            setIsOpen(false)
+                        }}
+                        className="group flex items-center gap-4"
+                    >
+                        <div className="relative h-14 w-14 overflow-hidden">
                             {companyImage && (
                                 <Image
                                     src={companyImage}
@@ -123,24 +181,28 @@ export function Header() {
                         </div>
                     </Link>
 
-                    {/* NAV DESKTOP */}
-                    <nav className="hidden lg:flex items-center gap-10">
+                    {/* NAVEGACIÓN DE ESCRITORIO */}
+                    <nav className="hidden items-center gap-10 lg:flex">
                         {navigation.map((item) => {
-                            const isActive = activeLink === item.href
+                            const isActive =
+                                activeLink === item.href
 
                             return (
                                 <button
                                     key={item.name}
-                                    onClick={() => handleNavClick(item.href)}
-                                    className={`relative text-base font-semibold transition-colors duration-300 ${isActive
+                                    type="button"
+                                    onClick={() =>
+                                        handleNavClick(item.href)
+                                    }
+                                    className={`group relative text-base font-semibold transition-colors duration-300 ${isActive
                                             ? 'text-accent'
                                             : 'text-muted-foreground hover:text-foreground'
-                                        } group`}
+                                        }`}
                                 >
                                     {item.name}
 
                                     <span
-                                        className={`absolute left-0 -bottom-1 h-[2px] bg-accent transition-all duration-300 ${isActive
+                                        className={`absolute -bottom-1 left-0 h-[2px] bg-accent transition-all duration-300 ${isActive
                                                 ? 'w-full'
                                                 : 'w-0 group-hover:w-full'
                                             }`}
@@ -150,74 +212,99 @@ export function Header() {
                         })}
                     </nav>
 
-                    {/* CTA + MOBILE */}
+                    {/* CTA Y BOTÓN MÓVIL */}
                     <div className="flex items-center gap-4">
-                        <Link
-                            href="#contacto"
-                            onClick={() => handleNavClick('#contacto')}
-                            className="hidden sm:inline-flex px-6 py-2.5 text-base font-semibold bg-accent text-background rounded-lg hover:opacity-90 transition-all duration-300"
+                        <button
+                            type="button"
+                            onClick={() =>
+                                handleNavClick('#contacto')
+                            }
+                            className="hidden rounded-lg bg-accent px-6 py-2.5 text-base font-semibold text-background transition-all duration-300 hover:opacity-90 sm:inline-flex"
                         >
                             Reservar ahora
-                        </Link>
+                        </button>
 
                         <button
                             type="button"
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="lg:hidden p-2 text-foreground"
+                            aria-label={
+                                isOpen
+                                    ? 'Cerrar menú'
+                                    : 'Abrir menú'
+                            }
+                            onClick={() =>
+                                setIsOpen((previous) => !previous)
+                            }
+                            className="p-2 text-foreground lg:hidden"
                         >
                             {isOpen ? (
-                                <X className="w-7 h-7" />
+                                <X className="h-7 w-7" />
                             ) : (
-                                <Menu className="w-7 h-7" />
+                                <Menu className="h-7 w-7" />
                             )}
                         </button>
                     </div>
                 </div>
             </div>
 
+            {/* FONDO DEL MENÚ MÓVIL */}
             {isOpen && (
-                <div
+                <button
+                    type="button"
+                    aria-label="Cerrar menú"
                     className="fixed inset-0 z-40 bg-black/80"
                     onClick={() => setIsOpen(false)}
                 />
             )}
 
+            {/* MENÚ MÓVIL */}
             <div
-                className={`fixed top-0 right-0 h-full w-[80%] max-w-sm z-50
-                bg-[#0b0b0b] border-l border-white/10 shadow-2xl
-                transform transition-transform duration-300 ${isOpen
+                className={`fixed top-0 right-0 z-50 h-full w-[80%] max-w-sm transform border-l border-white/10 bg-[#0b0b0b] shadow-2xl transition-transform duration-300 ${isOpen
                         ? 'translate-x-0'
                         : 'translate-x-full'
                     }`}
             >
-                <div className="flex items-center justify-between px-6 h-24 border-b border-white/10">
+                <div className="flex h-24 items-center justify-between border-b border-white/10 px-6">
                     <span className="font-bold text-white">
                         Menú
                     </span>
 
                     <button
                         type="button"
+                        aria-label="Cerrar menú"
                         onClick={() => setIsOpen(false)}
                     >
-                        <X className="w-6 h-6 text-white" />
+                        <X className="h-6 w-6 text-white" />
                     </button>
                 </div>
 
-                <nav className="px-6 py-6 space-y-2">
-                    {navigation.map((item) => (
-                        <button
-                            key={item.name}
-                            onClick={() => handleNavClick(item.href)}
-                            className="block w-full text-left py-3 text-gray-300 hover:text-white transition"
-                        >
-                            {item.name}
-                        </button>
-                    ))}
+                <nav className="space-y-2 px-6 py-6">
+                    {navigation.map((item) => {
+                        const isActive =
+                            activeLink === item.href
+
+                        return (
+                            <button
+                                key={item.name}
+                                type="button"
+                                onClick={() =>
+                                    handleNavClick(item.href)
+                                }
+                                className={`block w-full py-3 text-left transition ${isActive
+                                        ? 'text-accent'
+                                        : 'text-gray-300 hover:text-white'
+                                    }`}
+                            >
+                                {item.name}
+                            </button>
+                        )
+                    })}
 
                     <button
                         type="button"
-                        onClick={() => handleNavClick('#contacto')}
-                        className="w-full mt-6 px-4 py-3 bg-accent text-black rounded-lg"
+                        onClick={() =>
+                            handleNavClick('#contacto')
+                        }
+                        className="mt-6 w-full rounded-lg bg-accent px-4 py-3 font-semibold text-black"
                     >
                         Reservar ahora
                     </button>

@@ -208,8 +208,8 @@ export function ContactForm({
          * MISIÓN
          */
         if (
-            formData.mision ===
-            'asesoramiento'
+            !formData.mision ||
+            formData.mision === 'asesoramiento'
         ) {
             setErrorMessage(
                 'Selecciona una misión y una experiencia para enviar la solicitud.'
@@ -232,16 +232,16 @@ export function ContactForm({
         /*
          * VIAJEROS
          *
-         * formData.viajeros sigue siendo string.
-         * Aquí recién lo convertimos a number.
+         * Se convierte temporalmente a número
+         * solamente para validarlo.
          */
-        const passengers = Number(
+        const passengersNumber = Number(
             formData.viajeros
         )
 
         if (
-            !Number.isInteger(passengers) ||
-            passengers <= 0
+            !Number.isInteger(passengersNumber) ||
+            passengersNumber <= 0
         ) {
             setErrorMessage(
                 'Ingresa una cantidad válida de viajeros.'
@@ -249,6 +249,15 @@ export function ContactForm({
 
             return
         }
+
+        /*
+         * El backend espera passengers como string:
+         *
+         * "passengers": "15"
+         */
+        const passengers = String(
+            passengersNumber
+        )
 
         try {
             setSubmitting(true)
@@ -279,7 +288,7 @@ export function ContactForm({
 
             setSuccessMessage(
                 response.message ||
-                    '¡Gracias! Tu solicitud fue enviada correctamente.'
+                '¡Gracias! Tu solicitud fue enviada correctamente.'
             )
 
             setFormData(
@@ -334,16 +343,10 @@ export function ContactForm({
                             id="nombre"
                             type="text"
                             name="nombre"
-                            value={
-                                formData.nombre
-                            }
-                            onChange={
-                                handleChange
-                            }
+                            value={formData.nombre}
+                            onChange={handleChange}
                             required
-                            disabled={
-                                submitting
-                            }
+                            disabled={submitting}
                             placeholder="Tu nombre"
                             className="w-full rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                         />
@@ -362,16 +365,10 @@ export function ContactForm({
                             id="email"
                             type="email"
                             name="email"
-                            value={
-                                formData.email
-                            }
-                            onChange={
-                                handleChange
-                            }
+                            value={formData.email}
+                            onChange={handleChange}
                             required
-                            disabled={
-                                submitting
-                            }
+                            disabled={submitting}
                             placeholder="tu@email.com"
                             className="w-full rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                         />
@@ -447,18 +444,12 @@ export function ContactForm({
                                 id="viajeros"
                                 type="number"
                                 name="viajeros"
-                                value={
-                                    formData.viajeros
-                                }
-                                onChange={
-                                    handleChange
-                                }
+                                value={formData.viajeros}
+                                onChange={handleChange}
                                 required
                                 min={1}
                                 step={1}
-                                disabled={
-                                    submitting
-                                }
+                                disabled={submitting}
                                 placeholder="Ej. 2"
                                 className="w-full rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                             />
@@ -478,16 +469,10 @@ export function ContactForm({
                             <select
                                 id="mision"
                                 name="mision"
-                                value={
-                                    formData.mision
-                                }
-                                onChange={
-                                    handleChange
-                                }
+                                value={formData.mision}
+                                onChange={handleChange}
                                 required
-                                disabled={
-                                    submitting
-                                }
+                                disabled={submitting}
                                 className="w-full cursor-pointer appearance-none rounded-lg border border-border/70 bg-background px-4 py-3 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 <option value="">
@@ -495,27 +480,18 @@ export function ContactForm({
                                 </option>
 
                                 {missions.map(
-                                    (
-                                        mission
-                                    ) => (
+                                    (mission) => (
                                         <option
-                                            key={
-                                                mission.slug
-                                            }
-                                            value={
-                                                mission.slug
-                                            }
+                                            key={mission.slug}
+                                            value={mission.slug}
                                         >
-                                            {
-                                                mission.name
-                                            }
+                                            {mission.name}
                                         </option>
                                     )
                                 )}
 
                                 <option value="asesoramiento">
-                                    No sé, quiero
-                                    asesoramiento
+                                    No sé, quiero asesoramiento
                                 </option>
                             </select>
                         </div>
@@ -532,15 +508,9 @@ export function ContactForm({
                             <select
                                 id="experiencia"
                                 name="experiencia"
-                                value={
-                                    formData.experiencia
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required={
-                                    hasSelectedMission
-                                }
+                                value={formData.experiencia}
+                                onChange={handleChange}
+                                required={hasSelectedMission}
                                 disabled={
                                     !hasSelectedMission ||
                                     loadingExperiences ||
@@ -552,28 +522,19 @@ export function ContactForm({
                                     {loadingExperiences
                                         ? 'Cargando experiencias...'
                                         : !hasSelectedMission
-                                          ? 'Selecciona una misión'
-                                          : experiences.length ===
-                                              0
-                                            ? 'No hay experiencias disponibles'
-                                            : 'Selecciona una experiencia'}
+                                            ? 'Selecciona una misión'
+                                            : experiences.length === 0
+                                                ? 'No hay experiencias disponibles'
+                                                : 'Selecciona una experiencia'}
                                 </option>
 
                                 {experiences.map(
-                                    (
-                                        experience
-                                    ) => (
+                                    (experience) => (
                                         <option
-                                            key={
-                                                experience.slug
-                                            }
-                                            value={
-                                                experience.slug
-                                            }
+                                            key={experience.slug}
+                                            value={experience.slug}
                                         >
-                                            {
-                                                experience.name
-                                            }
+                                            {experience.name}
                                         </option>
                                     )
                                 )}
@@ -593,16 +554,10 @@ export function ContactForm({
                         <textarea
                             id="mensaje"
                             name="mensaje"
-                            value={
-                                formData.mensaje
-                            }
-                            onChange={
-                                handleChange
-                            }
+                            value={formData.mensaje}
+                            onChange={handleChange}
                             rows={4}
-                            disabled={
-                                submitting
-                            }
+                            disabled={submitting}
                             placeholder="Cuéntanos sobre tu viaje soñado..."
                             className="w-full resize-none rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                         />
@@ -615,15 +570,15 @@ export function ContactForm({
                             submitting
                                 ? undefined
                                 : {
-                                      scale: 1.01,
-                                  }
+                                    scale: 1.01,
+                                }
                         }
                         whileTap={
                             submitting
                                 ? undefined
                                 : {
-                                      scale: 0.98,
-                                  }
+                                    scale: 0.98,
+                                }
                         }
                         disabled={
                             submitting ||
@@ -655,9 +610,7 @@ export function ContactForm({
                                 }}
                                 className="text-center text-sm font-semibold text-accent"
                             >
-                                {
-                                    successMessage
-                                }
+                                {successMessage}
                             </motion.p>
                         )}
 
@@ -678,9 +631,7 @@ export function ContactForm({
                                 }}
                                 className="text-center text-sm font-semibold text-red-500"
                             >
-                                {
-                                    errorMessage
-                                }
+                                {errorMessage}
                             </motion.p>
                         )}
                     </AnimatePresence>

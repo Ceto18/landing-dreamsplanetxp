@@ -101,16 +101,18 @@ export function ReservationForm({
         /*
          * PASAJEROS
          *
-         * travelers se mantiene como string en el estado,
-         * y aquí se convierte a number.
+         * Se convierte temporalmente a número
+         * únicamente para validarlo.
          */
-        const passengers = Number(
+        const passengersNumber = Number(
             travelers
         )
 
         if (
-            !Number.isInteger(passengers) ||
-            passengers <= 0
+            !Number.isInteger(
+                passengersNumber
+            ) ||
+            passengersNumber <= 0
         ) {
             setErrorMessage(
                 'Ingresa una cantidad válida de viajeros.'
@@ -118,6 +120,15 @@ export function ReservationForm({
 
             return
         }
+
+        /*
+         * El backend espera el valor como string:
+         *
+         * "passengers": "15"
+         */
+        const passengers = String(
+            passengersNumber
+        )
 
         try {
             setSubmitting(true)

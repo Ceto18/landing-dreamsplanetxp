@@ -6,13 +6,14 @@ export type CreateReservationPayload = {
     email: string
     phone: string
     message: string
-    passengers: number
+    passengers: string
 }
 
 export type CreateReservationResponse = {
     success: boolean
     message: string
     data?: unknown
+    errors?: Record<string, string[]>
 }
 
 export const reservationService = {
@@ -22,7 +23,12 @@ export const reservationService = {
         const response =
             await api.post<CreateReservationResponse>(
                 '/public/reservations',
-                payload
+                {
+                    ...payload,
+                    passengers: String(
+                        payload.passengers
+                    ),
+                }
             )
 
         return response.data
