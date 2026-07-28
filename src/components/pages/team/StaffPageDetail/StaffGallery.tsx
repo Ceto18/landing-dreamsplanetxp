@@ -5,14 +5,17 @@ import type { TeamPersonDetailImage } from '@/services/teamService'
 
 type Props = {
     fullname: string
-    images: TeamPersonDetailImage[]
+    images?: TeamPersonDetailImage[]
 }
 
 export function StaffGallery({
     fullname,
-    images,
+    images = [],
 }: Props) {
-    if (images.length === 0) {
+    if (
+        !Array.isArray(images) ||
+        images.length === 0
+    ) {
         return null
     }
 
@@ -37,15 +40,24 @@ export function StaffGallery({
                         delay={index * 0.08}
                         className="group overflow-hidden rounded-2xl border border-border/50 bg-card/50 p-0 transition-all duration-500 hover:border-accent/40 hover:shadow-xl"
                     >
-                        <div className="h-64 overflow-hidden">
-                            <img
-                                src={image.image_url}
-                                alt={
-                                    image.name ||
-                                    `Fotografía de ${fullname}`
-                                }
-                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                            />
+                        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+                            {image.image_url ? (
+                                <img
+                                    src={image.image_url}
+                                    alt={
+                                        image.name ||
+                                        `Fotografía de ${fullname}`
+                                    }
+                                    loading="lazy"
+                                    className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                                />
+                            ) : (
+                                <div className="flex h-full w-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+                                    Sin imagen disponible
+                                </div>
+                            )}
+
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         </div>
                     </AnimatedCard>
                 ))}

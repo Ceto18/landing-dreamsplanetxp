@@ -30,20 +30,27 @@ function getRoleLabel(role: string) {
     return labels[role] ?? role
 }
 
-export function TeamCard({ member, delay = 0 }: Props) {
+export function TeamCard({
+    member,
+    delay = 0,
+}: Props) {
     const roleLabel = getRoleLabel(member.role)
 
     return (
         <FadeUp delay={delay}>
-            <Link href={getTeamMemberHref(member)}>
-                <AnimatedCard className="group space-y-4 rounded-2xl border border-border/60 bg-card/40 p-6 shadow-lg transition-all duration-500 hover:border-accent/60 hover:bg-card/70 hover:shadow-2xl">
-                    {/* Imagen */}
-                    <div className="relative h-48 overflow-hidden rounded-xl border border-border/50 bg-muted">
+            <Link
+                href={getTeamMemberHref(member)}
+                className="block h-full"
+            >
+                <AnimatedCard className="group h-full space-y-4 rounded-2xl border border-border/60 bg-card/40 p-6 shadow-lg transition-all duration-500 hover:border-accent/60 hover:bg-card/70 hover:shadow-2xl">
+                    {/* Imagen cuadrada para respetar el recorte */}
+                    <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-border/50 bg-muted">
                         {member.photo_url ? (
                             <img
                                 src={member.photo_url}
                                 alt={member.fullname}
-                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy"
+                                className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                             />
                         ) : (
                             <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
@@ -51,9 +58,9 @@ export function TeamCard({ member, delay = 0 }: Props) {
                             </div>
                         )}
 
-                        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
 
-                        <div className="absolute bottom-3 left-3 rounded-full border border-accent/30 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent backdrop-blur-md">
+                        <div className="absolute bottom-3 left-3 rounded-full border border-accent/30 bg-background/50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent backdrop-blur-md">
                             {roleLabel}
                         </div>
                     </div>
@@ -85,17 +92,18 @@ export function TeamCard({ member, delay = 0 }: Props) {
                                 </div>
                             )}
 
-                            {member.languages.length > 0 && (
-                                <div>
-                                    <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                        Idiomas
-                                    </p>
+                            {Array.isArray(member.languages) &&
+                                member.languages.length > 0 && (
+                                    <div>
+                                        <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                                            Idiomas
+                                        </p>
 
-                                    <p className="font-medium text-foreground">
-                                        {member.languages.join(', ')}
-                                    </p>
-                                </div>
-                            )}
+                                        <p className="font-medium text-foreground">
+                                            {member.languages.join(', ')}
+                                        </p>
+                                    </div>
+                                )}
 
                             {member.specialty && (
                                 <div>
