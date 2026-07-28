@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Montserrat, Geist_Mono } from 'next/font/google'
 
@@ -89,10 +88,6 @@ export default function RootLayout({
         <div className="relative z-10">
           {children}
         </div>
-
-        {process.env.NODE_ENV === 'production' && (
-          <Analytics />
-        )}
       </body>
     </html>
   )
