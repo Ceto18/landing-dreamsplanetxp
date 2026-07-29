@@ -33,7 +33,7 @@ export function MissionsCTA() {
 
                         {/* CTA BUTTON */}
                         <Link
-                            href="/#contacto"
+                            href="/#contact"
                             className="btn-gold inline-flex items-center justify-center gap-2 no-underline"
                         >
                             Solicitar asesoría

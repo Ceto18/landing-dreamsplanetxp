@@ -44,7 +44,7 @@ export function MissionCTA({ mission }: Props) {
                         </p>
 
                         <Link
-                            href="/#contacto"
+                            href="/#contact"
                             className="btn-gold inline-flex items-center gap-2 no-underline"
                         >
                             Solicitar información

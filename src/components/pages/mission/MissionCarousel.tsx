@@ -98,7 +98,7 @@ export function MissionCarousel({ missions }: Props) {
             return `/mission/${mission.slug}`
         }
 
-        return '#contacto'
+        return '#contact'
     }
 
     const getMissionKey = (mission: HomeMission, index: number) => {

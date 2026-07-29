@@ -555,7 +555,7 @@ export function Moment() {
 
                                     {/* CTA */}
                                     <a
-                                        href="#misiones"
+                                        href="#missions"
                                         className="block w-full text-center bg-accent text-background font-semibold rounded-lg py-3 hover:bg-accent/90 transition-colors no-underline"
                                         onClick={() => setSelectedPhoto(null)}
                                     >

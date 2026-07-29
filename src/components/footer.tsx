@@ -327,7 +327,7 @@ export function Footer() {
                             <ul className="space-y-2 text-sm">
                                 <li>
                                     <a
-                                        href="#misiones"
+                                        href="#missions"
                                         className="text-muted-foreground transition-colors hover:text-accent"
                                     >
                                         Misiones
@@ -336,7 +336,7 @@ export function Footer() {
 
                                 <li>
                                     <a
-                                        href="#momentos"
+                                        href="#moments"
                                         className="text-muted-foreground transition-colors hover:text-accent"
                                     >
                                         Momentos
@@ -345,7 +345,7 @@ export function Footer() {
 
                                 <li>
                                     <a
-                                        href="#equipo"
+                                        href="#team"
                                         className="text-muted-foreground transition-colors hover:text-accent"
                                     >
                                         Equipo
@@ -354,7 +354,7 @@ export function Footer() {
 
                                 <li>
                                     <a
-                                        href="#contacto"
+                                        href="#contact"
                                         className="text-muted-foreground transition-colors hover:text-accent"
                                     >
                                         Contacto

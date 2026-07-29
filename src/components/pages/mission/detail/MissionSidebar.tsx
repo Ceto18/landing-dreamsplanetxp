@@ -151,7 +151,7 @@ export function MissionSidebar({ mission }: Props) {
                 </div>
 
                 <Link
-                    href="/#contacto"
+                    href="/#contact"
                     className="btn-gold w-full inline-flex items-center justify-center gap-2 no-underline"
                 >
                     Reservar experiencia

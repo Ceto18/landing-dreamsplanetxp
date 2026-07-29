@@ -119,7 +119,7 @@ export function Hero({ hero, nextDeparture }: Props) {
                         <FadeUp delay={0.22}>
                             <div className="flex flex-col sm:flex-row gap-4 pt-4">
                                 <a
-                                    href="#misiones"
+                                    href="#missions"
                                     className="btn-gold flex items-center justify-center gap-2 no-underline group"
                                 >
                                     <span>Descubrir misiones</span>
@@ -127,7 +127,7 @@ export function Hero({ hero, nextDeparture }: Props) {
                                 </a>
 
                                 <a
-                                    href="#momentos"
+                                    href="#moments"
                                     className="px-6 py-2.5 rounded-lg font-medium text-sm bg-transparent text-foreground border border-accent/40 hover:bg-accent/10 hover:border-accent hover:text-accent transition-all duration-300 flex items-center justify-center gap-2 no-underline group"
                                 >
                                     <span>Ver momentos</span>
@@ -166,7 +166,7 @@ export function Hero({ hero, nextDeparture }: Props) {
                                     </div>
 
                                     <a
-                                        href="#contacto"
+                                        href="#contact"
                                         className="block w-full btn-gold py-3 text-center no-underline mt-5"
                                     >
                                         Solicitar información
@@ -231,7 +231,7 @@ export function Hero({ hero, nextDeparture }: Props) {
                                     </div>
 
                                     <a
-                                        href="#contacto"
+                                        href="#contact"
                                         className="block w-full btn-gold py-3 text-center no-underline"
                                     >
                                         Solicitar información

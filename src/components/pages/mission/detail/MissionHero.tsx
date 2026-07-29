@@ -74,7 +74,7 @@ export function MissionHero({ mission }: Props) {
                     <FadeUp delay={0.32}>
                         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                             <Link
-                                href="/#contacto"
+                                href="/#contact"
                                 className="btn-gold inline-flex items-center gap-2 no-underline"
                             >
                                 Solicitar información
