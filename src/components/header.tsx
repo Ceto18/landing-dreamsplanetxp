@@ -134,21 +134,21 @@ export function Header() {
     return (
         <header
             className={`fixed inset-x-0 top-0 z-50 border-b border-white/10 shadow-sm transition-all duration-300 ${isHome && !isScrolled
-                    ? 'bg-[#0b0b0b] lg:bg-transparent'
-                    : 'bg-[#0b0b0b]'
+                ? 'bg-[#0b0b0b] lg:bg-transparent'
+                : 'bg-[#0b0b0b]'
                 }`}
         >
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="flex h-24 items-center justify-between">
+                <div className="flex h-20 items-center justify-between sm:h-24">
                     <Link
                         href="/"
                         onClick={() => {
                             setActiveLink('')
                             setIsOpen(false)
                         }}
-                        className="group flex items-center gap-4"
+                        className="group flex items-center gap-3 sm:gap-4"
                     >
-                        <div className="relative h-14 w-14 overflow-hidden">
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden sm:h-14 sm:w-14">
                             {companyImage && (
                                 <Image
                                     src={companyImage}
@@ -161,13 +161,13 @@ export function Header() {
                             )}
                         </div>
 
-                        <div className="hidden sm:block">
-                            <h1 className="text-lg font-bold text-foreground">
+                        <div>
+                            <h1 className="text-base font-bold leading-none text-foreground sm:text-lg">
                                 Dreams
                                 <span className="text-accent">PlanetXP</span>
                             </h1>
 
-                            <p className="text-sm text-muted-foreground">
+                            <p className="mt-1 hidden text-sm text-muted-foreground sm:block">
                                 Experiencias Premium
                             </p>
                         </div>
@@ -183,16 +183,16 @@ export function Header() {
                                     type="button"
                                     onClick={() => handleNavClick(item.href)}
                                     className={`group relative text-base font-semibold transition-colors ${active
-                                            ? 'text-accent'
-                                            : 'text-muted-foreground hover:text-foreground'
+                                        ? 'text-accent'
+                                        : 'text-muted-foreground hover:text-foreground'
                                         }`}
                                 >
                                     {item.name}
 
                                     <span
                                         className={`absolute -bottom-1 left-0 h-0.5 bg-accent transition-all ${active
-                                                ? 'w-full'
-                                                : 'w-0 group-hover:w-full'
+                                            ? 'w-full'
+                                            : 'w-0 group-hover:w-full'
                                             }`}
                                     />
                                 </button>
@@ -260,8 +260,8 @@ export function Header() {
                                 type="button"
                                 onClick={() => handleNavClick(item.href)}
                                 className={`block w-full py-3 text-left transition ${active
-                                        ? 'text-accent'
-                                        : 'text-gray-300 hover:text-white'
+                                    ? 'text-accent'
+                                    : 'text-gray-300 hover:text-white'
                                     }`}
                             >
                                 {item.name}
