@@ -45,6 +45,7 @@ export type CreateReviewPayload = {
     comment: string
     rating: number
     video?: File | null
+    moment_uuid?: string
 }
 
 export type CreateReviewResponse = {
@@ -146,6 +147,10 @@ export const reviewService = {
         formData.append('name', payload.name)
         formData.append('comment', payload.comment)
         formData.append('rating', String(payload.rating))
+
+        if (payload.moment_uuid) {
+            formData.append('moment_uuid', payload.moment_uuid)
+        }
 
         if (payload.video) {
             formData.append('video', payload.video)

@@ -17,7 +17,13 @@ import {
 
 import { AnimatedCard } from '@/components/animations/animated-card'
 import { FadeUp } from '@/components/animations/fade-up'
-import { missionService } from '@/services/missionService'
+import {
+    missionService,
+    type ExperienceOption,
+    type MissionOption,
+    type MomentOption,
+    type OptionsPaginatedResponse,
+} from '@/services/missionService'
 import { reviewService } from '@/services/reviewService'
 
 type Props = {
@@ -36,6 +42,22 @@ type UploadStage =
 const MAX_RATING = 5
 const MAX_VIDEO_SIZE_MB = 200
 const MAX_VIDEO_SIZE_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024
+const OPTIONS_PER_PAGE = 100
+
+async function loadAllOptions<T>(
+    fetchPage: (page: number, perPage: number) => Promise<OptionsPaginatedResponse<T>>
+): Promise<T[]> {
+    const first = await fetchPage(1, OPTIONS_PER_PAGE)
+    if (first.last_page <= 1) return first.data
+
+    const pages = await Promise.all(
+        Array.from({ length: first.last_page - 1 }, (_, index) =>
+            fetchPage(index + 2, OPTIONS_PER_PAGE)
+        )
+    )
+
+    return [first, ...pages].flatMap((page) => page.data)
+}
 
 function formatFileSize(bytes: number) {
     if (bytes <= 0) return '0 B'
@@ -45,6 +67,7 @@ function formatFileSize(bytes: number) {
         Math.floor(Math.log(bytes) / Math.log(1024)),
         units.length - 1
     )
+
     const value = bytes / 1024 ** unitIndex
 
     return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`
@@ -67,10 +90,7 @@ function getBackendErrorMessage(error: unknown) {
     return null
 }
 
-export function MomentReviewForm({
-    slug,
-    onSubmitted,
-}: Props) {
+export function MomentReviewForm({ slug, onSubmitted }: Props) {
     const videoInputRef = useRef<HTMLInputElement>(null)
     const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -78,13 +98,24 @@ export function MomentReviewForm({
     const [comment, setComment] = useState('')
     const [rating, setRating] = useState(5)
     const [videoFile, setVideoFile] = useState<File | null>(null)
+
+    const [missionUuid, setMissionUuid] = useState('')
+    const [experienceUuid, setExperienceUuid] = useState('')
+    const [momentUuid, setMomentUuid] = useState('')
+
+    const [missions, setMissions] = useState<MissionOption[]>([])
+    const [experiences, setExperiences] = useState<ExperienceOption[]>([])
+    const [moments, setMoments] = useState<MomentOption[]>([])
+
+    const [loadingMissions, setLoadingMissions] = useState(false)
+    const [loadingExperiences, setLoadingExperiences] = useState(false)
+    const [loadingMoments, setLoadingMoments] = useState(false)
+
     const [submitting, setSubmitting] = useState(false)
     const [uploadProgress, setUploadProgress] = useState(0)
-    const [uploadStage, setUploadStage] =
-        useState<UploadStage>('idle')
+    const [uploadStage, setUploadStage] = useState<UploadStage>('idle')
     const [formError, setFormError] = useState<string | null>(null)
-    const [successMessage, setSuccessMessage] =
-        useState<string | null>(null)
+    const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
     const videoPreviewUrl = useMemo(
         () => (videoFile ? URL.createObjectURL(videoFile) : null),
@@ -100,6 +131,145 @@ export function MomentReviewForm({
     useEffect(() => {
         return () => abortControllerRef.current?.abort()
     }, [])
+
+    useEffect(() => {
+        if (slug) return
+
+        let mounted = true
+
+        const loadMissions = async () => {
+            try {
+                setLoadingMissions(true)
+                setFormError(null)
+
+                const data = await loadAllOptions<MissionOption>((page, perPage) =>
+                    missionService.getMissionOptions({
+                        page,
+                        per_page: perPage,
+                    })
+                )
+
+                if (mounted) setMissions(data)
+            } catch (error) {
+                console.error('Error cargando misiones:', error)
+
+                if (mounted) {
+                    setMissions([])
+                    setFormError('No se pudieron cargar las misiones.')
+                }
+            } finally {
+                if (mounted) setLoadingMissions(false)
+            }
+        }
+
+        void loadMissions()
+
+        return () => {
+            mounted = false
+        }
+    }, [slug])
+
+    useEffect(() => {
+        if (slug || !missionUuid) return
+
+        let mounted = true
+
+        const loadExperiences = async () => {
+            try {
+                setLoadingExperiences(true)
+                setFormError(null)
+
+                const data = await loadAllOptions<ExperienceOption>((page, perPage) =>
+                    missionService.getExperienceOptions(missionUuid, {
+                        page,
+                        per_page: perPage,
+                    })
+                )
+
+                if (mounted) setExperiences(data)
+            } catch (error) {
+                console.error('Error cargando experiencias:', error)
+
+                if (mounted) {
+                    setExperiences([])
+                    setFormError(
+                        'No se pudieron cargar las experiencias de esta misión.'
+                    )
+                }
+            } finally {
+                if (mounted) setLoadingExperiences(false)
+            }
+        }
+
+        void loadExperiences()
+
+        return () => {
+            mounted = false
+        }
+    }, [slug, missionUuid])
+
+    useEffect(() => {
+        if (slug || !experienceUuid) return
+
+        let mounted = true
+
+        const loadMoments = async () => {
+            try {
+                setLoadingMoments(true)
+                setFormError(null)
+
+                const data = await loadAllOptions<MomentOption>((page, perPage) =>
+                    missionService.getMomentOptions(experienceUuid, {
+                        page,
+                        per_page: perPage,
+                    })
+                )
+
+                if (mounted) setMoments(data)
+            } catch (error) {
+                console.error('Error cargando momentos:', error)
+
+                if (mounted) {
+                    setMoments([])
+                    setFormError(
+                        'No se pudieron cargar los momentos de esta experiencia.'
+                    )
+                }
+            } finally {
+                if (mounted) setLoadingMoments(false)
+            }
+        }
+
+        void loadMoments()
+
+        return () => {
+            mounted = false
+        }
+    }, [slug, experienceUuid])
+
+    const handleMissionChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setMissionUuid(event.target.value)
+        setExperienceUuid('')
+        setMomentUuid('')
+        setExperiences([])
+        setMoments([])
+        setFormError(null)
+        setSuccessMessage(null)
+    }
+
+    const handleExperienceChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setExperienceUuid(event.target.value)
+        setMomentUuid('')
+        setMoments([])
+        setFormError(null)
+        setSuccessMessage(null)
+    }
+
+    const handleMomentChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        setMomentUuid(event.target.value)
+        setFormError(null)
+        setSuccessMessage(null)
+    }
 
     const clearVideo = () => {
         setVideoFile(null)
@@ -119,12 +289,15 @@ export function MomentReviewForm({
         setName('')
         setComment('')
         setRating(5)
+        setMissionUuid('')
+        setExperienceUuid('')
+        setMomentUuid('')
+        setExperiences([])
+        setMoments([])
         clearVideo()
     }
 
-    const handleVideoChange = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleVideoChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] ?? null
 
         setFormError(null)
@@ -149,6 +322,7 @@ export function MomentReviewForm({
                     file.size
                 )}.`
             )
+
             event.target.value = ''
             setVideoFile(null)
             return
@@ -166,9 +340,7 @@ export function MomentReviewForm({
         setFormError('La subida del video fue cancelada.')
     }
 
-    const handleSubmit = async (
-        event: FormEvent<HTMLFormElement>
-    ) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
         if (submitting) return
@@ -182,6 +354,21 @@ export function MomentReviewForm({
 
         if (!cleanName) {
             setFormError('Ingresa tu nombre.')
+            return
+        }
+
+        if (!slug && !missionUuid) {
+            setFormError('Selecciona una misión.')
+            return
+        }
+
+        if (!slug && !experienceUuid) {
+            setFormError('Selecciona una experiencia.')
+            return
+        }
+
+        if (!slug && !momentUuid) {
+            setFormError('Selecciona un momento.')
             return
         }
 
@@ -209,9 +396,7 @@ export function MomentReviewForm({
             signal: controller.signal,
             onUploadProgress: (progress: number) => {
                 setUploadProgress(progress)
-                setUploadStage(
-                    progress >= 100 ? 'processing' : 'uploading'
-                )
+                setUploadStage(progress >= 100 ? 'processing' : 'uploading')
             },
         }
 
@@ -220,16 +405,19 @@ export function MomentReviewForm({
             setUploadStage('preparing')
 
             const response = slug
-                ? await missionService.createMomentReview(
-                      slug,
-                      payload,
+                ? await missionService.createMomentReview(slug, payload, options)
+                : await reviewService.createReview(
+                      {
+                          ...payload,
+                          moment_uuid: momentUuid,
+                      },
                       options
                   )
-                : await reviewService.createReview(payload, options)
 
             setUploadProgress(100)
             setUploadStage('success')
             resetForm()
+
             setSuccessMessage(
                 response?.message ||
                     'Tu reseña fue enviada y está pendiente de aprobación.'
@@ -237,12 +425,7 @@ export function MomentReviewForm({
 
             await onSubmitted?.()
         } catch (error: unknown) {
-            if (
-                axios.isCancel(error) ||
-                controller.signal.aborted
-            ) {
-                return
-            }
+            if (axios.isCancel(error) || controller.signal.aborted) return
 
             console.error(
                 slug
@@ -282,16 +465,15 @@ export function MomentReviewForm({
                     </h4>
 
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                        Tu reseña será revisada antes de aparecer
-                        públicamente.
+                        Tu reseña será revisada antes de aparecer públicamente.
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="space-y-2">
+                    <div>
                         <label
                             htmlFor="reviewName"
-                            className="text-sm font-semibold text-foreground"
+                            className="mb-2 block font-semibold text-foreground"
                         >
                             Nombre
                         </label>
@@ -299,19 +481,138 @@ export function MomentReviewForm({
                         <input
                             id="reviewName"
                             type="text"
-                            placeholder="Escribe tu nombre"
                             value={name}
-                            onChange={(event) =>
-                                setName(event.target.value)
-                            }
+                            onChange={(event) => setName(event.target.value)}
                             disabled={submitting}
-                            className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground outline-none transition placeholder:text-muted-foreground/70 focus:border-accent focus:ring-2 focus:ring-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
+                            placeholder="Escribe tu nombre"
                             required
+                            className="w-full rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <span className="text-sm font-semibold text-foreground">
+                    {!slug && (
+                        <>
+                            <div>
+                                <label
+                                    htmlFor="reviewMission"
+                                    className="mb-2 block font-semibold text-foreground"
+                                >
+                                    Misión
+                                </label>
+
+                                <select
+                                    id="reviewMission"
+                                    value={missionUuid}
+                                    onChange={handleMissionChange}
+                                    required
+                                    disabled={submitting || loadingMissions}
+                                    className="w-full cursor-pointer appearance-none rounded-lg border border-border/70 bg-background px-4 py-3 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                    <option value="">
+                                        {loadingMissions
+                                            ? 'Cargando misiones...'
+                                            : missions.length === 0
+                                              ? 'No hay misiones disponibles'
+                                              : 'Selecciona una misión'}
+                                    </option>
+
+                                    {missions.map((mission) => (
+                                        <option
+                                            key={mission.uuid}
+                                            value={mission.uuid}
+                                        >
+                                            {mission.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="reviewExperience"
+                                    className="mb-2 block font-semibold text-foreground"
+                                >
+                                    Experiencia
+                                </label>
+
+                                <select
+                                    id="reviewExperience"
+                                    value={experienceUuid}
+                                    onChange={handleExperienceChange}
+                                    required
+                                    disabled={
+                                        !missionUuid ||
+                                        loadingExperiences ||
+                                        submitting
+                                    }
+                                    className="w-full cursor-pointer appearance-none rounded-lg border border-border/70 bg-background px-4 py-3 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                    <option value="">
+                                        {loadingExperiences
+                                            ? 'Cargando experiencias...'
+                                            : !missionUuid
+                                              ? 'Selecciona una misión'
+                                              : experiences.length === 0
+                                                ? 'No hay experiencias disponibles'
+                                                : 'Selecciona una experiencia'}
+                                    </option>
+
+                                    {experiences.map((experience) => (
+                                        <option
+                                            key={experience.uuid}
+                                            value={experience.uuid}
+                                        >
+                                            {experience.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="reviewMoment"
+                                    className="mb-2 block font-semibold text-foreground"
+                                >
+                                    Momento
+                                </label>
+
+                                <select
+                                    id="reviewMoment"
+                                    value={momentUuid}
+                                    onChange={handleMomentChange}
+                                    required
+                                    disabled={
+                                        !experienceUuid ||
+                                        loadingMoments ||
+                                        submitting
+                                    }
+                                    className="w-full cursor-pointer appearance-none rounded-lg border border-border/70 bg-background px-4 py-3 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                    <option value="">
+                                        {loadingMoments
+                                            ? 'Cargando momentos...'
+                                            : !experienceUuid
+                                              ? 'Selecciona una experiencia'
+                                              : moments.length === 0
+                                                ? 'No hay momentos disponibles'
+                                                : 'Selecciona un momento'}
+                                    </option>
+
+                                    {moments.map((moment) => (
+                                        <option
+                                            key={moment.uuid}
+                                            value={moment.uuid}
+                                        >
+                                            {moment.title}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </>
+                    )}
+
+                    <div>
+                        <span className="mb-2 block font-semibold text-foreground">
                             Calificación
                         </span>
 
@@ -325,9 +626,7 @@ export function MomentReviewForm({
                                             key={value}
                                             type="button"
                                             disabled={submitting}
-                                            onClick={() =>
-                                                setRating(value)
-                                            }
+                                            onClick={() => setRating(value)}
                                             aria-label={`Calificar con ${value} estrellas`}
                                             className="rounded-lg p-1 transition-transform hover:scale-110 disabled:cursor-not-allowed disabled:opacity-60"
                                         >
@@ -349,31 +648,29 @@ export function MomentReviewForm({
                         </div>
                     </div>
 
-                    <div className="space-y-2">
+                    <div>
                         <label
                             htmlFor="reviewComment"
-                            className="text-sm font-semibold text-foreground"
+                            className="mb-2 block font-semibold text-foreground"
                         >
                             Comentario
                         </label>
 
                         <textarea
                             id="reviewComment"
-                            placeholder="Cuéntanos cómo fue tu experiencia..."
                             value={comment}
-                            onChange={(event) =>
-                                setComment(event.target.value)
-                            }
+                            onChange={(event) => setComment(event.target.value)}
                             disabled={submitting}
                             rows={5}
-                            className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-3 text-foreground outline-none transition placeholder:text-muted-foreground/70 focus:border-accent focus:ring-2 focus:ring-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
+                            placeholder="Cuéntanos cómo fue tu experiencia..."
                             required
+                            className="w-full resize-none rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                         />
                     </div>
 
                     <div className="space-y-3">
                         <div className="flex items-center justify-between gap-3">
-                            <span className="text-sm font-semibold text-foreground">
+                            <span className="font-semibold text-foreground">
                                 Video opcional
                             </span>
 
@@ -386,9 +683,7 @@ export function MomentReviewForm({
                             <button
                                 type="button"
                                 disabled={submitting}
-                                onClick={() =>
-                                    videoInputRef.current?.click()
-                                }
+                                onClick={() => videoInputRef.current?.click()}
                                 className="group flex w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-accent/40 bg-accent/[0.03] px-5 py-7 text-center transition hover:border-accent hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 <div className="flex h-12 w-12 items-center justify-center rounded-full border border-accent/30 bg-accent/10">
@@ -400,8 +695,8 @@ export function MomentReviewForm({
                                 </p>
 
                                 <p className="mt-1 text-xs text-muted-foreground">
-                                    Durante el envío podrás ver el
-                                    progreso de la subida.
+                                    Durante el envío podrás ver el progreso de la
+                                    subida.
                                 </p>
                             </button>
                         )}
@@ -430,9 +725,7 @@ export function MomentReviewForm({
                                             </p>
 
                                             <p className="mt-0.5 text-xs text-muted-foreground">
-                                                {formatFileSize(
-                                                    videoFile.size
-                                                )}
+                                                {formatFileSize(videoFile.size)}
                                             </p>
                                         </div>
                                     </div>
@@ -480,9 +773,7 @@ export function MomentReviewForm({
                                         {videoFile && (
                                             <p className="mt-1 truncate text-xs text-muted-foreground">
                                                 {videoFile.name} ·{' '}
-                                                {formatFileSize(
-                                                    videoFile.size
-                                                )}
+                                                {formatFileSize(videoFile.size)}
                                             </p>
                                         )}
                                     </div>
@@ -496,16 +787,14 @@ export function MomentReviewForm({
                             <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-border/70">
                                 <div
                                     className="h-full rounded-full bg-accent transition-[width] duration-300"
-                                    style={{
-                                        width: `${uploadProgress}%`,
-                                    }}
+                                    style={{ width: `${uploadProgress}%` }}
                                 />
                             </div>
 
                             <div className="mt-4 flex items-center justify-between gap-3">
                                 <p className="text-xs text-muted-foreground">
-                                    No cierres esta página mientras
-                                    se envía el archivo.
+                                    No cierres esta página mientras se envía el
+                                    archivo.
                                 </p>
 
                                 <button
@@ -535,12 +824,19 @@ export function MomentReviewForm({
 
                     <button
                         type="submit"
-                        disabled={submitting}
+                        disabled={
+                            submitting ||
+                            (!slug &&
+                                (loadingMissions ||
+                                    loadingExperiences ||
+                                    loadingMoments))
+                        }
                         className="btn-gold inline-flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                         {submitting ? (
                             <>
                                 <LoaderCircle className="h-5 w-5 animate-spin" />
+
                                 {uploadStage === 'processing'
                                     ? 'Procesando reseña...'
                                     : videoFile

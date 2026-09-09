@@ -120,6 +120,63 @@ export type MissionMomentDetail = {
 }
 
 /* ======================================================
+   REVIEW OPTIONS
+   Endpoints:
+   GET /api/v1/public/missions/options
+   GET /api/v1/public/experiences/options/{missionUuid}
+   GET /api/v1/public/moments/options/{experienceUuid}
+====================================================== */
+
+export type MissionOption = {
+    uuid: string
+    name: string
+}
+
+export type ExperienceOption = {
+    uuid: string
+    name: string
+}
+
+export type MomentOption = {
+    uuid: string
+    title: string
+}
+
+export type OptionsPaginationLink = {
+    url: string | null
+    label: string
+    page: number | null
+    active: boolean
+}
+
+export type OptionsPaginatedResponse<T> = {
+    current_page: number
+    data: T[]
+    first_page_url: string | null
+    from: number | null
+    last_page: number
+    last_page_url: string | null
+    links: OptionsPaginationLink[]
+    next_page_url: string | null
+    path: string
+    per_page: number
+    prev_page_url: string | null
+    to: number | null
+    total: number
+}
+
+export type GetOptionsParams = {
+    page?: number
+    per_page?: number
+}
+
+type OptionsApiResponse<T> = {
+    success: boolean
+    message: string
+    data: OptionsPaginatedResponse<T>
+}
+
+/* ======================================================
    MOMENT REVIEWS
    Endpoint:
    GET /api/v1/public/moments/{slug}/reviews
@@ -180,6 +237,143 @@ export type CreateMomentReviewResponse = {
 }
 
 export const missionService = {
+    async getMissionOptions(
+        params: GetOptionsParams = {}
+    ): Promise<OptionsPaginatedResponse<MissionOption>> {
+        const page = params.page ?? 1
+        const perPage = params.per_page ?? 10
+
+        const response = await api.get<
+            OptionsApiResponse<MissionOption>
+        >('/public/missions/options', {
+            params: {
+                page,
+                per_page: perPage,
+            },
+        })
+
+        const data = response.data?.data
+
+        return {
+            current_page: data?.current_page ?? page,
+            data: Array.isArray(data?.data)
+                ? data.data
+                : [],
+            first_page_url:
+                data?.first_page_url ?? null,
+            from: data?.from ?? null,
+            last_page: data?.last_page ?? 1,
+            last_page_url:
+                data?.last_page_url ?? null,
+            links: Array.isArray(data?.links)
+                ? data.links
+                : [],
+            next_page_url:
+                data?.next_page_url ?? null,
+            path: data?.path ?? '',
+            per_page:
+                data?.per_page ?? perPage,
+            prev_page_url:
+                data?.prev_page_url ?? null,
+            to: data?.to ?? null,
+            total: data?.total ?? 0,
+        }
+    },
+
+    async getExperienceOptions(
+        missionUuid: string,
+        params: GetOptionsParams = {}
+    ): Promise<OptionsPaginatedResponse<ExperienceOption>> {
+        const page = params.page ?? 1
+        const perPage = params.per_page ?? 10
+
+        const response = await api.get<
+            OptionsApiResponse<ExperienceOption>
+        >(
+            `/public/experiences/options/${missionUuid}`,
+            {
+                params: {
+                    page,
+                    per_page: perPage,
+                },
+            }
+        )
+
+        const data = response.data?.data
+
+        return {
+            current_page: data?.current_page ?? page,
+            data: Array.isArray(data?.data)
+                ? data.data
+                : [],
+            first_page_url:
+                data?.first_page_url ?? null,
+            from: data?.from ?? null,
+            last_page: data?.last_page ?? 1,
+            last_page_url:
+                data?.last_page_url ?? null,
+            links: Array.isArray(data?.links)
+                ? data.links
+                : [],
+            next_page_url:
+                data?.next_page_url ?? null,
+            path: data?.path ?? '',
+            per_page:
+                data?.per_page ?? perPage,
+            prev_page_url:
+                data?.prev_page_url ?? null,
+            to: data?.to ?? null,
+            total: data?.total ?? 0,
+        }
+    },
+
+    async getMomentOptions(
+        experienceUuid: string,
+        params: GetOptionsParams = {}
+    ): Promise<OptionsPaginatedResponse<MomentOption>> {
+        const page = params.page ?? 1
+        const perPage = params.per_page ?? 10
+
+        const response = await api.get<
+            OptionsApiResponse<MomentOption>
+        >(
+            `/public/moments/options/${experienceUuid}`,
+            {
+                params: {
+                    page,
+                    per_page: perPage,
+                },
+            }
+        )
+
+        const data = response.data?.data
+
+        return {
+            current_page: data?.current_page ?? page,
+            data: Array.isArray(data?.data)
+                ? data.data
+                : [],
+            first_page_url:
+                data?.first_page_url ?? null,
+            from: data?.from ?? null,
+            last_page: data?.last_page ?? 1,
+            last_page_url:
+                data?.last_page_url ?? null,
+            links: Array.isArray(data?.links)
+                ? data.links
+                : [],
+            next_page_url:
+                data?.next_page_url ?? null,
+            path: data?.path ?? '',
+            per_page:
+                data?.per_page ?? perPage,
+            prev_page_url:
+                data?.prev_page_url ?? null,
+            to: data?.to ?? null,
+            total: data?.total ?? 0,
+        }
+    },
+
     async getMissionTabs(): Promise<MissionTabItem[]> {
         const response = await api.get(
             '/public/missions/tabs'
