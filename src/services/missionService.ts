@@ -35,6 +35,8 @@ export type MissionExperienceCard = {
     nights: number
     raiting: number | string | null
     investment: number
+    discount: number
+    investment_final: number
     features: string[]
     first_image: MissionExperienceFirstImage | null
 }
@@ -83,6 +85,8 @@ export type MissionExperienceDetail = {
     nights: number
     raiting: number | string | null
     investment: number
+    discount: number
+    investment_final: number
     number_seats: number
     seats_used: number
     difficulty: MissionDifficulty

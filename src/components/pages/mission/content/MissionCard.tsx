@@ -9,6 +9,8 @@ import {
     Users,
     Star,
     ShieldCheck,
+    Tag,
+    Sparkles,
 } from 'lucide-react'
 
 import { AnimatedCard } from '@/components/animations/animated-card'
@@ -21,29 +23,24 @@ type Props = {
 function formatDate(value?: string | null): string {
     if (!value) return 'Próximamente'
 
-    const dateOnlyPattern = /^\d{4}-\d{2}-\d{2}$/
-
-    const normalizedValue = dateOnlyPattern.test(value)
+    const normalizedValue = /^\d{4}-\d{2}-\d{2}$/.test(value)
         ? `${value}T00:00:00Z`
         : value
 
-    const parsedDate = new Date(normalizedValue)
+    const date = new Date(normalizedValue)
 
-    if (Number.isNaN(parsedDate.getTime())) {
-        console.warn('MissionCard recibió una fecha inválida:', value)
-        return 'Próximamente'
-    }
+    if (Number.isNaN(date.getTime())) return 'Próximamente'
 
     return new Intl.DateTimeFormat('es-PE', {
         day: '2-digit',
         month: 'long',
         year: 'numeric',
         timeZone: 'UTC',
-    }).format(parsedDate)
+    }).format(date)
 }
 
 function formatCurrency(value?: number | null) {
-    if (!value) return 'Consultar'
+    if (value === undefined || value === null) return 'Consultar'
 
     return new Intl.NumberFormat('es-PE', {
         style: 'currency',
@@ -53,19 +50,26 @@ function formatCurrency(value?: number | null) {
 }
 
 export function MissionCard({ experience }: Props) {
-    const detailSlug = experience.slug
+    const detailHref = `/mission/${experience.slug}`
 
     const image =
-        experience.first_image?.image_url || '/mission-placeholder.jpg'
+        experience.first_image?.image_url ||
+        '/mission-placeholder.jpg'
 
     const subtitle =
         experience.short_description ||
         'Una experiencia diseñada para vivir una misión inolvidable.'
 
-    const releaseDate = formatDate(experience.release_date)
+    const availableSeats =
+        experience.available_seats ??
+        Math.max(
+            (experience.number_seats ?? 0) -
+            (experience.seats_used ?? 0),
+            0
+        )
 
     const group = experience.number_seats
-        ? `${experience.seats_used ?? 0}/${experience.number_seats} cupos`
+        ? `${availableSeats} cupos disponibles`
         : 'Cupos limitados'
 
     const duration =
@@ -73,18 +77,22 @@ export function MissionCard({ experience }: Props) {
             ? `${experience.days} días / ${experience.nights} noches`
             : 'Duración por confirmar'
 
-    const rating = experience.raiting || 'Nuevo'
+    const investment = Number(experience.investment ?? 0)
+    const discount = Number(experience.discount ?? 0)
+    const investmentFinal = Number(
+        experience.investment_final ?? investment
+    )
+
+    const hasDiscount =
+        discount > 0 &&
+        investmentFinal > 0 &&
+        investmentFinal < investment
 
     const highlights = experience.features ?? []
 
-    const price = formatCurrency(experience.investment)
-
-    const detailHref = `/mission/${detailSlug}`
-
     return (
-        <AnimatedCard className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card/40 glass-effect shadow-lg hover:border-accent/60 hover:bg-card/70 hover:shadow-2xl transition-all duration-500">
-            {/* IMAGE */}
-            <div className="relative h-56 overflow-hidden">
+        <AnimatedCard className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/40 glass-effect shadow-lg transition-all duration-500 hover:-translate-y-1 hover:border-accent/60 hover:bg-card/70 hover:shadow-2xl">
+            <div className="relative h-56 shrink-0 overflow-hidden">
                 <Link href={detailHref}>
                     <Image
                         src={image}
@@ -95,86 +103,80 @@ export function MissionCard({ experience }: Props) {
                     />
                 </Link>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/30 to-transparent" />
 
-                {/* TITLE OVERLAY */}
+                {hasDiscount && (
+                    <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-white/20 bg-accent px-3 py-1.5 text-xs font-bold text-accent-foreground shadow-lg backdrop-blur-md">
+                        <Tag className="h-3.5 w-3.5" />
+                        Ahorra {formatCurrency(discount)}
+                    </div>
+                )}
+
+                {availableSeats > 0 && availableSeats <= 5 && (
+                    <div className="absolute right-4 top-4 rounded-full border border-white/20 bg-background/80 px-3 py-1.5 text-xs font-semibold text-foreground shadow-lg backdrop-blur-md">
+                        Solo {availableSeats} cupos
+                    </div>
+                )}
+
                 <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-accent text-xs font-semibold uppercase tracking-[0.25em]">
-                        Experiencia
-                    </p>
+                    <div className="flex items-center gap-1.5 text-accent">
+                        <Sparkles className="h-3.5 w-3.5" />
 
-                    <h3 className="mt-1 text-2xl font-bold text-foreground group-hover:text-accent transition-colors">
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em]">
+                            Experiencia
+                        </p>
+                    </div>
+
+                    <h3 className="mt-1 line-clamp-2 text-2xl font-bold text-foreground transition-colors group-hover:text-accent">
                         {experience.name}
                     </h3>
                 </div>
             </div>
 
-            {/* CONTENT */}
-            <div className="p-5 space-y-5">
-                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            <div className="flex flex-1 flex-col gap-5 p-5">
+                <p className="min-h-[40px] line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                     {subtitle}
                 </p>
 
-                {/* INFO GRID */}
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="rounded-xl border border-border/60 p-3">
-                        <div className="flex items-center gap-2 text-accent mb-1">
-                            <CalendarDays className="w-4 h-4" />
-                            <span className="font-semibold">Salida</span>
-                        </div>
+                    <InfoItem
+                        icon={<CalendarDays className="h-4 w-4" />}
+                        label="Salida"
+                        value={formatDate(experience.release_date)}
+                    />
 
-                        <p className="text-muted-foreground text-xs">
-                            {releaseDate}
-                        </p>
-                    </div>
+                    <InfoItem
+                        icon={<Users className="h-4 w-4" />}
+                        label="Grupo"
+                        value={group}
+                    />
 
-                    <div className="rounded-xl border border-border/60 p-3">
-                        <div className="flex items-center gap-2 text-accent mb-1">
-                            <Users className="w-4 h-4" />
-                            <span className="font-semibold">Grupo</span>
-                        </div>
+                    <InfoItem
+                        icon={<MapPin className="h-4 w-4" />}
+                        label="Duración"
+                        value={duration}
+                    />
 
-                        <p className="text-muted-foreground text-xs">
-                            {group}
-                        </p>
-                    </div>
-
-                    <div className="rounded-xl border border-border/60 p-3">
-                        <div className="flex items-center gap-2 text-accent mb-1">
-                            <MapPin className="w-4 h-4" />
-                            <span className="font-semibold">Duración</span>
-                        </div>
-
-                        <p className="text-muted-foreground text-xs">
-                            {duration}
-                        </p>
-                    </div>
-
-                    <div className="rounded-xl border border-border/60 p-3">
-                        <div className="flex items-center gap-2 text-accent mb-1">
-                            <Star className="w-4 h-4 fill-accent" />
-                            <span className="font-semibold">Rating</span>
-                        </div>
-
-                        <p className="text-muted-foreground text-xs">
-                            {rating}
-                        </p>
-                    </div>
+                    <InfoItem
+                        icon={<Star className="h-4 w-4 fill-accent" />}
+                        label="Rating"
+                        value={String(experience.raiting || 'Nuevo')}
+                    />
                 </div>
 
-                {/* HIGHLIGHTS */}
-                <div className="space-y-2">
+                <div className="min-h-[104px] space-y-2">
                     <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                         Incluye
                     </p>
 
-                    {highlights.length > 0 ? (
+                    {highlights.length ? (
                         highlights.slice(0, 3).map((highlight) => (
                             <div
                                 key={highlight}
                                 className="flex items-center gap-2 text-sm text-muted-foreground"
                             >
-                                <ShieldCheck className="w-4 h-4 text-accent flex-shrink-0" />
+                                <ShieldCheck className="h-4 w-4 shrink-0 text-accent" />
+
                                 <span className="line-clamp-1">
                                     {highlight}
                                 </span>
@@ -187,27 +189,78 @@ export function MissionCard({ experience }: Props) {
                     )}
                 </div>
 
-                {/* FOOTER */}
-                <div className="flex items-center justify-between gap-4 pt-4 border-t border-border/60">
-                    <div>
-                        <p className="text-xs text-muted-foreground uppercase tracking-widest">
-                            Inversión
-                        </p>
+                <div className="mt-auto flex min-h-[124px] items-end rounded-2xl border border-border/60 bg-background/20 p-4">
+                    <div className="flex w-full items-end justify-between gap-4">
+                        <div className="min-w-0">
+                            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                                Inversión
+                            </p>
 
-                        <p className="text-lg font-bold text-accent">
-                            {price}
-                        </p>
+                            <div className="mt-1 min-h-[66px]">
+                                {hasDiscount && (
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-sm text-muted-foreground line-through decoration-2">
+                                            {formatCurrency(investment)}
+                                        </span>
+
+                                        <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-bold text-accent">
+                                            OFERTA
+                                        </span>
+                                    </div>
+                                )}
+
+                                <p className="text-2xl font-black tracking-tight text-accent">
+                                    {formatCurrency(
+                                        hasDiscount
+                                            ? investmentFinal
+                                            : investment
+                                    )}
+                                </p>
+
+                                <p className="min-h-[16px] text-xs font-medium text-muted-foreground">
+                                    {hasDiscount
+                                        ? `Ahorras ${formatCurrency(discount)}`
+                                        : '\u00A0'}
+                                </p>
+                            </div>
+                        </div>
+
+                        <Link
+                            href={detailHref}
+                            className="group/link inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-accent-foreground shadow-md transition-all hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] no-underline"
+                        >
+                            Ver detalle
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                        </Link>
                     </div>
-
-                    <Link
-                        href={detailHref}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-accent text-accent px-4 py-2 text-sm font-semibold hover:bg-accent/10 transition-all no-underline group/link"
-                    >
-                        Ver detalle
-                        <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-                    </Link>
                 </div>
             </div>
         </AnimatedCard>
+    )
+}
+
+function InfoItem({
+    icon,
+    label,
+    value,
+}: {
+    icon: React.ReactNode
+    label: string
+    value: string
+}) {
+    return (
+        <div className="min-h-[74px] rounded-xl border border-border/60 bg-background/20 p-3 transition-colors hover:border-accent/30">
+            <div className="mb-1 flex items-center gap-2 text-accent">
+                {icon}
+
+                <span className="font-semibold">
+                    {label}
+                </span>
+            </div>
+
+            <p className="line-clamp-2 text-xs text-muted-foreground">
+                {value}
+            </p>
+        </div>
     )
 }

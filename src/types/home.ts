@@ -136,6 +136,8 @@ export type MissionExperience = {
     nights: number
     raiting: number
     investment: number
+    discount: number
+    investment_final: number
     features: string[]
     first_image: MissionExperienceImage | null
 }
