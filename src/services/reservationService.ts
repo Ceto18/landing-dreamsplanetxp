@@ -3,10 +3,8 @@ import { api } from './api'
 export type CreateReservationPayload = {
     experience_slug: string
     full_name: string
-    email: string
     phone: string
     message: string
-    passengers: string
 }
 
 export type CreateReservationResponse = {
@@ -23,12 +21,7 @@ export const reservationService = {
         const response =
             await api.post<CreateReservationResponse>(
                 '/public/reservations',
-                {
-                    ...payload,
-                    passengers: String(
-                        payload.passengers
-                    ),
-                }
+                payload
             )
 
         return response.data

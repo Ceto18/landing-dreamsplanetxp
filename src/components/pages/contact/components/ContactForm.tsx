@@ -1,25 +1,32 @@
 'use client'
 
-import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
+import {
+    useEffect,
+    useState,
+    type ChangeEvent,
+    type FormEvent,
+    type UIEvent,
+} from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { isPossiblePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
+import { ChevronDown } from 'lucide-react'
 import { AnimatedCard } from '@/components/animations/animated-card'
-import { missionService, type MissionExperienceCard, type MissionTabItem } from '@/services/missionService'
+import { missionService, type ExperienceAllOption } from '@/services/missionService'
 import { reservationService } from '@/services/reservationService'
 import { initialContactFormData, type ContactFormData } from '../data/contact.data'
 
 type FormElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 
-type Props = {
-    missions: MissionTabItem[]
-}
-
-export function ContactForm({ missions }: Props) {
+export function ContactForm() {
     const [formData, setFormData] = useState<ContactFormData>(initialContactFormData)
-    const [experiences, setExperiences] = useState<MissionExperienceCard[]>([])
+    const [experiences, setExperiences] = useState<ExperienceAllOption[]>([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [lastPage, setLastPage] = useState(1)
     const [loadingExperiences, setLoadingExperiences] = useState(false)
+    const [loadingMore, setLoadingMore] = useState(false)
+    const [destinationOpen, setDestinationOpen] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
@@ -28,28 +35,27 @@ export function ContactForm({ missions }: Props) {
         let isMounted = true
 
         const loadExperiences = async () => {
-            if (!formData.mision || formData.mision === 'asesoramiento') {
-                setExperiences([])
-                setLoadingExperiences(false)
-                return
-            }
-
             try {
                 setLoadingExperiences(true)
                 setErrorMessage('')
 
-                const response = await missionService.getExperiencesByMissionSlug(formData.mision, 1, 100)
+                const response = await missionService.getAllExperiences({
+                    page: 1,
+                    per_page: 20,
+                })
 
                 if (!isMounted) return
 
                 setExperiences(response.data)
+                setCurrentPage(response.current_page)
+                setLastPage(response.last_page)
             } catch (error) {
-                console.error('Error al cargar experiencias:', error)
+                console.error('Error al cargar destinos:', error)
 
                 if (!isMounted) return
 
                 setExperiences([])
-                setErrorMessage('No se pudieron cargar las experiencias de esta misión.')
+                setErrorMessage('No se pudieron cargar los destinos.')
             } finally {
                 if (isMounted) setLoadingExperiences(false)
             }
@@ -60,7 +66,50 @@ export function ContactForm({ missions }: Props) {
         return () => {
             isMounted = false
         }
-    }, [formData.mision])
+    }, [])
+
+    const loadMoreExperiences = async () => {
+        if (loadingMore || currentPage >= lastPage) return
+
+        try {
+            setLoadingMore(true)
+
+            const nextPage = currentPage + 1
+
+            const response = await missionService.getAllExperiences({
+                page: nextPage,
+                per_page: 20,
+            })
+
+            setExperiences((previous) => {
+                const existingUuids = new Set(previous.map((experience) => experience.slug))
+
+                const newExperiences = response.data.filter(
+                    (experience) => !existingUuids.has(experience.slug)
+                )
+
+                return [...previous, ...newExperiences]
+            })
+
+            setCurrentPage(response.current_page)
+            setLastPage(response.last_page)
+        } catch (error) {
+            console.error('Error al cargar más destinos:', error)
+        } finally {
+            setLoadingMore(false)
+        }
+    }
+
+    const handleDestinationScroll = (event: UIEvent<HTMLDivElement>) => {
+        const element = event.currentTarget
+
+        const isNearBottom =
+            element.scrollTop + element.clientHeight >= element.scrollHeight - 40
+
+        if (isNearBottom) {
+            void loadMoreExperiences()
+        }
+    }
 
     const handleChange = (event: ChangeEvent<FormElement>) => {
         const { name, value } = event.target
@@ -68,20 +117,10 @@ export function ContactForm({ missions }: Props) {
         setSuccessMessage('')
         setErrorMessage('')
 
-        setFormData((previous) => {
-            if (name === 'mision') {
-                return {
-                    ...previous,
-                    mision: value,
-                    ruta: '',
-                }
-            }
-
-            return {
-                ...previous,
-                [name]: value,
-            }
-        })
+        setFormData((previous) => ({
+            ...previous,
+            [name]: value,
+        }))
     }
 
     const handlePhoneChange = (value?: string) => {
@@ -92,6 +131,18 @@ export function ContactForm({ missions }: Props) {
             ...previous,
             telefono: value ?? '',
         }))
+    }
+
+    const handleDestinationSelect = (experience: ExperienceAllOption) => {
+        setSuccessMessage('')
+        setErrorMessage('')
+
+        setFormData((previous) => ({
+            ...previous,
+            ruta: experience.slug,
+        }))
+
+        setDestinationOpen(false)
     }
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -108,7 +159,9 @@ export function ContactForm({ missions }: Props) {
         }
 
         if (!isPossiblePhoneNumber(formData.telefono)) {
-            setErrorMessage('El número de teléfono no tiene una longitud válida para el país seleccionado.')
+            setErrorMessage(
+                'El número de teléfono no tiene una longitud válida para el país seleccionado.'
+            )
             return
         }
 
@@ -117,13 +170,8 @@ export function ContactForm({ missions }: Props) {
             return
         }
 
-        if (!formData.mision || formData.mision === 'asesoramiento') {
-            setErrorMessage('Selecciona una misión y una experiencia para enviar la solicitud.')
-            return
-        }
-
-        if (!formData.experiencia) {
-            setErrorMessage('Selecciona una experiencia.')
+        if (!formData.ruta) {
+            setErrorMessage('Selecciona un destino.')
             return
         }
 
@@ -133,17 +181,18 @@ export function ContactForm({ missions }: Props) {
             setErrorMessage('')
 
             const response = await reservationService.createReservation({
-                experience_slug: formData.experiencia,
+                experience_slug: formData.ruta,
                 full_name: formData.nombre.trim(),
                 phone: formData.telefono.trim(),
                 message: formData.mensaje.trim(),
-                email: '',
-                passengers: ''
             })
 
-            setSuccessMessage(response.message || '¡Gracias! Tu solicitud fue enviada correctamente.')
+            setSuccessMessage(
+                response.message || '¡Gracias! Tu solicitud fue enviada correctamente.'
+            )
+
             setFormData(initialContactFormData)
-            setExperiences([])
+            setDestinationOpen(false)
         } catch (error) {
             console.error('Error al crear la reserva:', error)
             setErrorMessage('No se pudo enviar la solicitud. Inténtalo nuevamente.')
@@ -152,12 +201,14 @@ export function ContactForm({ missions }: Props) {
         }
     }
 
-    const hasSelectedMission = Boolean(formData.mision) && formData.mision !== 'asesoramiento'
+    const selectedExperience = experiences.find(
+        (experience) => experience.slug === formData.ruta
+    )
 
     return (
         <AnimatedCard
             delay={0.18}
-            className="relative overflow-hidden rounded-3xl border border-border/60 bg-card/50 shadow-2xl glass-effect"
+            className="relative overflow-visible rounded-3xl border border-border/60 bg-card/50 shadow-2xl glass-effect"
         >
             <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-accent/10 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-accent/5 blur-3xl" />
@@ -165,7 +216,7 @@ export function ContactForm({ missions }: Props) {
             <div className="relative z-10">
                 <div className="border-b border-border/50 px-6 py-6 sm:px-8 sm:py-7">
                     <span className="mb-3 inline-flex rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                        Reserva tu experiencia
+                        Reserva tu ruta
                     </span>
 
                     <h3 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -173,14 +224,17 @@ export function ContactForm({ missions }: Props) {
                     </h3>
 
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                        Completa tus datos y selecciona la experiencia que deseas vivir.
+                        Completa tus datos y selecciona el destino que deseas vivir.
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
                     <div>
                         <div className="mb-4">
-                            <p className="text-sm font-semibold text-foreground">Tus datos</p>
+                            <p className="text-sm font-semibold text-foreground">
+                                Tus datos
+                            </p>
+
                             <p className="mt-1 text-xs text-muted-foreground">
                                 Necesitamos estos datos para poder gestionar tu solicitud.
                             </p>
@@ -188,7 +242,10 @@ export function ContactForm({ missions }: Props) {
 
                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <div>
-                                <label htmlFor="nombre" className="mb-2 block text-sm font-semibold text-foreground">
+                                <label
+                                    htmlFor="nombre"
+                                    className="mb-2 block text-sm font-semibold text-foreground"
+                                >
                                     Nombre completo
                                     <span className="ml-1 text-accent">*</span>
                                 </label>
@@ -208,7 +265,10 @@ export function ContactForm({ missions }: Props) {
                             </div>
 
                             <div>
-                                <label htmlFor="telefono" className="mb-2 block text-sm font-semibold text-foreground">
+                                <label
+                                    htmlFor="telefono"
+                                    className="mb-2 block text-sm font-semibold text-foreground"
+                                >
                                     Teléfono
                                     <span className="ml-1 text-accent">*</span>
                                 </label>
@@ -230,81 +290,102 @@ export function ContactForm({ missions }: Props) {
 
                     <div className="h-px bg-border/50" />
 
-                    <div>
-                        <div className="mb-4">
-                            <p className="text-sm font-semibold text-foreground">Elige tu experiencia</p>
-                            <p className="mt-1 text-xs text-muted-foreground">
-                                Selecciona una misión para conocer las experiencias disponibles.
-                            </p>
-                        </div>
+                    <div className="relative">
+                        <label
+                            htmlFor="ruta"
+                            className="mb-2 block text-sm font-semibold text-foreground"
+                        >
+                            Destino
+                            <span className="ml-1 text-accent">*</span>
+                        </label>
 
-                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                            <div>
-                                <label htmlFor="mision" className="mb-2 block text-sm font-semibold text-foreground">
-                                    Misión de interés
-                                    <span className="ml-1 text-accent">*</span>
-                                </label>
+                        <button
+                            id="ruta"
+                            type="button"
+                            disabled={loadingExperiences || submitting}
+                            onClick={() => setDestinationOpen((previous) => !previous)}
+                            className="flex w-full items-center justify-between rounded-lg border border-border/70 bg-background px-4 py-3 text-left text-foreground transition focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            <span
+                                className={
+                                    selectedExperience
+                                        ? 'text-foreground'
+                                        : 'text-muted-foreground'
+                                }
+                            >
+                                {loadingExperiences
+                                    ? 'Cargando destinos...'
+                                    : selectedExperience?.full_name ||
+                                      'Selecciona un destino'}
+                            </span>
 
-                                <select
-                                    id="mision"
-                                    name="mision"
-                                    value={formData.mision}
-                                    onChange={handleChange}
-                                    required
-                                    disabled={submitting}
-                                    className="w-full cursor-pointer appearance-none rounded-lg border border-border/70 bg-background px-4 py-3 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
+                            <ChevronDown
+                                className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
+                                    destinationOpen ? 'rotate-180' : ''
+                                }`}
+                            />
+                        </button>
+
+                        <AnimatePresence>
+                            {destinationOpen && !loadingExperiences && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                    className="absolute z-50 mt-2 w-full overflow-hidden rounded-lg border border-border/70 bg-background shadow-xl"
                                 >
-                                    <option value="">Selecciona una misión</option>
+                                    <div
+                                        onScroll={handleDestinationScroll}
+                                        className="max-h-64 overflow-y-auto"
+                                    >
+                                        {experiences.length === 0 ? (
+                                            <div className="px-4 py-3 text-sm text-muted-foreground">
+                                                No hay destinos disponibles
+                                            </div>
+                                        ) : (
+                                            experiences.map((experience) => (
+                                                <button
+                                                    key={experience.slug}
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleDestinationSelect(experience)
+                                                    }
+                                                    className={`block w-full px-4 py-3 text-left text-sm transition hover:bg-accent/10 ${
+                                                        formData.ruta === experience.slug
+                                                            ? 'bg-accent/10 font-semibold text-accent'
+                                                            : 'text-foreground'
+                                                    }`}
+                                                >
+                                                    {experience.full_name}
+                                                </button>
+                                            ))
+                                        )}
 
-                                    {missions.map((mission) => (
-                                        <option key={mission.slug} value={mission.slug}>
-                                            {mission.name}
-                                        </option>
-                                    ))}
+                                        {loadingMore && (
+                                            <div className="px-4 py-3 text-center text-sm text-muted-foreground">
+                                                Cargando más destinos...
+                                            </div>
+                                        )}
 
-                                    <option value="asesoramiento">
-                                        No sé, quiero asesoramiento
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label htmlFor="experiencia" className="mb-2 block text-sm font-semibold text-foreground">
-                                    Experiencia de interés
-                                    <span className="ml-1 text-accent">*</span>
-                                </label>
-
-                                <select
-                                    id="experiencia"
-                                    name="experiencia"
-                                    value={formData.experiencia}
-                                    onChange={handleChange}
-                                    required={hasSelectedMission}
-                                    disabled={!hasSelectedMission || loadingExperiences || submitting}
-                                    className="w-full cursor-pointer appearance-none rounded-lg border border-border/70 bg-background px-4 py-3 text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-50"
-                                >
-                                    <option value="">
-                                        {loadingExperiences
-                                            ? 'Cargando experiencias...'
-                                            : !hasSelectedMission
-                                                ? 'Selecciona una misión'
-                                                : experiences.length === 0
-                                                    ? 'No hay experiencias disponibles'
-                                                    : 'Selecciona una experiencia'}
-                                    </option>
-
-                                    {experiences.map((experience) => (
-                                        <option key={experience.slug} value={experience.slug}>
-                                            {experience.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
+                                        {!loadingMore &&
+                                            currentPage >= lastPage &&
+                                            experiences.length > 20 && (
+                                                <div className="border-t border-border/50 px-4 py-3 text-center text-xs text-muted-foreground">
+                                                    No hay más destinos
+                                                </div>
+                                            )}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     <div>
-                        <label htmlFor="mensaje" className="mb-2 block text-sm font-semibold text-foreground">
+                        <label
+                            htmlFor="mensaje"
+                            className="mb-2 block text-sm font-semibold text-foreground"
+                        >
                             Mensaje
                         </label>
 

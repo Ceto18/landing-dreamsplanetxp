@@ -141,6 +141,12 @@ export type ExperienceOption = {
     name: string
 }
 
+export type ExperienceAllOption = {
+    slug: string
+    name: string
+    full_name: string
+}
+
 export type MomentOption = {
     uuid: string
     title: string
@@ -326,6 +332,40 @@ export const missionService = {
                 data?.per_page ?? perPage,
             prev_page_url:
                 data?.prev_page_url ?? null,
+            to: data?.to ?? null,
+            total: data?.total ?? 0,
+        }
+    },
+
+    async getAllExperiences(
+        params: GetOptionsParams = {}
+    ): Promise<OptionsPaginatedResponse<ExperienceAllOption>> {
+        const page = params.page ?? 1
+        const perPage = params.per_page ?? 20
+
+        const response = await api.get<
+            OptionsApiResponse<ExperienceAllOption>
+        >('/public/experiences/all', {
+            params: {
+                page,
+                per_page: perPage,
+            },
+        })
+
+        const data = response.data?.data
+
+        return {
+            current_page: data?.current_page ?? page,
+            data: Array.isArray(data?.data) ? data.data : [],
+            first_page_url: data?.first_page_url ?? null,
+            from: data?.from ?? null,
+            last_page: data?.last_page ?? 1,
+            last_page_url: data?.last_page_url ?? null,
+            links: Array.isArray(data?.links) ? data.links : [],
+            next_page_url: data?.next_page_url ?? null,
+            path: data?.path ?? '',
+            per_page: data?.per_page ?? perPage,
+            prev_page_url: data?.prev_page_url ?? null,
             to: data?.to ?? null,
             total: data?.total ?? 0,
         }
