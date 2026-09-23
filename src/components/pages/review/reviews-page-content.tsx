@@ -29,7 +29,7 @@
 
 //                     <SectionHeader
 //                         title="Reseñas de Viajeros"
-//                         description="Historias reales de personas que confiaron en Dreams Planet XP para vivir experiencias únicas alrededor del mundo."
+//                         description="Historias reales de personas que confiaron en Dreams Planet XP para vivir rutas únicas alrededor del mundo."
 //                     />
 
 //                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
@@ -68,7 +68,7 @@
 //                             </h2>
 
 //                             <p className="mt-4 max-w-2xl text-muted-foreground">
-//                                 Cada reseña refleja una experiencia vivida con seguridad,
+//                                 Cada reseña refleja una ruta vivida con seguridad,
 //                                 acompañamiento y momentos diseñados para recordar.
 //                             </p>
 //                         </div>

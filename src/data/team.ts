@@ -23,7 +23,7 @@ export const teamData: TeamMember[] = [
     experience: '8 años',
     languages: ['Francés', 'Inglés', 'Español'],
     specialty: 'Travel content',
-    bio: 'Sofia es una viajera apasionada que comparte experiencias únicas alrededor del mundo.',
+    bio: 'Sofia es una viajera apasionada que comparte rutas únicas alrededor del mundo.',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
     destination: 'Marruecos',
     missions: [
@@ -102,7 +102,7 @@ export const teamData: TeamMember[] = [
     experience: '11 años',
     languages: ['Vietnamita', 'Inglés', 'Francés'],
     specialty: 'Travel content',
-    bio: 'Linh comparte experiencias de aventura y cultura en Vietnam.',
+    bio: 'Linh comparte rutas de aventura y cultura en Vietnam.',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
     destination: 'Vietnam',
     missions: [

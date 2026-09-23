@@ -65,7 +65,7 @@ export function ReservationForm({
 
         if (!momentSlug) {
             setErrorMessage(
-                'No se pudo identificar la experiencia seleccionada.'
+                'No se pudo identificar la ruta seleccionada.'
             )
 
             return
@@ -188,14 +188,14 @@ export function ReservationForm({
                 </div>
 
                 <p className="text-xl font-bold text-foreground">
-                    Reserva tu experiencia
+                    Reserva tu ruta
                 </p>
             </div>
 
-            {/* Experiencia seleccionada */}
+            {/* Ruta seleccionada */}
             {momentTitle && (
                 <p className="mb-4 text-sm italic text-muted-foreground">
-                    Experiencia seleccionada:{' '}
+                    Ruta seleccionada:{' '}
                     <span className="font-semibold text-accent">
                         {momentTitle}
                     </span>

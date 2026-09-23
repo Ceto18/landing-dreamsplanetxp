@@ -82,7 +82,7 @@ export function MomentComments({ slug }: Props) {
             <FadeUp>
                 <div className="mb-8">
                     <p className="text-sm font-semibold uppercase tracking-[0.25em] text-accent">
-                        Experiencias de viajeros
+                        Rutas de viajeros
                     </p>
 
                     <h3 className="mt-3 text-3xl font-bold text-foreground">
@@ -91,7 +91,7 @@ export function MomentComments({ slug }: Props) {
 
                     <p className="mt-2 max-w-2xl text-muted-foreground">
                         Descubre lo que otros viajeros opinan sobre
-                        esta experiencia.
+                        esta ruta.
                     </p>
                 </div>
             </FadeUp>

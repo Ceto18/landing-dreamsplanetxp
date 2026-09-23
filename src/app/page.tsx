@@ -17,20 +17,20 @@ import { homeService } from '@/services/homeService'
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'DreamsPlanetXP | Experiencias de Viaje Premium',
+    absolute: 'DreamsPlanetXP | Rutas de Viaje Premium',
   },
 
   description:
-    'Vive experiencias de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas, destinos extraordinarios y momentos inolvidables.',
+    'Vive rutas de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas, destinos extraordinarios y momentos inolvidables.',
 
   alternates: {
     canonical: '/',
   },
 
   openGraph: {
-    title: 'DreamsPlanetXP | Experiencias de Viaje Premium',
+    title: 'DreamsPlanetXP | Rutas de Viaje Premium',
     description:
-      'Vive experiencias de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas en destinos extraordinarios.',
+      'Vive rutas de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas en destinos extraordinarios.',
     url: '/',
     type: 'website',
   },

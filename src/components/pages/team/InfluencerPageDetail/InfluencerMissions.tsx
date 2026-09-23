@@ -37,7 +37,7 @@ export function InfluencerMissions({
             <FadeUp>
                 <div className="mb-10 text-center">
                     <p className="text-sm font-semibold uppercase tracking-[0.25em] text-accent">
-                        Experiencias compartidas
+                        Rutas compartidas
                     </p>
 
                     <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
@@ -184,14 +184,14 @@ export function InfluencerCta({
                         </div>
 
                         <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
-                            Vive una experiencia
+                            Vive una ruta
                             inolvidable
                         </h2>
 
                         <p className="mx-auto mt-4 max-w-xl leading-relaxed text-muted-foreground">
                             Descubre nuestras próximas
                             misiones y comparte nuevas
-                            experiencias junto a{' '}
+                            rutas junto a{' '}
                             {fullname}.
                         </p>
 

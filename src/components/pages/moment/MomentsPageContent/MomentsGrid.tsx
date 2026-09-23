@@ -53,7 +53,7 @@ export function MomentsGrid({ moments }: { moments: MomentCardItem[] }) {
                                     </p>
 
                                     <div className="mt-3 text-accent text-sm font-semibold flex items-center gap-1">
-                                        Ver experiencia
+                                        Ver ruta
                                         <ArrowRight className="w-4 h-4" />
                                     </div>
                                 </div>

@@ -8,7 +8,7 @@ export function OrganizationSchema() {
     url: 'https://dreamsplanetxp.es/',
     logo: 'https://dreamsplanetxp.es/logodreams.png',
     description:
-      'Experiencias de viaje premium, misiones exclusivas y viajes personalizados.',
+      'Rutas de viaje premium, misiones exclusivas y viajes personalizados.',
     sameAs: [
       'https://www.instagram.com/dreamsplanetxp/',
       'https://www.youtube.com/@DreamsPlanetXP',

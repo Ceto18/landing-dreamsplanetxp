@@ -13,8 +13,8 @@ export function MomentDetailsGrid({ moment }: { moment: MomentDetail }) {
             icon: MapPin,
         },
         {
-            label: 'Experiencia',
-            value: moment.mission_experience || moment.experience || 'Experiencia',
+            label: 'Ruta',
+            value: moment.mission_experience || moment.experience || 'Ruta',
             icon: Compass,
         },
         {

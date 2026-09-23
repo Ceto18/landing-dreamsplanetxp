@@ -190,7 +190,7 @@ export function Review() {
                 <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                         title="Reseñas"
-                        description="Historias reales de viajeros que vivieron experiencias únicas, auténticas e inolvidables."
+                        description="Historias reales de viajeros que vivieron rutas únicas, auténticas e inolvidables."
                     />
 
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -216,7 +216,7 @@ export function Review() {
                 <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <SectionHeader
                         title="Reseñas"
-                        description="Historias reales de viajeros que vivieron experiencias únicas, auténticas e inolvidables."
+                        description="Historias reales de viajeros que vivieron rutas únicas, auténticas e inolvidables."
                     />
 
                     <div className="mx-auto max-w-2xl rounded-3xl border border-border/60 bg-card/50 p-8 text-center shadow-xl">
@@ -225,7 +225,7 @@ export function Review() {
                         </p>
 
                         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                            Muy pronto podrás conocer las experiencias compartidas por nuestros viajeros.
+                            Muy pronto podrás conocer las rutas compartidas por nuestros viajeros.
                         </p>
 
                     </div>
@@ -247,7 +247,7 @@ export function Review() {
             <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Reseñas"
-                    description="Historias reales de viajeros que vivieron experiencias únicas, auténticas e inolvidables."
+                    description="Historias reales de viajeros que vivieron rutas únicas, auténticas e inolvidables."
                 />
 
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">

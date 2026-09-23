@@ -32,7 +32,7 @@ export function MomentGallery({
                         <FadeUp>
                             <div className="space-y-4">
                                 <h2 className="text-4xl font-bold">
-                                    Una experiencia que
+                                    Una ruta que
                                     deja huella
                                 </h2>
 

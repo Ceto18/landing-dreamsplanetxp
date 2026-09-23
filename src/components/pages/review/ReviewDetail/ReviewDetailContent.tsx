@@ -44,7 +44,7 @@
 //                     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 //                         <SectionHeader
 //                             title="Más reseñas"
-//                             description="Conoce otras experiencias de viajeros que fueron parte de nuestras misiones."
+//                             description="Conoce otras rutas de viajeros que fueron parte de nuestras misiones."
 //                         />
 
 //                         <RelatedReviews reviews={relatedReviews} />

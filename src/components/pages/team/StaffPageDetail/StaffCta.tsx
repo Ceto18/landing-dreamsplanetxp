@@ -19,7 +19,7 @@ export function StaffCta() {
 
                         <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted-foreground">
                             Explora nuestras misiones y descubre a las
-                            personas que hacen posible cada experiencia.
+                            personas que hacen posible cada ruta.
                         </p>
 
                         <Link

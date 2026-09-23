@@ -213,7 +213,7 @@ export function Moment({
                                         moment.image_url,
                                     description:
                                         mission.label ||
-                                        'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.',
+                                        'Una ruta creada para conectar con nuevos destinos, culturas y momentos memorables.',
                                     place:
                                         detail?.country ??
                                         mission.country,

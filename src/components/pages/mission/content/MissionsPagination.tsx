@@ -51,7 +51,7 @@ export function MissionsPagination({
                 <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-border/60 bg-card/30 p-4 sm:flex-row">
                     <p className="text-sm text-muted-foreground">
                         Página {currentPage} de {totalPages} · {total}{' '}
-                        experiencias
+                        rutas
                     </p>
 
                     <div className="flex flex-wrap items-center justify-center gap-2">

@@ -22,7 +22,7 @@ export type TimelineItem = {
 export const aboutValues: AboutValue[] = [
     {
         title: 'Autenticidad',
-        description: 'Experiencias genuinas diseñadas para conectar con la cultura local.',
+        description: 'Rutas genuinas diseñadas para conectar con la cultura local.',
         icon: Sparkles,
     },
     {
@@ -57,7 +57,7 @@ export const aboutStats: AboutStat[] = [
     },
     {
         value: '5',
-        label: 'Años de Experiencia',
+        label: 'Años de Ruta',
     },
 ]
 
@@ -75,7 +75,7 @@ export const aboutTimeline: TimelineItem[] = [
         year: 'Etapa 1',
         title: 'Primeras misiones',
         description:
-            'Diseñamos experiencias seleccionadas en destinos especiales, priorizando seguridad, cultura y conexión.',
+            'Diseñamos rutas seleccionadas en destinos especiales, priorizando seguridad, cultura y conexión.',
         image: '/images/about/timeline-2.jpg',
     },
     {
@@ -89,7 +89,7 @@ export const aboutTimeline: TimelineItem[] = [
     {
         id: 4,
         year: 'Hoy',
-        title: 'Experiencias premium',
+        title: 'Rutas premium',
         description:
             'Consolidamos una propuesta de viajes premium con acompañamiento, planificación y detalles cuidadosamente pensados.',
         image: '/images/about/timeline-4.jpg',
@@ -99,14 +99,14 @@ export const aboutTimeline: TimelineItem[] = [
         year: 'Futuro',
         title: 'Nuevos destinos',
         description:
-            'Seguimos expandiendo nuestras misiones hacia nuevos países, culturas y experiencias transformadoras.',
+            'Seguimos expandiendo nuestras misiones hacia nuevos países, culturas y rutas transformadoras.',
         image: '/images/about/timeline-5.jpg',
     },
 ]
 
 export const aboutPillars = [
     {
-        title: 'Diseño de experiencias',
+        title: 'Diseño de rutas',
         description:
             'Cada viaje se construye pensando en el ritmo, la emoción y los momentos clave del viajero.',
         icon: Compass,
@@ -126,7 +126,7 @@ export const aboutPillars = [
     {
         title: 'Calidad constante',
         description:
-            'Cuidamos cada detalle para mantener una experiencia organizada, confiable y memorable.',
+            'Cuidamos cada detalle para mantener una ruta organizada, confiable y memorable.',
         icon: Trophy,
     },
 ]

@@ -168,7 +168,7 @@ export function Header() {
                             </h1>
 
                             <p className="mt-1 hidden text-sm text-muted-foreground sm:block">
-                                Experiencias Premium
+                                Rutas Premium
                             </p>
                         </div>
                     </Link>

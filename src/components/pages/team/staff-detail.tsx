@@ -42,7 +42,7 @@
 //             <h1 className="text-3xl font-bold">{staff.name}</h1>
 //             <p className="text-muted-foreground mt-2">{staff.role}</p>
 //             <p className="mt-4">{staff.bio || staff.specialty}</p>
-//             {staff.experience && <p className="mt-2">Experiencia: {staff.experience}</p>}
+//             {staff.experience && <p className="mt-2">Ruta: {staff.experience}</p>}
 //             {staff.languages && <p>Idiomas: {staff.languages.join(', ')}</p>}
 //           </div>
 //         </div>

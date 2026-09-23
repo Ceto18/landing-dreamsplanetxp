@@ -19,7 +19,7 @@ export function StaffMissions({ missions }: Props) {
             <FadeUp>
                 <div className="mb-10 text-center">
                     <p className="text-sm font-semibold uppercase tracking-[0.25em] text-accent">
-                        Experiencias compartidas
+                        Rutas compartidas
                     </p>
 
                     <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">

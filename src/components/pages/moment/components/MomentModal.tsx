@@ -157,7 +157,7 @@ export function MomentModal({
 
                                 <p className="text-lg text-muted-foreground leading-relaxed">
                                     {photo.description ||
-                                        'Una experiencia creada para conectar con nuevos destinos, culturas y momentos memorables.'}
+                                        'Una ruta creada para conectar con nuevos destinos, culturas y momentos memorables.'}
                                 </p>
                             </div>
 
@@ -177,7 +177,7 @@ export function MomentModal({
 
                                         <p>
                                             <span className="text-muted-foreground">
-                                                Experiencia:
+                                                Ruta:
                                             </span>{' '}
                                             {photo.experience || '-'}
                                         </p>

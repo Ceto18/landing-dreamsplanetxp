@@ -272,7 +272,7 @@ export default function TeamPageClient() {
 
                         <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
                             Conoce a las personas que acompañan, coordinan y
-                            hacen posible cada una de nuestras experiencias.
+                            hacen posible cada una de nuestras rutas.
                         </p>
                     </div>
 
@@ -435,7 +435,7 @@ export default function TeamPageClient() {
                                                     {member.experience && (
                                                         <div>
                                                             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                                                Experiencia
+                                                                Ruta
                                                             </p>
 
                                                             <p className="mt-1 font-medium text-foreground">

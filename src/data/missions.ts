@@ -45,18 +45,18 @@ export const missions: Mission[] = [
         description:
             'Una expedición diseñada para vivir el desierto, los zocos, la arquitectura tradicional y la magia de Marruecos.',
         longDescription:
-            'Marruecos es una misión pensada para viajeros que buscan una experiencia intensa, cultural y visualmente inolvidable. Desde los mercados llenos de vida hasta las noches bajo el cielo del desierto, cada momento está diseñado para conectar con el destino de forma auténtica, segura y memorable.',
+            'Marruecos es una misión pensada para viajeros que buscan una ruta intensa, cultural y visualmente inolvidable. Desde los mercados llenos de vida hasta las noches bajo el cielo del desierto, cada momento está diseñado para conectar con el destino de forma auténtica, segura y memorable.',
         highlights: [
             'Campamento premium en el desierto',
             'Recorrido por Marrakech',
-            'Experiencia cultural local',
+            'Ruta cultural local',
             'Guías especializados',
         ],
         includes: [
             'Hospedaje seleccionado',
             'Acompañamiento de coordinadores',
             'Traslados internos',
-            'Experiencias culturales',
+            'Rutas culturales',
             'Asistencia durante la misión',
             'Actividades grupales',
         ],
@@ -77,13 +77,13 @@ export const missions: Mission[] = [
                 day: 'Día 3',
                 title: 'Ruta hacia el desierto',
                 description:
-                    'Viaje por paisajes únicos hasta llegar al inicio de la experiencia en dunas.',
+                    'Viaje por paisajes únicos hasta llegar al inicio de la ruta en dunas.',
             },
             {
                 day: 'Día 4',
                 title: 'Noche bajo las estrellas',
                 description:
-                    'Campamento, atardecer, cena especial y experiencia nocturna en el desierto.',
+                    'Campamento, atardecer, cena especial y ruta nocturna en el desierto.',
             },
         ],
         gallery: [
@@ -111,12 +111,12 @@ export const missions: Mission[] = [
         description:
             'Una ruta pensada para descubrir la esencia de Vietnam entre ciudades vibrantes, naturaleza y gastronomía.',
         longDescription:
-            'Vietnam combina paisajes naturales impresionantes, cultura milenaria y una gastronomía reconocida mundialmente. Esta misión está diseñada para quienes buscan una experiencia equilibrada entre exploración, descanso, conexión cultural y momentos memorables.',
+            'Vietnam combina paisajes naturales impresionantes, cultura milenaria y una gastronomía reconocida mundialmente. Esta misión está diseñada para quienes buscan una ruta equilibrada entre exploración, descanso, conexión cultural y momentos memorables.',
         highlights: [
             'Ha Long Bay',
             'Mercados tradicionales',
             'Gastronomía vietnamita',
-            'Experiencias culturales',
+            'Rutas culturales',
         ],
         includes: [
             'Hospedaje seleccionado',
@@ -124,7 +124,7 @@ export const missions: Mission[] = [
             'Traslados internos',
             'Actividades culturales',
             'Asistencia en ruta',
-            'Experiencias gastronómicas',
+            'Rutas gastronómicas',
         ],
         itinerary: [
             {
@@ -143,13 +143,13 @@ export const missions: Mission[] = [
                 day: 'Día 3',
                 title: 'Naturaleza y bahía',
                 description:
-                    'Experiencia escénica en paisajes naturales y navegación.',
+                    'Ruta escénica en paisajes naturales y navegación.',
             },
             {
                 day: 'Día 4',
                 title: 'Gastronomía local',
                 description:
-                    'Ruta de sabores vietnamitas y experiencias culinarias seleccionadas.',
+                    'Ruta de sabores vietnamitas y rutas culinarias seleccionadas.',
             },
         ],
         gallery: [
@@ -175,20 +175,20 @@ export const missions: Mission[] = [
         price: 'Desde $1,590',
         pdfUrl: '/pdf/thailand.pdf',
         description:
-            'Una experiencia vibrante entre playas, cultura, templos y actividades tropicales.',
+            'Una ruta vibrante entre playas, cultura, templos y actividades tropicales.',
         longDescription:
             'Tailandia es una misión para quienes desean combinar aventura, descanso, cultura y paisajes paradisíacos. El recorrido está pensado para vivir momentos auténticos sin perder comodidad, seguridad ni acompañamiento.',
         highlights: [
             'Playas paradisíacas',
             'Templos emblemáticos',
-            'Experiencia gastronómica',
+            'Ruta gastronómica',
             'Actividades grupales',
         ],
         includes: [
             'Hospedaje seleccionado',
             'Actividades guiadas',
             'Traslados internos',
-            'Experiencias en playa',
+            'Rutas en playa',
             'Acompañamiento del equipo',
             'Asistencia durante la ruta',
         ],
@@ -213,7 +213,7 @@ export const missions: Mission[] = [
             },
             {
                 day: 'Día 4',
-                title: 'Experiencia gastronómica',
+                title: 'Ruta gastronómica',
                 description:
                     'Sabores tailandeses y momentos de integración grupal.',
             },
@@ -246,7 +246,7 @@ export const missions: Mission[] = [
             'Japón es una misión pensada para viajeros que desean vivir una mezcla única entre tradición, tecnología, orden, gastronomía y belleza visual. Cada etapa está diseñada para experimentar el destino con profundidad y comodidad.',
         highlights: [
             'Tokio y Kioto',
-            'Experiencia cultural japonesa',
+            'Ruta cultural japonesa',
             'Templos y jardines',
             'Ruta gastronómica',
         ],
@@ -254,7 +254,7 @@ export const missions: Mission[] = [
             'Hospedaje seleccionado',
             'Coordinación de ruta',
             'Traslados internos',
-            'Experiencias culturales',
+            'Rutas culturales',
             'Acompañamiento del equipo',
             'Asistencia durante el viaje',
         ],
@@ -281,7 +281,7 @@ export const missions: Mission[] = [
                 day: 'Día 4',
                 title: 'Ruta gastronómica',
                 description:
-                    'Experiencia culinaria japonesa en puntos seleccionados.',
+                    'Ruta culinaria japonesa en puntos seleccionados.',
             },
         ],
         gallery: [
@@ -309,10 +309,10 @@ export const missions: Mission[] = [
         description:
             'Una misión para quienes buscan naturaleza, montaña, cultura espiritual y transformación personal.',
         longDescription:
-            'Nepal es una misión de conexión. Montañas, templos, comunidades locales y paisajes imponentes forman parte de una experiencia diseñada para quienes buscan algo más que un viaje: una pausa profunda y significativa.',
+            'Nepal es una misión de conexión. Montañas, templos, comunidades locales y paisajes imponentes forman parte de una ruta diseñada para quienes buscan algo más que un viaje: una pausa profunda y significativa.',
         highlights: [
             'Paisajes del Himalaya',
-            'Experiencia espiritual',
+            'Ruta espiritual',
             'Trekking guiado',
             'Cultura local',
         ],
@@ -321,7 +321,7 @@ export const missions: Mission[] = [
             'Guías especializados',
             'Actividades de montaña',
             'Asistencia en ruta',
-            'Experiencias culturales',
+            'Rutas culturales',
             'Coordinación del grupo',
         ],
         itinerary: [
@@ -341,7 +341,7 @@ export const missions: Mission[] = [
                 day: 'Día 3',
                 title: 'Ruta de montaña',
                 description:
-                    'Inicio de experiencia natural con acompañamiento especializado.',
+                    'Inicio de ruta natural con acompañamiento especializado.',
             },
             {
                 day: 'Día 4',
@@ -373,19 +373,19 @@ export const missions: Mission[] = [
         price: 'Por anunciar',
         pdfUrl: '/pdf/sorpresa.pdf',
         description:
-            'Una experiencia misteriosa diseñada para quienes quieren dejarse sorprender.',
+            'Una ruta misteriosa diseñada para quienes quieren dejarse sorprender.',
         longDescription:
-            'La Misión Sorpresa está pensada para viajeros que quieren salir de lo esperado. El destino, la ruta y varias experiencias se revelan progresivamente para mantener la emoción hasta el final.',
+            'La Misión Sorpresa está pensada para viajeros que quieren salir de lo esperado. El destino, la ruta y varias rutas se revelan progresivamente para mantener la emoción hasta el final.',
         highlights: [
             'Destino secreto',
-            'Experiencia exclusiva',
+            'Ruta exclusiva',
             'Grupo reducido',
             'Aventura inesperada',
         ],
         includes: [
             'Ruta secreta',
             'Acompañamiento completo',
-            'Experiencias seleccionadas',
+            'Rutas seleccionadas',
             'Soporte del equipo',
             'Actividades sorpresa',
             'Coordinación premium',
@@ -399,7 +399,7 @@ export const missions: Mission[] = [
             },
             {
                 day: 'Día 2',
-                title: 'Primera experiencia',
+                title: 'Primera ruta',
                 description:
                     'Actividad principal preparada para iniciar la aventura.',
             },
@@ -413,7 +413,7 @@ export const missions: Mission[] = [
                 day: 'Día 4',
                 title: 'Cierre memorable',
                 description:
-                    'Experiencia final diseñada para cerrar la misión con impacto.',
+                    'Ruta final diseñada para cerrar la misión con impacto.',
             },
         ],
         gallery: [

@@ -268,7 +268,7 @@ export function Footer() {
 
                             <p className="text-sm text-muted-foreground">
                                 Transformando viajes en
-                                experiencias memorables.
+                                rutas memorables.
                             </p>
 
                             <div className="flex min-h-9 items-center gap-3 pt-2">

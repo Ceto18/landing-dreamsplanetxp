@@ -24,11 +24,11 @@ export function MissionContent({ mission }: Props) {
             <FadeUp>
                 <div className="space-y-4">
                     <p className="text-accent text-sm font-semibold uppercase tracking-[0.3em]">
-                        Sobre esta experiencia
+                        Sobre esta ruta
                     </p>
 
                     <h2 className="text-4xl font-bold text-foreground">
-                        {mission.subtitle || 'Una experiencia diseñada para viajar diferente'}
+                        {mission.subtitle || 'Una ruta diseñada para viajar diferente'}
                     </h2>
 
                     <p className="text-muted-foreground leading-relaxed">

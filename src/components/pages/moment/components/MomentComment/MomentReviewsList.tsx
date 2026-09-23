@@ -67,7 +67,7 @@ export function MomentReviewsList({
                 </p>
 
                 <p className="mt-2 text-sm text-muted-foreground">
-                    Sé la primera persona en compartir su experiencia.
+                    Sé la primera persona en compartir su ruta.
                 </p>
             </div>
         )
@@ -157,7 +157,7 @@ export function MomentReviewsList({
                                         </div>
 
                                         <p className="mt-4 font-semibold text-foreground">
-                                            Ver video de la experiencia
+                                            Ver video de la ruta
                                         </p>
                                     </div>
                                 </button>

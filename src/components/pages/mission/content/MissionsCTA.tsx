@@ -28,7 +28,7 @@ export function MissionsCTA() {
 
                         {/* SUBTITLE */}
                         <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-                            Te ayudamos a elegir la experiencia ideal según tu estilo, fechas y presupuesto.
+                            Te ayudamos a elegir la ruta ideal según tu estilo, fechas y presupuesto.
                         </p>
 
                         {/* CTA BUTTON */}

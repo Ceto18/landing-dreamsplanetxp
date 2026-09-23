@@ -50,7 +50,7 @@ export type ContactFormData = {
     email: string
     telefono: string
     mision: string
-    experiencia: string
+    ruta: string
     viajeros: string
     mensaje: string
 }
@@ -60,7 +60,7 @@ export const initialContactFormData: ContactFormData = {
     email: '',
     telefono: '',
     mision: '',
-    experiencia: '',
+    ruta: '',
     viajeros: '',
     mensaje: '',
 }

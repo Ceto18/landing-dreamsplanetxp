@@ -58,7 +58,7 @@ export function MissionCard({ experience }: Props) {
 
     const subtitle =
         experience.short_description ||
-        'Una experiencia diseñada para vivir una misión inolvidable.'
+        'Una ruta diseñada para vivir una misión inolvidable.'
 
     const availableSeats =
         experience.available_seats ??

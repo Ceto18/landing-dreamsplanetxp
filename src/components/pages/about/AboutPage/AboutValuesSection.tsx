@@ -28,7 +28,7 @@ export function AboutValuesSection({
             <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Nuestros Valores"
-                    description="Principios que guían cada experiencia, cada destino y cada detalle del viaje."
+                    description="Principios que guían cada ruta, cada destino y cada detalle del viaje."
                 />
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">

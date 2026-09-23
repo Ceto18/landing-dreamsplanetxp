@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Reseñas',
 
     description:
-        'Descubre las experiencias y opiniones de viajeros que han vivido momentos únicos con DreamsPlanetXP.',
+        'Descubre las rutas y opiniones de viajeros que han vivido momentos únicos con DreamsPlanetXP.',
 
     alternates: {
         canonical: '/review',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Reseñas | DreamsPlanetXP',
         description:
-            'Descubre las experiencias y opiniones de viajeros que han vivido momentos únicos con DreamsPlanetXP.',
+            'Descubre las rutas y opiniones de viajeros que han vivido momentos únicos con DreamsPlanetXP.',
         url: '/review',
         type: 'website',
     },

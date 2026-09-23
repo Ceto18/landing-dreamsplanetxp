@@ -88,7 +88,7 @@
 //                                 </div>
 
 //                                 <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-5">
-//                                     Experiencia del viajero
+//                                     Ruta del viajero
 //                                 </h2>
 
 //                                 <p className="text-muted-foreground leading-relaxed text-lg">
@@ -174,7 +174,7 @@
 //                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 //                     <SectionHeader
 //                         title="Más reseñas"
-//                         description="Conoce otras experiencias de viajeros que fueron parte de nuestras misiones."
+//                         description="Conoce otras rutas de viajeros que fueron parte de nuestras misiones."
 //                     />
 
 //                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

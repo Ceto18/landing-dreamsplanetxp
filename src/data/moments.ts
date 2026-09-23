@@ -62,7 +62,7 @@ export const momentosData: Record<string, Photo[]> = {
             title: 'Atardecer en el desierto',
             image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop',
             description:
-                'Un instante entre dunas, silencio y cielo dorado. Una experiencia pensada para viajeros que buscan conectar con el destino más allá de lo turístico.',
+                'Un instante entre dunas, silencio y cielo dorado. Una ruta pensada para viajeros que buscan conectar con el destino más allá de lo turístico.',
             place: 'Desierto de Marruecos',
             experience: 'Atardecer y campamento',
             moment: 'Últimas horas del día',
@@ -221,7 +221,7 @@ export const momentosData: Record<string, Photo[]> = {
         'Vietnam',
         'Momento en Vietnam',
         'https://images.unsplash.com/photo-1528127269029-c4b9e67ad96f?w=600&h=600&fit=crop',
-        'Una experiencia mágica en tierras vietnamitas que transformará tu perspectiva.',
+        'Una ruta mágica en tierras vietnamitas que transformará tu perspectiva.',
         'Vietnam',
         'Exploración cultural',
         'Fascinación',

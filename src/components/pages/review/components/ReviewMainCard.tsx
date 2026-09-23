@@ -55,7 +55,7 @@ export function ReviewMainCard({
                     >
                         <div className="space-y-3">
                             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-accent">
-                                Experiencia del viajero
+                                Ruta del viajero
                             </p>
 
                             <p className="text-xl italic leading-relaxed text-foreground sm:text-2xl">

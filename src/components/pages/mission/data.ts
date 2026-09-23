@@ -19,7 +19,7 @@ export const missions = [
 export const benefits = [
     { title: 'Guías Especializados', description: 'Acompañamiento experto durante cada etapa del viaje.', icon: Map },
     { title: 'Hospedaje Premium', description: 'Estadías cómodas, seleccionadas por ubicación y calidad.', icon: Hotel },
-    { title: 'Experiencias Auténticas', description: 'Actividades reales que conectan con la cultura local.', icon: Sparkles },
+    { title: 'Rutas Auténticas', description: 'Actividades reales que conectan con la cultura local.', icon: Sparkles },
     { title: 'Seguridad Garantizada', description: 'Rutas planificadas y soporte constante durante la misión.', icon: ShieldCheck },
     { title: 'Grupos Reducidos', description: 'Viajes más cercanos, personalizados y mejor organizados.', icon: Users },
     { title: 'Memorias Inmortales', description: 'Momentos únicos diseñados para quedarse contigo.', icon: Camera },

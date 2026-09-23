@@ -17,7 +17,7 @@ export function MissionGallery({ mission }: Props) {
         <div className="space-y-6">
             <FadeUp>
                 <h3 className="text-3xl font-bold text-foreground">
-                    Galería de la experiencia
+                    Galería de la ruta
                 </h3>
             </FadeUp>
 

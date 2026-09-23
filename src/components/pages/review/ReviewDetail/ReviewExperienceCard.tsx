@@ -17,7 +17,7 @@
 //                 </div>
 
 //                 <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-5">
-//                     Experiencia del viajero
+//                     Ruta del viajero
 //                 </h2>
 
 //                 <p className="text-muted-foreground leading-relaxed text-lg">

@@ -26,7 +26,7 @@ export function Hero({ hero, nextDeparture }: Props) {
             value: `${hero.travelers_count}+`,
         },
         {
-            label: 'Experiencias',
+            label: 'Rutas',
             value: `${hero.experiences_count}+`,
         },
         {

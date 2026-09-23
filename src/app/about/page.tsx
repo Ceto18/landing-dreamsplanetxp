@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Quiénes Somos',
 
     description:
-        'Conoce DreamsPlanetXP, nuestra historia, filosofía y pasión por crear experiencias premium alrededor del mundo.',
+        'Conoce DreamsPlanetXP, nuestra historia, filosofía y pasión por crear rutas premium alrededor del mundo.',
 
     alternates: {
         canonical: '/about',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Quiénes Somos | DreamsPlanetXP',
         description:
-            'Conoce DreamsPlanetXP, nuestra historia, filosofía y pasión por crear experiencias premium alrededor del mundo.',
+            'Conoce DreamsPlanetXP, nuestra historia, filosofía y pasión por crear rutas premium alrededor del mundo.',
         url: '/about',
         type: 'website',
     },

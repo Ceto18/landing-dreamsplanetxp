@@ -321,7 +321,7 @@ export default function PoliticaPrivacidadPage() {
                                         <p>
                                             El pasajero da su consentimiento para
                                             almacenar las cookies y otras técnicas de
-                                            rastreo para mejorar su experiencia de
+                                            rastreo para mejorar su ruta de
                                             navegación en nuestra web, para mostrarle
                                             contenidos personalizados y anuncios
                                             adecuados, para analizar el tráfico en nuestra
@@ -362,7 +362,7 @@ export default function PoliticaPrivacidadPage() {
                                         <p>
                                             Las cookies son archivos pequeños que las
                                             páginas web almacenan en el navegador del
-                                            usuario para mejorar la experiencia de
+                                            usuario para mejorar la ruta de
                                             navegación.
                                         </p>
                                     </LegalSection>

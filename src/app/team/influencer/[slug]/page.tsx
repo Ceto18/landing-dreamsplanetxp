@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props) {
             title: `${member.fullname} | DreamsPlanetXP`,
             description:
                 member.bio ||
-                `Conoce la experiencia, especialidad y trayectoria de ${member.fullname}.`,
+                `Conoce la ruta, especialidad y trayectoria de ${member.fullname}.`,
         }
     } catch (error) {
         console.error(

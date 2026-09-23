@@ -20,7 +20,7 @@ export function Mission({ missions }: Props) {
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Misiones"
-                    description="Explora nuestras expediciones exclusivas diseñadas para viajeros que buscan experiencias transformadoras."
+                    description="Explora nuestras expediciones exclusivas diseñadas para viajeros que buscan rutas transformadoras."
                 />
 
                 <MissionCarousel missions={missions} />

@@ -35,7 +35,7 @@ export async function AboutStats() {
             icon: Star,
         },
         {
-            label: 'Años de experiencia',
+            label: 'Años de ruta',
             value: `+${company.years_of_experience}`,
             icon: CalendarDays,
         },

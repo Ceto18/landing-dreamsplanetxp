@@ -73,7 +73,7 @@ export function ContactForm({ missions }: Props) {
                 return {
                     ...previous,
                     mision: value,
-                    experiencia: '',
+                    ruta: '',
                 }
             }
 

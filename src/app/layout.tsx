@@ -23,12 +23,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://dreamsplanetxp.es'),
 
   title: {
-    default: 'DREAMSPLANETXP | Experiencias de Viaje Premium',
+    default: 'DREAMSPLANETXP | Rutas de Viaje Premium',
     template: '%s | DREAMSPLANETXP',
   },
 
   description:
-    'Vive experiencias de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas, destinos extraordinarios y experiencias diseñadas para crear recuerdos inolvidables.',
+    'Vive rutas de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas, destinos extraordinarios y rutas diseñadas para crear recuerdos inolvidables.',
 
   applicationName: 'DREAMSPLANETXP',
 
@@ -50,9 +50,9 @@ export const metadata: Metadata = {
     locale: 'es_ES',
     url: '/',
     siteName: 'DREAMSPLANETXP',
-    title: 'DREAMSPLANETXP | Experiencias de Viaje Premium',
+    title: 'DREAMSPLANETXP | Rutas de Viaje Premium',
     description:
-      'Vive experiencias de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas en destinos extraordinarios.',
+      'Vive rutas de viaje únicas y memorables con DreamsPlanetXP. Descubre misiones exclusivas en destinos extraordinarios.',
     images: [
       {
         url: '/logodreams.png',
@@ -65,9 +65,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: 'summary_large_image',
-    title: 'DREAMSPLANETXP | Experiencias de Viaje Premium',
+    title: 'DREAMSPLANETXP | Rutas de Viaje Premium',
     description:
-      'Vive experiencias de viaje únicas y memorables con DreamsPlanetXP.',
+      'Vive rutas de viaje únicas y memorables con DreamsPlanetXP.',
     images: ['/logodreams.png'],
   },
 

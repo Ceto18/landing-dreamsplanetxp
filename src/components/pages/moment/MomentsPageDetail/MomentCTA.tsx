@@ -17,7 +17,7 @@ export function MomentCTA() {
                         </h2>
 
                         <p className="text-muted-foreground mb-8">
-                            Explora nuestras misiones y descubre experiencias
+                            Explora nuestras misiones y descubre rutas
                             diseñadas para crear recuerdos únicos.
                         </p>
 

@@ -37,7 +37,7 @@ export function StaffInfo({
             icon: Globe,
         },
         {
-            label: 'Experiencia',
+            label: 'Ruta',
             value: member.experience || 'No especificada',
             icon: Briefcase,
         },

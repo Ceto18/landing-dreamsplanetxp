@@ -21,7 +21,7 @@ export function ReviewsHero({ metrics }: Props) {
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Reseñas de Viajeros"
-                    description="Historias reales de personas que confiaron en Dreams Planet XP para vivir experiencias únicas alrededor del mundo."
+                    description="Historias reales de personas que confiaron en Dreams Planet XP para vivir rutas únicas alrededor del mundo."
                 />
 
                 <ReviewsMetrics metrics={metrics} />

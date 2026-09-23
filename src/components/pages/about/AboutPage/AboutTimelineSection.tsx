@@ -24,7 +24,7 @@ export function AboutTimelineSection({
             <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Nuestra Cronología"
-                    description="Un camino de experiencias, aprendizajes y momentos que han construido la esencia de DreamsPlanetXP."
+                    description="Un camino de rutas, aprendizajes y momentos que han construido la esencia de DreamsPlanetXP."
                 />
 
                 <div className="relative mt-20">

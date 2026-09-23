@@ -13,7 +13,7 @@ export function MissionBenefits() {
                 </p>
 
                 <h2 className="text-3xl sm:text-5xl font-bold text-foreground">
-                    Experiencias que se quedan contigo
+                    Rutas que se quedan contigo
                 </h2>
 
                 <p className="text-base sm:text-lg text-muted-foreground italic">

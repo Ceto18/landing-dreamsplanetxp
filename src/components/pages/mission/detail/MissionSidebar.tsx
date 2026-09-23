@@ -194,7 +194,7 @@ export function MissionSidebar({ mission }: Props) {
                     href="/#contact"
                     className="btn-gold inline-flex w-full items-center justify-center gap-2 no-underline"
                 >
-                    Reservar experiencia
+                    Reservar ruta
                 </Link>
             </AnimatedCard>
         </aside>

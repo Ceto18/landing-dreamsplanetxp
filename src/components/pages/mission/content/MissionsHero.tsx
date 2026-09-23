@@ -15,7 +15,7 @@ export function MissionsHero() {
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionHeader
                     title="Todas las Misiones"
-                    description="Explora nuestras expediciones premium, diseñadas para viajeros que buscan experiencias auténticas, seguras y memorables."
+                    description="Explora nuestras expediciones premium, diseñadas para viajeros que buscan rutas auténticas, seguras y memorables."
                     className="mb-12"
                 />
 
@@ -33,7 +33,7 @@ export function MissionsHero() {
 
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
                             Cada misión incluye acompañamiento, planificación,
-                            experiencias seleccionadas y una ruta pensada para
+                            rutas seleccionadas y una ruta pensada para
                             disfrutar el destino con comodidad y seguridad.
                         </p>
                     </div>

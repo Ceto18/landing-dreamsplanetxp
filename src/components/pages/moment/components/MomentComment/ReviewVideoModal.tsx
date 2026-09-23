@@ -196,7 +196,7 @@ export function ReviewVideoModal({
 
                         <div className="min-w-0">
                             <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-accent sm:text-xs">
-                                Experiencia compartida
+                                Ruta compartida
                             </p>
 
                             <h3 className="mt-1 truncate text-base font-semibold text-white sm:text-xl">
@@ -263,7 +263,7 @@ export function ReviewVideoModal({
                                 </div>
 
                                 <p className="mt-4 text-sm font-medium tracking-wide text-white/60">
-                                    Preparando la experiencia...
+                                    Preparando la ruta...
                                 </p>
                             </div>
                         </div>

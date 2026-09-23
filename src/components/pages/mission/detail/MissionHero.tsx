@@ -12,7 +12,7 @@ type Props = {
 }
 
 function formatCountry(country?: string | null) {
-    if (!country) return 'Experiencia'
+    if (!country) return 'Ruta'
 
     return country.charAt(0).toUpperCase() + country.slice(1)
 }
@@ -28,7 +28,7 @@ export function MissionHero({ mission }: Props) {
     const subtitle =
         mission.subtitle ||
         mission.short_description ||
-        'Una experiencia diseñada para vivir una misión inolvidable.'
+        'Una ruta diseñada para vivir una misión inolvidable.'
 
     return (
         <section className="relative flex min-h-[85vh] items-center overflow-hidden pb-20 pt-32">

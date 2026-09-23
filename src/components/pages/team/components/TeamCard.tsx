@@ -83,7 +83,7 @@ export function TeamCard({
                             {member.experience && (
                                 <div>
                                     <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                                        Experiencia
+                                        Ruta
                                     </p>
 
                                     <p className="font-medium text-foreground">

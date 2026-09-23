@@ -47,14 +47,14 @@ export function MomentCard({
 
                     {!hasExperience && (
                         <span className="mt-2 w-fit rounded-full bg-background/80 px-3 py-1 text-[11px] font-medium text-foreground/70 backdrop-blur-sm">
-                            Sin experiencia activa
+                            Sin ruta activa
                         </span>
                     )}
                 </div>
 
                 {hasExperience && (
                     <div className="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-background shadow-lg">
-                        Ver experiencia
+                        Ver ruta
                     </div>
                 )}
 

@@ -30,11 +30,11 @@ export async function generateMetadata({ params }: Props) {
             description:
                 experience.short_description ||
                 experience.subtitle ||
-                'Experiencia premium de DreamsPlanetXP',
+                'Ruta premium de DreamsPlanetXP',
         }
     } catch {
         return {
-            title: 'Experiencia no encontrada | DreamsPlanetXP',
+            title: 'Ruta no encontrada | DreamsPlanetXP',
         }
     }
 }
@@ -65,7 +65,7 @@ export default async function MissionDetailPage({ params }: Props) {
             </>
         )
     } catch (error) {
-        console.error('Error al obtener experiencia:', error)
+        console.error('Error al obtener ruta:', error)
 
         notFound()
     }

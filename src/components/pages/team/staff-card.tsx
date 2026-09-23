@@ -35,7 +35,7 @@
 //           <div className="space-y-2">
 //             <h3 className="text-lg font-bold text-foreground">{staff.name}</h3>
 //             {staff.bio && <p className="text-sm text-accent">{staff.bio}</p>}
-//             {staff.experience && <p className="text-xs text-muted-foreground">Experiencia: {staff.experience}</p>}
+//             {staff.experience && <p className="text-xs text-muted-foreground">Ruta: {staff.experience}</p>}
 //             {staff.languages && <p className="text-xs text-muted-foreground">Idiomas: {staff.languages.join(', ')}</p>}
 //           </div>
 //         </AnimatedCard>

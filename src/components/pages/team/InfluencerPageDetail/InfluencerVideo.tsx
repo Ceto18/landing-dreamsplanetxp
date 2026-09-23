@@ -32,7 +32,7 @@ export function InfluencerVideo({
                     </h2>
 
                     <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-                        Conoce un poco más sobre {fullname}, su experiencia y su
+                        Conoce un poco más sobre {fullname}, su ruta y su
                         forma de vivir cada aventura.
                     </p>
                 </div>

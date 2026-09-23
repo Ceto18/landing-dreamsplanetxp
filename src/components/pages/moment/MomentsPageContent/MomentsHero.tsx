@@ -26,7 +26,7 @@ export function MomentsHero() {
 
                 <SectionHeader
                     title="Momentos de la misión"
-                    description="Explora los momentos especiales de esta misión, sus lugares, sensaciones y experiencias memorables."
+                    description="Explora los momentos especiales de esta misión, sus lugares, sensaciones y rutas memorables."
                 />
 
                 <FadeUp delay={0.2}>

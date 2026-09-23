@@ -11,7 +11,7 @@ type Props = {
 }
 
 function formatCountry(country?: string | null) {
-    if (!country?.trim()) return 'esta experiencia'
+    if (!country?.trim()) return 'esta ruta'
 
     return country.charAt(0).toUpperCase() + country.slice(1)
 }
@@ -36,7 +36,7 @@ export function MissionCTA({ mission }: Props) {
 
                         <p className="mx-auto mb-8 max-w-2xl text-muted-foreground">
                             Escríbenos y recibe asesoría personalizada para la
-                            experiencia{' '}
+                            ruta{' '}
                             <span className="font-semibold text-foreground">
                                 {mission.name}
                             </span>

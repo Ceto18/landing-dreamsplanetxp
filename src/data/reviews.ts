@@ -23,7 +23,7 @@ const reviews: Review[] = [
         name: 'María Fernández',
         location: 'Madrid, España',
         comment:
-            'Una experiencia inolvidable. La organización y el acompañamiento superaron mis expectativas.',
+            'Una ruta inolvidable. La organización y el acompañamiento superaron mis expectativas.',
         rating: 5,
         missionName: 'Misión Islandia',
         momentName: 'Auroras boreales',
@@ -37,7 +37,7 @@ const reviews: Review[] = [
         name: 'Carlos Mendoza',
         location: 'Lima, Perú',
         comment:
-            'Cada momento estuvo cuidadosamente preparado. Fue una experiencia distinta y muy especial.',
+            'Cada momento estuvo cuidadosamente preparado. Fue una ruta distinta y muy especial.',
         rating: 5,
         missionName: 'Misión Australia',
         momentName: 'Australian Camp',

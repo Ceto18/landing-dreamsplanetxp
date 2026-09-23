@@ -103,7 +103,7 @@ export function InfluencerInfo({ member }: MemberProps) {
             icon: Globe,
         },
         {
-            label: 'Experiencia',
+            label: 'Ruta',
             value: member.experience || 'No especificada',
             icon: Briefcase,
         },
@@ -168,7 +168,7 @@ export function InfluencerBiography({
 
                     <p className="mt-6 text-base leading-8 text-muted-foreground sm:text-lg">
                         {bio ||
-                            `Estamos preparando más información sobre la trayectoria y experiencia de ${fullname}.`}
+                            `Estamos preparando más información sobre la trayectoria y ruta de ${fullname}.`}
                     </p>
                 </div>
             </FadeUp>
@@ -201,7 +201,7 @@ export function InfluencerVideo({
                     </h2>
 
                     <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-                        Conoce un poco más sobre {fullname}, su experiencia y su
+                        Conoce un poco más sobre {fullname}, su ruta y su
                         forma de vivir cada aventura.
                     </p>
                 </div>

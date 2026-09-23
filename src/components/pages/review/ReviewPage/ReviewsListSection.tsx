@@ -40,12 +40,12 @@ export function ReviewsListSection({
                         </p>
 
                         <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">
-                            Experiencias compartidas por nuestros viajeros
+                            Rutas compartidas por nuestros viajeros
                         </h2>
 
                         <p className="mt-4 leading-relaxed text-muted-foreground">
                             Conoce las opiniones de otros viajeros y
-                            comparte tu propia experiencia con la
+                            comparte tu propia ruta con la
                             comunidad.
                         </p>
                     </div>
@@ -98,7 +98,7 @@ export function ReviewsListSection({
 
                                                         <p className="mt-0.5 text-xs text-muted-foreground">
                                                             {review.mission_name ||
-                                                                'Experiencia DreamsPlanetXP'}
+                                                                'Ruta DreamsPlanetXP'}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -183,7 +183,7 @@ export function ReviewsListSection({
 
                                 <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
                                     Sé la primera persona en compartir
-                                    su experiencia.
+                                    su ruta.
                                 </p>
                             </AnimatedCard>
                         )}

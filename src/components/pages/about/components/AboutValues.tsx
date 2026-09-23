@@ -30,7 +30,7 @@ export function AboutValues({ values }: Props) {
 
                 <FadeUp delay={0.2}>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                        Principios que guían cada experiencia, cada destino y cada detalle del viaje.
+                        Principios que guían cada ruta, cada destino y cada detalle del viaje.
                     </p>
                 </FadeUp>
             </div>

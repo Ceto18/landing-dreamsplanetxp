@@ -29,7 +29,7 @@ export function MomentsCTA() {
 
                         <p className="text-muted-foreground mb-6">
                             Explora esta misión y descubre sus momentos y
-                            experiencias disponibles.
+                            rutas disponibles.
                         </p>
 
                         <Link

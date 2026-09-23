@@ -188,12 +188,12 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
 
                 if (mounted) setExperiences(data)
             } catch (error) {
-                console.error('Error cargando experiencias:', error)
+                console.error('Error cargando rutas:', error)
 
                 if (mounted) {
                     setExperiences([])
                     setFormError(
-                        'No se pudieron cargar las experiencias de esta misión.'
+                        'No se pudieron cargar las rutas de esta misión.'
                     )
                 }
             } finally {
@@ -232,7 +232,7 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
                 if (mounted) {
                     setMoments([])
                     setFormError(
-                        'No se pudieron cargar los momentos de esta experiencia.'
+                        'No se pudieron cargar los momentos de esta ruta.'
                     )
                 }
             } finally {
@@ -363,7 +363,7 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
         }
 
         if (!slug && !experienceUuid) {
-            setFormError('Selecciona una experiencia.')
+            setFormError('Selecciona una ruta.')
             return
         }
 
@@ -461,7 +461,7 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
             <AnimatedCard className="rounded-3xl border border-border/60 bg-card/50 p-6 shadow-2xl sm:p-8">
                 <div className="mb-6">
                     <h4 className="text-xl font-bold text-foreground">
-                        Comparte tu experiencia
+                        Comparte tu ruta
                     </h4>
 
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -532,7 +532,7 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
                                     htmlFor="reviewExperience"
                                     className="mb-2 block font-semibold text-foreground"
                                 >
-                                    Experiencia
+                                    Ruta
                                 </label>
 
                                 <select
@@ -549,12 +549,12 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
                                 >
                                     <option value="">
                                         {loadingExperiences
-                                            ? 'Cargando experiencias...'
+                                            ? 'Cargando rutas...'
                                             : !missionUuid
                                               ? 'Selecciona una misión'
                                               : experiences.length === 0
-                                                ? 'No hay experiencias disponibles'
-                                                : 'Selecciona una experiencia'}
+                                                ? 'No hay rutas disponibles'
+                                                : 'Selecciona una ruta'}
                                     </option>
 
                                     {experiences.map((experience) => (
@@ -592,7 +592,7 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
                                         {loadingMoments
                                             ? 'Cargando momentos...'
                                             : !experienceUuid
-                                              ? 'Selecciona una experiencia'
+                                              ? 'Selecciona una ruta'
                                               : moments.length === 0
                                                 ? 'No hay momentos disponibles'
                                                 : 'Selecciona un momento'}
@@ -662,7 +662,7 @@ export function MomentReviewForm({ slug, onSubmitted }: Props) {
                             onChange={(event) => setComment(event.target.value)}
                             disabled={submitting}
                             rows={5}
-                            placeholder="Cuéntanos cómo fue tu experiencia..."
+                            placeholder="Cuéntanos cómo fue tu ruta..."
                             required
                             className="w-full resize-none rounded-lg border border-border/70 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30 disabled:cursor-not-allowed disabled:opacity-60"
                         />

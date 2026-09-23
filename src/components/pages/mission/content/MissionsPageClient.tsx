@@ -160,7 +160,7 @@ export default function MissionsPageClient() {
                 setTotalPages(response?.last_page ?? 1)
                 setTotal(response?.total ?? 0)
             } catch (error) {
-                console.error('Error al obtener experiencias:', error)
+                console.error('Error al obtener rutas:', error)
 
                 setExperiences([])
                 setCurrentPage(1)

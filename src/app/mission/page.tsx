@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Misiones',
 
     description:
-        'Explora nuestras misiones y experiencias premium alrededor del mundo con DreamsPlanetXP.',
+        'Explora nuestras misiones y rutas premium alrededor del mundo con DreamsPlanetXP.',
 
     alternates: {
         canonical: '/mission',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Misiones | DreamsPlanetXP',
         description:
-            'Explora nuestras misiones y experiencias premium alrededor del mundo con DreamsPlanetXP.',
+            'Explora nuestras misiones y rutas premium alrededor del mundo con DreamsPlanetXP.',
         url: '/mission',
         type: 'website',
     },
