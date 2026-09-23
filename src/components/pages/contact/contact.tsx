@@ -49,7 +49,6 @@ export async function Contact() {
 
                     <div className="lg:col-span-2">
                         <ContactForm
-                            missions={missions}
                         />
                     </div>
                 </div>
