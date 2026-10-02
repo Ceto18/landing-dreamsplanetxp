@@ -85,16 +85,16 @@ export default function RootLayout({
       lang="es"
       className={`${montserrat.variable} ${geistMono.variable} dark`}
     >
-      <body className="relative bg-black font-sans text-foreground antialiased">
-
+      <head>
         <Script
-          id="google-adsense"
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7882722765544662"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
+      </head>
 
+      <body className="relative bg-black font-sans text-foreground antialiased">
         <WebsiteSchema />
         <OrganizationSchema />
 
