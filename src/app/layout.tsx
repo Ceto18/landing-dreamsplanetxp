@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat, Geist_Mono } from 'next/font/google'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import Script from 'next/script'
 
 import './globals.css'
 
@@ -73,6 +72,10 @@ export const metadata: Metadata = {
   },
 
   category: 'travel',
+
+  other: {
+    'google-adsense-account': 'ca-pub-7882722765544662',
+  },
 }
 
 export default function RootLayout({
@@ -86,11 +89,10 @@ export default function RootLayout({
       className={`${montserrat.variable} ${geistMono.variable} dark`}
     >
       <head>
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7882722765544662"
           crossOrigin="anonymous"
-          strategy="beforeInteractive"
         />
       </head>
 
